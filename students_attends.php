@@ -212,9 +212,9 @@ include_once './inc/top.php';
 			<?php if ($permissions[0]['W']) { ?>
               <input type="submit" value="Add" name="btnAdd" class="btn btn-primary"/>
 			<?php } else { ?>
-				<input type="submit" value="Add" name="btnAdd" class="btn btn-primary disabled/>
+				<input type="submit" value="Add" name="btnAdd" class="btn btn-primary" disabled/>
 			<?php } ?>
-              <input type="reset" value="Clear"  name="btnClear"/>
+              <input type="reset" value="Clear"  name="btnClear" class="btn btn-default"/>
             </div>
         <!-- /.row -->
       </form>

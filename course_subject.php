@@ -63,6 +63,13 @@ include_once './inc/top.php';
                 <!-- /.row -->
 
                 <!-- cours subject mng -->
+                <?php
+                require_once("./config.php");
+                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+                $stmt->execute();
+                $permissions = $stmt->fetchAll();
+                ?>
+                <?php if($permissions[0]['R']){?>
                 <form method="post" action="controller/course_subjectController.php" data-toggle="validator">
                     <div class="row">
                         <div class="col-lg-4">
@@ -133,13 +140,26 @@ include_once './inc/top.php';
                             <label>Fee</label><br/>
                             <input type="text" name="txtFee" size="10" maxlength="10" required/><br/>
                             <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
-                        
-                        <div>
-                            <input type="submit" value="Add" name="btnAdd"/>
-                            <input type="submit" value="Update" name="btnUpdate"/>
-                            <input type="submit" value="Delete" name="btnDelete"/>
-                            <input type="reset" value="Clear" name="btnClear"/>
-                        </div>
+
+                            <div>
+                                <?php if($permissions[0]['W']){?>
+                                    <input type="submit" value="Add" name="btnAdd" class="btn-primary"/>
+                                    <input type="submit" value="Update" name="btnUpdate" class="btn-primary"/>
+                                <?php } else {
+                                    ?>
+                                    <input type="submit" value="Add" name="btnAdd" class="btn-disabled" disabled/>
+                                    <input type="submit" value="Update" name="btnUpdate" class="btn-disabled" disabled/>
+                                    <?php
+                                }
+                                if($permissions[0]['D']){?>
+                                    <input type="submit" value="Delete" name="btnDelete" class="btn-danger"/>
+                                <?php } else {
+                                    ?>
+                                    <input type="submit" value="Delete" name="btnDelete" class="btn-disabled" disabled/>
+                                    <?php
+                                } ?>
+                                <input type="reset" value="Clear" name="btnClear"  class="btn-default"/>
+                            </div>
                         
                         </div>
                     
@@ -176,6 +196,11 @@ include_once './inc/top.php';
                     </div>
                 </form>
                 <!-- /cours subject mng -->
+                <?php } else {
+                    ?>
+                    <h1>You Do Not Have Permissions To This Page...!</h1>
+                    <?php
+                } ?>
 
             </div>
             <!-- /.container-fluid -->

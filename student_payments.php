@@ -189,7 +189,14 @@ include_once 'dbconfig.php';
             </div>
       </div>
           <!-- /.row -->
-          
+
+		<?php
+		require_once("./config.php");
+		$stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+		$stmt->execute();
+		$permissions = $stmt->fetchAll();
+		?>
+		<?php if($permissions[0]['R']){?>
           <form method="post" name="stupay" id="stupay" action="controller/studentPaymentController.php" data-toggle="validator">
         <div class="row">
               <div class="col-lg-4">
@@ -257,8 +264,14 @@ include_once 'dbconfig.php';
               </tr>
                 </table>
             <input type="hidden" id="txtDue" name="txtDue" placeholder="0.00"/>
-            <input type="submit" name="btnAdd" onClick="return printpanel()">
-            <input type="reset">
+				  <?php if($permissions[0]['W']){?>
+					  <input type="submit" name="btnAdd" onClick="return printpanel()" class="btn btn-primary">
+				  <?php } else {
+					  ?>
+					  <input type="submit" name="btnAdd" onClick="return printpanel()" class="btn btn-primary" disabled>
+					  <?php
+				  } ?>
+            <input type="reset" class="btn btn-default">
           </div>
             </div>
 			
@@ -360,6 +373,12 @@ include_once 'dbconfig.php';
     <!-- /.row -->
 	
     </form>
+
+		<?php } else {
+			?>
+			<h1>You Do Not Have Permissions To This Page...!</h1>
+			<?php
+		} ?>
     </div>
     <!-- /.container-fluid --> 
     
