@@ -3,8 +3,8 @@ function connection()
 {
     $servername = "localhost";
     $username = "root";
-    $password = "525625";
-//    $password = "123";
+//    $password = "525625";
+    $password = "123";
     $database = "kelanidb";
 
 // Create connection
