@@ -1,2 +1,2 @@
-hello hello:wq
+hello hello
 
