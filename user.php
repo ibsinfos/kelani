@@ -143,6 +143,8 @@ if(isset($_GET['edit'])){
             $Emp_id = $row['Emp_id'];
             $CreateUser = $row['CreateUser'];
             $Status = $row['Status'];
+            $btnStatus = 'enabled';
+            $btnAddStatus = 'disabled';
         }
     }
     else{
@@ -152,6 +154,8 @@ if(isset($_GET['edit'])){
         $Emp_id = "";
         $CreateUser = "";
         $Status = "";
+        $btnStatus = 'disabled';
+        $btnAddStatus = 'enabled';
     }
 //	var_dump($_POST);
 //	die();
@@ -164,6 +168,8 @@ else{
     $Emp_id = "";
     $CreateUser = "";
     $Status = "";
+    $btnStatus = 'disabled';
+    $btnAddStatus = 'enabled';
 }
 
 ?>
@@ -194,9 +200,9 @@ else{
                 <div class="col-lg-4">
                     <form method="post" action="controller/userController.php" target="_self" data-toggle="validator" id="usrmng">
                         <label>Username</label><br/>
-                        <input id="txtUsername" value="" title="Username must not be blank and contain only letters, numbers and underscores." type="text" required pattern="\w+" name="usernamex">
+                        <input id="txtUsername" <?php echo $btnAddStatus; ?> value="<?php if(isset($_GET['edit'])){ echo $Username;} ?>" title="Username must not be blank and contain only letters, numbers and underscores." type="text" required name="usernamex">
                         <label>Password</label><br/>
-                        <input id="pwd1" title="Password must contain at least 6 characters, including UPPER/lowercase and numbers." type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="pwd1">
+                        <input id="pwd1" value="<?php if(isset($_GET['edit'])){ echo $Password;} ?>" title="Password must contain at least 6 characters, including UPPER/lowercase and numbers." type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="pwd1">
                         <label>Reenter Password</label><br/>
                         <input id="txtRePw" title="Please enter the same Password as above." type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="pwd2"></p>
                         <label>User Level</label><br/>
@@ -217,7 +223,7 @@ else{
 
                         </select><br />
                         <label>Employee</label><br/>
-                        <select name="cmbEmployee" id="cmbEmployee">
+                        <select name="cmbEmployee" id="cmbEmployee" <?php echo $btnAddStatus; ?>>
                             <option value='0'>        --Select Employee--</option>
                             <?php
                             include_once 'dbconfig.php';
@@ -243,10 +249,10 @@ else{
                         <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
 
                         <div>
-                            <input name="btnAdd" type="submit" value="Add"/>
-                            <input name="btnUpdate" onclick="" type="submit" value="Update"/>
-                            <input name="btnDelete" type="submit" value="Delete"/>
-                            <input name="btnClear" type="reset" value="Clear"/>
+                            <input type="submit" value="Add" name="btnAdd" <?php echo $btnAddStatus; ?>/>
+                            <input type="submit" value="Update" name="btnUpdate" id="btnUpdate" <?php echo $btnStatus; ?>/>
+                            <input type="submit" value="Delete" name="btnDelete" <?php echo $btnStatus; ?>/>
+                            <input type="reset" value="Clear" name="btnClear"/>
                         </div>
                     </form>
                 </div>
