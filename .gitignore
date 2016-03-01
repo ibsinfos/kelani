@@ -1,1 +1,4 @@
 .idea/
+config.php
+dbconfig.php
+controller/dbconfig.php
