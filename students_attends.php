@@ -146,6 +146,13 @@ include_once './inc/top.php';
             </div>
       </div>
           <!-- /.row -->
+		<?php
+		require_once("./config.php");
+		$stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+		$stmt->execute();
+		$permissions = $stmt->fetchAll();
+		if ($permissions[0]['R']) {
+			?>
           
           <form method="post" id="stuatt" name="stuatt" action="controller/students_attendsController.php">
         <div class="row">
@@ -202,13 +209,23 @@ include_once './inc/top.php';
         <!-- /.row -->
         
         <div class="row" style="padding-left: 15px;">
-              <input type="submit" value="Add" name="btnAdd" />
+			<?php if ($permissions[0]['W']) { ?>
+              <input type="submit" value="Add" name="btnAdd" class="btn btn-primary"/>
+			<?php } else { ?>
+				<input type="submit" value="Add" name="btnAdd" class="btn btn-primary disabled/>
+			<?php } ?>
               <input type="reset" value="Clear"  name="btnClear"/>
             </div>
         <!-- /.row -->
       </form>
-        </div>
-    <!-- /.container-fluid --> 
+		<?php } else {
+			?>
+			<h1>You Do Not Have Permissions To This Page...!</h1>
+			<?php
+		} ?>
+	</div>
+
+    <!-- /.container-fluid -->
     
   </div>
       <!-- /#page-wrapper --> 

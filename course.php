@@ -73,6 +73,13 @@ if(isset($_GET['edit'])){
                 <!-- /.row -->
 
                 <!-- cours mng -->
+                <?php
+                require_once("./config.php");
+                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+                $stmt->execute();
+                $permissions = $stmt->fetchAll();
+                if ($permissions[0]['R']) {
+                    ?>
                 <form method="post" action="controller/courseController.php" target="_parent" data-toggle="validator">
                     <div class="row">
                         <div class="col-lg-4">
@@ -96,16 +103,34 @@ if(isset($_GET['edit'])){
                             ?>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-lg-12">
-                            <input name="btnAdd" type="submit" value="Add"/>
-                            <input name="btnUpdate" onClick="" type="submit" value="Update"/>
-                            <input name="btnDelete" type="submit" value="Delete"/>
-                            <input name="btnClear" type="reset" value="Clear"/>
+                            <?php if ($permissions[0]['W']) { ?>
+                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
+                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary"/>
+                            <?php } else {
+                                ?>
+                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" disabled/>
+                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary" disabled/>
+                                <?php
+                            }
+                            if ($permissions[0]['D']) {
+                                ?>
+                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                            <?php } else {
+                                ?>
+                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                                <?php
+                            } ?>
+                            <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
                         </div>
                     </div>
                 </form>
+                <?php } else {
+                    ?>
+                    <h1>You Do Not Have Permissions To This Page...!</h1>
+                    <?php
+                } ?>
                 <!-- /cours mng -->
             </div>
             <!-- /.container-fluid -->

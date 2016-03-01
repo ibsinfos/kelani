@@ -62,6 +62,13 @@ include_once './inc/top.php';
                 </div>
                 <!-- /.row -->
 
+                <?php
+                require_once("./config.php");
+                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+                $stmt->execute();
+                $permissions = $stmt->fetchAll();
+                if ($permissions[0]['R']) {
+                    ?>
                 <!-- exam/seminar center -->
                 <form method="post" action="controller/examcenterController.php" target="_parent" data-toggle="validator">
                     <div class="row">
@@ -86,14 +93,34 @@ include_once './inc/top.php';
                     </div>
 
                     <div class="row">
-                        <div class="col-lg-12">
-                            <input name="btnAdd" type="submit" value="Add"/>
-                            <input name="btnUpdate" onclick="" type="submit" value="Update"/>
-                            <input name="btnDelete" type="submit" value="Delete"/>
-                            <input name="btnClear" type="reset" value="Clear"/>
+                        <div class="col-lg-12"><?php if ($permissions[0]['W']) { ?>
+                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
+                                <input name="btnUpdate" onclick="" type="submit" value="Update"
+                                       class="btn btn-primary"/>
+                            <?php } else {
+                                ?>
+                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" disabled/>
+                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary"
+                                       disabled/>
+                                <?php
+                            }
+                            if ($permissions[0]['D']) {
+                                ?>
+                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                            <?php } else {
+                                ?>
+                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                                <?php
+                            } ?>
+                            <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
                         </div>
                     </div>
                 </form>
+                <?php } else {
+                    ?>
+                    <h1>You Do Not Have Permissions To This Page...!</h1>
+                    <?php
+                } ?>
                 <!-- /exam/seminar center -->
             </div>
             <!-- /.container-fluid -->
