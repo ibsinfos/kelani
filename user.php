@@ -201,8 +201,9 @@ else{
                     <form method="post" action="controller/userController.php" target="_self" data-toggle="validator" id="usrmng">
                         <label>Username</label><br/>
                         <input id="txtUsername" <?php echo $btnAddStatus; ?> value="<?php if(isset($_GET['edit'])){ echo $Username;} ?>" title="Username must not be blank and contain only letters, numbers and underscores." type="text" required name="usernamex">
+                        <input value="<?php if(isset($_GET['edit'])){ echo $Username;} ?>" type="hidden" name="usernamey">
                         <label>Password</label><br/>
-                        <input id="pwd1" value="<?php if(isset($_GET['edit'])){ echo $Password;} ?>" title="Password must contain at least 6 characters, including UPPER/lowercase and numbers." type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="pwd1">
+                        <input id="pwd1" title="Password must contain at least 6 characters, including UPPER/lowercase and numbers." type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="pwd1">
                         <label>Reenter Password</label><br/>
                         <input id="txtRePw" title="Please enter the same Password as above." type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="pwd2"></p>
                         <label>User Level</label><br/>

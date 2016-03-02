@@ -85,7 +85,6 @@ include_once './inc/top.php';
                                 }
                                 ?>
                         </select>
-                        <input name="btnAddNew" type="submit" value="Add New"/>
                         <br />
                         
 
@@ -119,6 +118,9 @@ include_once './inc/top.php';
                     </div>
                 </div>
                 <!-- /.row -->
+
+
+
 				
             </div>
             <!-- /.container-fluid -->
