@@ -58,7 +58,13 @@ include_once './inc/top.php';
         </div>
       </div>
       <!-- /.row -->
-      
+        <?php
+        require_once("./config.php");
+        $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+        $stmt->execute();
+        $permissions = $stmt->fetchAll();
+        if ($permissions[0]['R']) {
+            ?>
       <form method="post" id="empath" action="">
         <div class="row">
           <div class="col-lg-4">
@@ -98,11 +104,17 @@ include_once './inc/top.php';
         </div>
         <!-- /.row -->
         <div class="row" style="padding-left: 15px;">
-          <input type="submit" value="Add" name="btnSearch"/>
-          <input type="reset" value="Clear"  name="btnClear"/>
+          <input type="submit" value="Add" name="btnSearch" class="btn btn-primary"/>
+          <input type="reset" value="Clear"  name="btnClear" class="btn btn-default"/>
         </div>
+
         <!-- /.row -->
       </form>
+        <?php } else {
+            ?>
+            <h1>You Do Not Have Permissions To This Page...!</h1>
+            <?php
+        } ?>
       <div class="row"> </div>
     </div>
     <!-- /.container-fluid --> 

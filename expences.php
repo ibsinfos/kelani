@@ -1,4 +1,4 @@
-<?php session_start(); ?>
+                                                                                                                                                                                                                                                                                  <?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -82,7 +82,14 @@ include_once 'dbconfig.php';
                     </div>
                 </div>
                 <!-- /.row -->
-                
+
+                <?php
+                require_once("./config.php");
+                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+                $stmt->execute();
+                $permissions = $stmt->fetchAll();
+                if ($permissions[0]['R']) {
+                    ?>
                 <form method="post" action="controller/expencesController.php" target="_parent" data-toggle="validator">
                 <div class="row">
                     <div class="col-lg-4">
@@ -100,9 +107,14 @@ include_once 'dbconfig.php';
                         <label>Amount</label><br/>
                         <input type="text" name="txtAmount" maxlength="10" size="10" required/><br/>
                         <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
-                    <div>
-                        <input name="btnAdd" type="submit" value="Add"/>
-                        <input name="btnClear" type="reset" value="Clear"/>
+                    <div><?php if ($permissions[0]['W']) { ?>
+                            <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
+                        <?php } else {
+                            ?>
+                            <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" disabled/>
+                            <?php
+                        }?>
+                        <input name="btnClear" type="reset" value="Clear" class="btn-default btn"/>
                     </div>
                     
                     </div>
@@ -132,6 +144,11 @@ include_once 'dbconfig.php';
                 </div>
                 <!-- /.row -->
 				</form>
+                <?php } else {
+                    ?>
+                    <h1>You Do Not Have Permissions To This Page...!</h1>
+                    <?php
+                } ?>
             </div>
             <!-- /.container-fluid -->
 

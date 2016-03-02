@@ -144,6 +144,13 @@ if(isset($_GET['Student_id'])){
                     </div>
                 </div>
                 <!-- /.row -->
+				<?php
+				require_once("./config.php");
+				$stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+				$stmt->execute();
+				$permissions = $stmt->fetchAll();
+				if ($permissions[0]['R']) {
+				?>
                 <form method="post" action="controller/students_courseController_Edit.php" data-toggle="validator">
                 <div class="row">
                     <div class="col-lg-4">
@@ -220,8 +227,11 @@ if(isset($_GET['Student_id'])){
                 <div class="row" style="padding-left: 15px;">
                     <!--<input type="submit" value="Add" name="btnAdd"/>-->                    
                     <!--<input type="submit" value="Delete" name="btnDelete"/>-->
-                    <input type="reset" value="Clear" name="btnClear"/>
-                    <input type="button" value="Update" name="btnUpdate" id="btnUpdate" onClick="UpdateSubjectGrade()"/>
+					<?php if ($permissions[0]['W']) {
+					?>
+					<input type="button" value="Update" name="btnUpdate" id="btnUpdate" onClick="UpdateSubjectGrade()"/>
+					<?php } ?>
+					<input type="reset" value="Clear" name="btnClear"/>
                 </div>
                 <!-- /.row -->
  				</form>
@@ -265,7 +275,11 @@ if(isset($_GET['Student_id'])){
                     </div>
                 </div>
                 <!-- /.row -->
-                
+				<?php } else {
+					?>
+					<h1>You Do Not Have Permissions To This Page...!</h1>
+					<?php
+				} ?>
             </div>
             <!-- /.container-fluid -->
 

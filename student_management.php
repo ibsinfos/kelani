@@ -535,8 +535,8 @@ $QulificationID_ = $row['MAXNO'];
                                         <div class="row">
                                             <div class="submitfooter">
                                                
-                                                <input type="reset" value="Clear"/>
-                                                <input type="submit" name="btnFinishDD" value="Finish" style="float:right"/>
+                                                <input type="reset" value="Clear" class="btn-default btn"/>
+                                                <input type="submit" name="btnFinishDD" value="Finish" style="float:right" class="btn-primary btn"/>
                                                 <input type="button" name="btnPrevious_EQ" value="Previous" style="float:right" class="btn btn-info" data-toggle="collapse" data-target="#collapse4,#collapse3"/>
                                             </div>
                                         </div>

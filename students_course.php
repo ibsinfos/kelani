@@ -128,6 +128,13 @@ else{
                     </div>
                 </div>
                 <!-- /.row -->
+                <?php
+                require_once("./config.php");
+                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+                $stmt->execute();
+                $permissions = $stmt->fetchAll();
+                if ($permissions[0]['R']) {
+                    ?>
                 <form method="post" action="controller/students_courseController.php" data-toggle="validator" id="subcou">
                 <div class="row">
                     <div class="col-lg-4">
@@ -198,10 +205,25 @@ else{
                 
                 <!-- /.row -->
                 <div class="row" style="padding-left: 15px;">
-                    <input type="submit" value="Add" name="btnAdd"/>                    
-                    <input type="submit" value="Delete" name="btnDelete"/>
+                    <?php if ($permissions[0]['W']) { ?>
+                        <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
+                        <input name="btnUpdate" onclick="" type="submit" value="Update" onclick="showDetails();" class="btn btn-primary"/>
+                    <?php } else {
+                        ?>
+                        <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" disabled/>
+                        <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary"
+                               disabled/>
+                        <?php
+                    }
+                    if ($permissions[0]['D']) {
+                        ?>
+                        <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                    <?php } else {
+                        ?>
+                        <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                        <?php
+                    } ?>
                     <input type="reset" value="Clear" name="btnClear"/>
-                    <input type="button" value="Update" name="btnUpdate" onclick="showDetails();"/>
                 </div>
                 <!-- /.row -->
  				</form>
@@ -238,6 +260,11 @@ else{
                     </div>
                 </div>
                 <!-- /.row -->
+                <?php } else {
+                    ?>
+                    <h1>You Do Not Have Permissions To This Page...!</h1>
+                    <?php
+                } ?>
                 
             </div>
             <!-- /.container-fluid -->

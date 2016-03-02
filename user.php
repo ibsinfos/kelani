@@ -11,7 +11,6 @@
     <meta name="author" content="">
 
 
-
     <!-- Bootstrap Core CSS -->
 
     <link href="./css/bootstrap.min.css" rel="stylesheet">
@@ -37,33 +36,31 @@
 
     <script type="text/javascript">
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
 
             // JavaScript form validation
 
-            var checkPassword = function(str)
-            {
+            var checkPassword = function (str) {
                 var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
                 return re.test(str);
             };
 
-            var checkForm = function(e)
-            {
-                if(this.usernamex.value == "") {
+            var checkForm = function (e) {
+                if (this.usernamex.value == "") {
                     alert("Error: Username cannot be blank!");
                     this.usernamex.focus();
                     e.preventDefault(); // equivalent to return false
                     return;
                 }
                 re = /^\w+$/;
-                if(!re.test(this.usernamex.value)) {
+                if (!re.test(this.usernamex.value)) {
                     alert("Error: Username must contain only letters, numbers and underscores!");
                     this.usernamex.focus();
                     e.preventDefault();
                     return;
                 }
-                if(this.pwd1.value != "" && this.pwd1.value == this.pwd2.value) {
-                    if(!checkPassword(this.pwd1.value)) {
+                if (this.pwd1.value != "" && this.pwd1.value == this.pwd2.value) {
+                    if (!checkPassword(this.pwd1.value)) {
                         alert("The password you have entered is not valid!");
                         this.pwd1.focus();
                         e.preventDefault();
@@ -83,13 +80,12 @@
 
             // HTML5 form validation
 
-            var supports_input_validity = function()
-            {
+            var supports_input_validity = function () {
                 var i = document.createElement("input");
                 return "setCustomValidity" in i;
             }
 
-            if(supports_input_validity()) {
+            if (supports_input_validity()) {
                 var usernameInput = document.getElementById("txtUsername");
                 usernameInput.setCustomValidity(usernameInput.title);
 
@@ -100,13 +96,13 @@
 
                 // input key handlers
 
-                usernameInput.addEventListener("keyup", function() {
+                usernameInput.addEventListener("keyup", function () {
                     usernameInput.setCustomValidity(this.validity.patternMismatch ? usernameInput.title : "");
                 }, false);
 
-                pwd1Input.addEventListener("keyup", function() {
+                pwd1Input.addEventListener("keyup", function () {
                     this.setCustomValidity(this.validity.patternMismatch ? pwd1Input.title : "");
-                    if(this.checkValidity()) {
+                    if (this.checkValidity()) {
                         pwd2Input.pattern = this.value;
                         pwd2Input.setCustomValidity(pwd2Input.title);
                     } else {
@@ -115,7 +111,7 @@
                     }
                 }, false);
 
-                pwd2Input.addEventListener("keyup", function() {
+                pwd2Input.addEventListener("keyup", function () {
                     this.setCustomValidity(this.validity.patternMismatch ? pwd2Input.title : "");
                 }, false);
 
@@ -125,15 +121,16 @@
 
     </script>
 
-</head><body>
+</head>
+<body>
 
 <?php
 include_once './inc/top.php';
 include_once 'dbconfig.php'; //Connect to database
 
-if(isset($_GET['edit'])){
+if (isset($_GET['edit'])) {
     $id = trim($_GET['edit']);
-    $query = "SELECT Username, Password, UserLevel_tbl_id, Emp_id, CreateUser, CreateDate, Status, Username FROM user_tbl WHERE Username='".$id."'";
+    $query = "SELECT Username, Password, UserLevel_tbl_id, Emp_id, CreateUser, CreateDate, Status, Username FROM user_tbl WHERE Username='" . $id . "'";
     $result = getData($query);
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
@@ -146,8 +143,7 @@ if(isset($_GET['edit'])){
             $btnStatus = 'enabled';
             $btnAddStatus = 'disabled';
         }
-    }
-    else{
+    } else {
         $Username = "";
         $Password = "";
         $UserLevel_tbl_id = "";
@@ -160,8 +156,7 @@ if(isset($_GET['edit'])){
 //	var_dump($_POST);
 //	die();
 
-}
-else{
+} else {
     $Username = "";
     $Password = "";
     $UserLevel_tbl_id = "";
@@ -187,7 +182,7 @@ else{
                     </h1>
                     <ol class="breadcrumb">
                         <li>
-                            <i class="fa fa-dashboard"></i>  <a href="index.php">Dashboard</a>
+                            <i class="fa fa-dashboard"></i> <a href="index.php">Dashboard</a>
                         </li>
                         <li class="active">
                             <i class="fa fa-bar-chart-o"></i> User
@@ -197,7 +192,14 @@ else{
             </div>
             <!-- /.row -->
             <div class="row">
+                <?php
+                require_once("./config.php");
+                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+                $stmt->execute();
+                $permissions = $stmt->fetchAll();
+                if($permissions[0]['R']){?>
                 <div class="col-lg-4">
+<<<<<<< HEAD
                     <form method="post" action="controller/userController.php" target="_self" data-toggle="validator" id="usrmng">
                         <label>Username</label><br/>
                         <input id="txtUsername" <?php echo $btnAddStatus; ?> value="<?php if(isset($_GET['edit'])){ echo $Username;} ?>" title="Username must not be blank and contain only letters, numbers and underscores." type="text" required name="usernamex">
@@ -218,10 +220,45 @@ else{
                                 while ($row = mysqli_fetch_assoc($result)) {
                                     $selected = $row['id'] == $UserLevel_tbl_id ? 'selected' : '';
                                     echo "<option ". $selected ." value='".$row['id']."'>".$row['lavel_name']."</option>";
+=======
+                    <form method="post" action="controller/userController.php" target="_self" data-toggle="validator"
+                          id="usrmng">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Username</label>
+                            <input class="form-control col-md-8" id="txtUsername" value=""
+                                   title="Username must not be blank and contain only letters, numbers and underscores."
+                                   type="text" required pattern="\w+" name="usernamex">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Password</label>
+                            <input class="form-control col-md-8" id="pwd1"
+                                   title="Password must contain at least 6 characters, including UPPER/lowercase and numbers."
+                                   type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="pwd1">
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Reenter Password</label>
+                            <input class="form-control col-md-8" id="txtRePw" title="Please enter the same Password as above." type="password"
+                                   required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="pwd2"></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">User Level</label><br/>
+                            <select class="form-control col-md-8" name="cmbUserLevel" id="cmbUserLevel">
+                                <option value='0'> --Select UserLevel--</option>
+                                <?php
+                                include_once 'dbconfig.php';
+                                $query = 'SELECT * FROM userlevel_tbl;';
+                                $result = getData($query);
+                                if (mysqli_num_rows($result) > 0) {
+                                    // output data of each row
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        $selected = $row['id'] == $UserLevel_tbl_id ? 'selected' : '';
+                                        echo "<option " . $selected . " value='" . $row['id'] . "'>" . $row['lavel_name'] . "</option>";
+                                    }
+>>>>>>> 796addc8fbe77db2e3f3cc9ac0f00512eefec8fa
                                 }
-                            }
-                            ?>
+                                ?>
 
+<<<<<<< HEAD
                         </select><br />
                         <label>Employee</label><br/>
                         <select name="cmbEmployee" id="cmbEmployee" <?php echo $btnAddStatus; ?>>
@@ -235,18 +272,37 @@ else{
                                 while ($row = mysqli_fetch_assoc($result)) {
                                     $selected = $row['Emp_id'] == $Emp_id ? 'selected' : '';
                                     echo "<option ". $selected ." value='".$row['Emp_id']."'>".$row['Name']."</option>";
+=======
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Employee</label><br/>
+                            <select class="form-control col-md-8" name="cmbEmployee" id="cmbEmployee">
+                                <option value='0'> --Select Employee--</option>
+                                <?php
+                                include_once 'dbconfig.php';
+                                $query = 'SELECT * FROM employee_tb';
+                                $result = getData($query);
+                                if (mysqli_num_rows($result) > 0) {
+                                    // output data of each row
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        $selected = $row['Emp_id'] == $Emp_id ? 'selected' : '';
+                                        echo "<option " . $selected . " value='" . $row['Emp_id'] . "'>" . $row['Name'] . "</option>";
+                                    }
+>>>>>>> 796addc8fbe77db2e3f3cc9ac0f00512eefec8fa
                                 }
-                            }
-                            ?>
-                        </select><br />
-                        <label>Status</label><br/>
-
-                        <select name='cmbStatus' id="cmbStatus">
-                            <option <?php echo $Status == "1" ? 'selected' : '' ?> value='1'>Active</option>
-                            <option <?php echo $Status == "0" ? 'selected' : '' ?> value='0'>Deactive</option>
-                        </select>
-
+                                ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Status</label>
+                            <select class="form-control col-md-8" name='cmbStatus' id="cmbStatus">
+                                <option <?php echo $Status == "1" ? 'selected' : '' ?> value='1'>Active</option>
+                                <option <?php echo $Status == "0" ? 'selected' : '' ?> value='0'>Deactive</option>
+                            </select>
+                        </div>
                         <input type="hidden" value="<?php echo date('Y-m-d'); ?>" name="dtpDatex">
+<<<<<<< HEAD
                         <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
 
                         <div>
@@ -254,6 +310,30 @@ else{
                             <input type="submit" value="Update" name="btnUpdate" id="btnUpdate" <?php echo $btnStatus; ?>/>
                             <input type="submit" value="Delete" name="btnDelete" <?php echo $btnStatus; ?>/>
                             <input type="reset" value="Clear" name="btnClear"/>
+=======
+                        <input type="hidden"
+                               value="<?php echo ($_SESSION['user_session'] == 'loged') ? $_SESSION['username'] : 'User'; ?>"
+                               name="ssUser">
+
+                        <div class="form-group col-md-12">
+                            <?php if($permissions[0]['W']){?>
+                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
+                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary"/>
+                            <?php } else {
+                            ?>
+                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" disabled/>
+                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary" disabled/>
+                                <?php
+                            }
+                            if($permissions[0]['D']){?>
+                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                            <?php } else {
+                                ?>
+                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger" disabled/>
+                                <?php
+                            } ?>
+                                <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
+>>>>>>> 796addc8fbe77db2e3f3cc9ac0f00512eefec8fa
                         </div>
                     </form>
                 </div>
@@ -276,13 +356,18 @@ WHERE u.Emp_id = e.Emp_id AND u.UserLevel_tbl_id = ul.id AND e.Branch_tbl_Branch
 						<th>CREATE DATE</th>
 						<th>&nbsp;</th>
                         </tr>";
-                    while($row = mysqli_fetch_array($result)){//Creates a loop to loop through results
-                        echo "<tr><td>" . $row['Username']. "</td><td>" . $row['NameInitial']. "</td><td>" . $row['lavel_name']. "</td><td>" . $row['City']. "</td><td>" . $row['CreateDate']. "</td><td><a href='user.php?edit=".$row['Username']."'>Edit</a></td></tr>";  //$row['index'] the index here is a field name
+                    while ($row = mysqli_fetch_array($result)) {//Creates a loop to loop through results
+                        echo "<tr><td>" . $row['Username'] . "</td><td>" . $row['NameInitial'] . "</td><td>" . $row['lavel_name'] . "</td><td>" . $row['City'] . "</td><td>" . $row['CreateDate'] . "</td><td><a href='user.php?edit=" . $row['Username'] . "'>Edit</a></td></tr>";  //$row['index'] the index here is a field name
                     }
                     echo "</table>"; //Close the table in HTML
                     connection_close(); //Make sure to close out the database connection
                     ?>
                 </div>
+                <?php } else {
+                    ?>
+                    <h1>You Do Not Have Permissions To This Page...!</h1>
+                    <?php
+                } ?>
             </div>
             <!-- /.row -->
 
@@ -296,4 +381,5 @@ WHERE u.Emp_id = e.Emp_id AND u.UserLevel_tbl_id = ul.id AND e.Branch_tbl_Branch
 <!-- /#wrapper -->
 
 <?php include_once './inc/footer.php'; ?>
-</body></html>
+</body>
+</html>

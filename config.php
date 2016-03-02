@@ -2,8 +2,8 @@
 $db_host = "localhost";
 $db_name = "kelanidb";
 $db_user = "root";
-$db_pass = "123";
-//$db_pass = "525625";
+//$db_pass = "123";
+$db_pass = "525625";
 
 try{
 
