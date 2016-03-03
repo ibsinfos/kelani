@@ -951,7 +951,7 @@ INSERT INTO `student_subject_course_tbl` (`id`,`Student_tb_Student_id`,`Acadamic
  (165,'16KEL00002','2016',1,7,32,'P1 A','100.00','O','2016-02-15 10:40:01','Admin',1),
  (166,'16HAL00002','2016',1,8,31,'P1 B','120.00','O','2016-02-15 16:03:55','Admin',0),
  (167,'16HAL00002','2016',1,8,31,'P1 B','120.00','O','2016-02-24 11:25:09','Admin',0),
- (168,'16PAN00001','2016',3,7,13,'P1 A','500.00','O','2016-02-29 14:18:28','aaa',1),
+ (168,'16PAN00001','2016',3,7,13,'P1 A','500.00','A plus','2016-02-29 14:18:28','aaa',0),
  (169,'16PAN00001','2016',3,7,14,'P1 A','500.00','O','2016-02-29 14:18:28','aaa',1),
  (170,'16PAN00001','2016',3,7,16,'P1 A','500.00','O','2016-02-29 14:18:28','aaa',1);
 /*!40000 ALTER TABLE `student_subject_course_tbl` ENABLE KEYS */;
@@ -1221,26 +1221,10 @@ CREATE TABLE `user_tbl` (
 
 /*!40000 ALTER TABLE `user_tbl` DISABLE KEYS */;
 INSERT INTO `user_tbl` (`Username`,`Password`,`UserLevel_tbl_id`,`Emp_id`,`CreateUser`,`CreateDate`,`Status`) VALUES 
- ('a','Aaaaaa1',1,'AXA001',NULL,'2016-02-26',1),
- ('A111111','Aa111111',1,'HAL001','Admin',NULL,1),
+ ('a','Zz2221',1,'AXA001',NULL,'2016-02-26',1),
+ ('A111111','Zz2221',1,'HAL001','Admin',NULL,1),
  ('aaa','47bce5c74f589f4867dbd57e9ca9f808',1,NULL,'Admin','2016-01-01',1),
- ('Amila1','d41d8cd98f00b204e9800998ecf8427e',1,'AXA001','aaa','2016-02-26',1),
- ('Axxax','d41d8cd98f00b204e9800998ecf8427e',1,'AXA001','aaa','2016-02-26',1),
- ('Axxxx','Aa111111',1,'AXA001','Admin','2016-02-25',1),
- ('Kamal','d41d8cd98f00b204e9800998ecf8427e',1,'HAL002','aaa','2016-02-26',1),
- ('Livera','Livera1',1,'AXA001','aaa','2016-02-26',1),
- ('Livera1','X111111x',1,'AXA001','aaa',NULL,1),
- ('MNRL','f8641a334ef91542ed266ee644b8869d',1,'HAL001','aaa','2016-02-26',1),
- ('MNRLivera','40d9a40c61bd409b976933a70f2adb1a',1,'AXA001','aaa','2016-02-26',1),
- ('Nishan','Nishan1',1,'AXA001',NULL,'2016-02-26',1),
- ('Nishan2','Nishan2',1,'AXA001','Nishan2','2016-02-26',1),
- ('NLivera','NLivera1',1,'HAL001','aaa','2016-02-26',1),
- ('Oppp','d41d8cd98f00b204e9800998ecf8427e',1,'HAL001','aaa','2016-02-26',1),
- ('Shashika','d41d8cd98f00b204e9800998ecf8427e',1,'KEL001','aaa','2016-03-01',1),
- ('SSaaxax','X111111xx',1,'HAL001','Admin','2016-01-04',1),
- ('Xaaaaaa','d41d8cd98f00b204e9800998ecf8427e',1,'AXA001','aaa','2016-02-26',1),
- ('Xyz','badb77bc1c602c4d94f208c717dd5ead',1,'AXA001','aaa','2016-02-26',1),
- ('Zzzzzzzzz','d41d8cd98f00b204e9800998ecf8427e',1,'AXA001','aaa','2016-02-26',1);
+ ('Jagath','0e6d36b024e667bb7e91b3bc32f2feaf',1,'KEL001','aaa','2016-03-02',1);
 /*!40000 ALTER TABLE `user_tbl` ENABLE KEYS */;
 
 

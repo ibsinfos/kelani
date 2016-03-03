@@ -199,17 +199,21 @@ if (isset($_GET['edit'])) {
                 $permissions = $stmt->fetchAll();
                 if($permissions[0]['R']){?>
                 <div class="col-lg-4">
-<<<<<<< HEAD
+
                     <form method="post" action="controller/userController.php" target="_self" data-toggle="validator" id="usrmng">
-                        <label>Username</label><br/>
-                        <input id="txtUsername" <?php echo $btnAddStatus; ?> value="<?php if(isset($_GET['edit'])){ echo $Username;} ?>" title="Username must not be blank and contain only letters, numbers and underscores." type="text" required name="usernamex">
+                        <div class="form-group"><label class="control-label col-md-4">Username</label>
+                        <input class="form-control col-md-8" id="txtUsername" <?php echo $btnAddStatus; ?> value="<?php if(isset($_GET['edit'])){ echo $Username;} ?>" title="Username must not be blank and contain only letters, numbers and underscores." type="text" required name="usernamex">
                         <input value="<?php if(isset($_GET['edit'])){ echo $Username;} ?>" type="hidden" name="usernamey">
-                        <label>Password</label><br/>
-                        <input id="pwd1" title="Password must contain at least 6 characters, including UPPER/lowercase and numbers." type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="pwd1">
-                        <label>Reenter Password</label><br/>
-                        <input id="txtRePw" title="Please enter the same Password as above." type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="pwd2"></p>
-                        <label>User Level</label><br/>
-                        <select name="cmbUserLevel" id="cmbUserLevel">
+                        </div>
+                        <div class="form-group"><label class="control-label col-md-4">Password</label>
+                        <input class="form-control col-md-8" id="pwd1" title="Password must contain at least 6 characters, including UPPER/lowercase and numbers." type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="pwd1">
+                        </div>
+                        <div class="form-group"><label class="control-label col-md-4">Re-enter Password</label>
+                        <input class="form-control col-md-8" id="txtRePw" title="Please enter the same Password as above." type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="pwd2"></p>
+                        </div>
+                        <div class="form-group">
+                        <label class="control-label col-md-4">User Level</label>
+                        <select class="form-control col-md-8" name="cmbUserLevel" id="cmbUserLevel">
                             <option value='0'>        --Select UserLevel--</option>
                             <?php
                             include_once 'dbconfig.php';
@@ -220,48 +224,16 @@ if (isset($_GET['edit'])) {
                                 while ($row = mysqli_fetch_assoc($result)) {
                                     $selected = $row['id'] == $UserLevel_tbl_id ? 'selected' : '';
                                     echo "<option ". $selected ." value='".$row['id']."'>".$row['lavel_name']."</option>";
-=======
-                    <form method="post" action="controller/userController.php" target="_self" data-toggle="validator"
-                          id="usrmng">
-                        <div class="form-group">
-                            <label class="control-label col-md-4">Username</label>
-                            <input class="form-control col-md-8" id="txtUsername" value=""
-                                   title="Username must not be blank and contain only letters, numbers and underscores."
-                                   type="text" required pattern="\w+" name="usernamex">
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-4">Password</label>
-                            <input class="form-control col-md-8" id="pwd1"
-                                   title="Password must contain at least 6 characters, including UPPER/lowercase and numbers."
-                                   type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="pwd1">
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-4">Reenter Password</label>
-                            <input class="form-control col-md-8" id="txtRePw" title="Please enter the same Password as above." type="password"
-                                   required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" name="pwd2"></p>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-4">User Level</label><br/>
-                            <select class="form-control col-md-8" name="cmbUserLevel" id="cmbUserLevel">
-                                <option value='0'> --Select UserLevel--</option>
-                                <?php
-                                include_once 'dbconfig.php';
-                                $query = 'SELECT * FROM userlevel_tbl;';
-                                $result = getData($query);
-                                if (mysqli_num_rows($result) > 0) {
-                                    // output data of each row
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                        $selected = $row['id'] == $UserLevel_tbl_id ? 'selected' : '';
-                                        echo "<option " . $selected . " value='" . $row['id'] . "'>" . $row['lavel_name'] . "</option>";
-                                    }
->>>>>>> 796addc8fbe77db2e3f3cc9ac0f00512eefec8fa
+
                                 }
+							}
                                 ?>
 
-<<<<<<< HEAD
-                        </select><br />
-                        <label>Employee</label><br/>
-                        <select name="cmbEmployee" id="cmbEmployee" <?php echo $btnAddStatus; ?>>
+                        </select>
+                        </div>
+                        <div class="form-group">
+                        <label class="control-label col-md-4">Employee</label>
+                        <select class="form-control col-md-8" name="cmbEmployee" id="cmbEmployee" <?php echo $btnAddStatus; ?>>
                             <option value='0'>        --Select Employee--</option>
                             <?php
                             include_once 'dbconfig.php';
@@ -272,24 +244,8 @@ if (isset($_GET['edit'])) {
                                 while ($row = mysqli_fetch_assoc($result)) {
                                     $selected = $row['Emp_id'] == $Emp_id ? 'selected' : '';
                                     echo "<option ". $selected ." value='".$row['Emp_id']."'>".$row['Name']."</option>";
-=======
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-4">Employee</label><br/>
-                            <select class="form-control col-md-8" name="cmbEmployee" id="cmbEmployee">
-                                <option value='0'> --Select Employee--</option>
-                                <?php
-                                include_once 'dbconfig.php';
-                                $query = 'SELECT * FROM employee_tb';
-                                $result = getData($query);
-                                if (mysqli_num_rows($result) > 0) {
-                                    // output data of each row
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                        $selected = $row['Emp_id'] == $Emp_id ? 'selected' : '';
-                                        echo "<option " . $selected . " value='" . $row['Emp_id'] . "'>" . $row['Name'] . "</option>";
+
                                     }
->>>>>>> 796addc8fbe77db2e3f3cc9ac0f00512eefec8fa
                                 }
                                 ?>
                             </select>
@@ -302,18 +258,8 @@ if (isset($_GET['edit'])) {
                             </select>
                         </div>
                         <input type="hidden" value="<?php echo date('Y-m-d'); ?>" name="dtpDatex">
-<<<<<<< HEAD
-                        <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
 
-                        <div>
-                            <input type="submit" value="Add" name="btnAdd" <?php echo $btnAddStatus; ?>/>
-                            <input type="submit" value="Update" name="btnUpdate" id="btnUpdate" <?php echo $btnStatus; ?>/>
-                            <input type="submit" value="Delete" name="btnDelete" <?php echo $btnStatus; ?>/>
-                            <input type="reset" value="Clear" name="btnClear"/>
-=======
-                        <input type="hidden"
-                               value="<?php echo ($_SESSION['user_session'] == 'loged') ? $_SESSION['username'] : 'User'; ?>"
-                               name="ssUser">
+                        <input type="hidden" value="<?php echo ($_SESSION['user_session']== 'loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
 
                         <div class="form-group col-md-12">
                             <?php if($permissions[0]['W']){?>
@@ -333,7 +279,7 @@ if (isset($_GET['edit'])) {
                                 <?php
                             } ?>
                                 <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
->>>>>>> 796addc8fbe77db2e3f3cc9ac0f00512eefec8fa
+
                         </div>
                     </form>
                 </div>

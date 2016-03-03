@@ -1,18 +1,16 @@
 <?php
 require_once ("../dbconfig.php");
 if (isset($_POST["btnAdd"])) {
-	
-	$PASSWORD = md5($PASSWORDX);
-	
+		
     $con = connection();
     $stmt=$con->prepare('INSERT INTO user_tbl VALUES(?,?,?,?,?,?,?)');
-    $stmt->bind_param('ssisssi', $USERNAME,$PASSWORD,$USERLEVEL,$EMPLOYEE,$USER,$DATE,$STATUS);
+    $stmt->bind_param('ssisssi', $USERNAME,$PASSWORDX,$USERLEVEL,$EMPLOYEE,$USER,$DATE,$STATUS);
 	
 	//var_dump($_POST);
  	//die();
 	
 	$USERNAME = $_POST['usernamex'];
-	$PASSWORDX = $_POST['pwd1'];
+	$PASSWORDX = md5($_POST['pwd1']);
 	$USERLEVEL = $_POST['cmbUserLevel'];
 	$EMPLOYEE = $_POST['cmbEmployee'];
 	$USER = $_POST['ssUser'];
@@ -35,7 +33,7 @@ elseif(isset($_POST["btnUpdate"])) {
     if(trim(($_POST['usernamey'])) != ''){
 
         $USERNAMEY = $_POST['usernamey'];
-        $PASSWORDX = $_POST['pwd1'];
+        $PASSWORDX = md5($_POST['pwd1']);
         $USERLEVEL = $_POST['cmbUserLevel'];
         $STATUS = $_POST['cmbStatus'];
 

@@ -46,6 +46,7 @@
             <li> <a href="courseProcess.php"> Course Process</a> </li>
             <li> <a href="branch.php"> Branch</a> </li>
             <li> <a href="al_subject.php"> AL Subject</a> </li>
+            <li> <a href="acadamicyear.php"> Acadamic Year</a> </li>
             <li> <a href="polling_divisions.php"> Polling Divisions</a> </li>
             <li> <a href="part.php"> Part</a> </li>
             <li> <a href="examcenter.php"> Exam&frasl;Seminar Center</a> </li>

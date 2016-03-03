@@ -389,7 +389,9 @@ $QulificationID_ = $row['MAXNO'];
                                                     <option value="A">A</option>
                                                     <option value="B">B</option>
                                                     <option value="C">C</option>
+                                                    <option value="D">D</option>
                                                     <option value="F">F</option>
+                                                    <option value="W">W</option>
                                                 </select>
                                                 <br /><br />
                                             </div>
@@ -452,7 +454,7 @@ $QulificationID_ = $row['MAXNO'];
                                                         <td><select name="cmbALsubject" style="width: 250px;" id = "cmbALsubject">
                                                           <?php
                                                                 include_once 'dbconfig.php';
-                                                                $query = 'SELECT SubjectID, `Name` FROM alsubject_tbl';
+                                                                $query = 'SELECT * FROM alsubject_tbl order by `Name`';
                                                                 $result = getData($query);
                                                                 if (mysqli_num_rows($result) > 0) {
                                                                     // output data of each row
