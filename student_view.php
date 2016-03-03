@@ -134,7 +134,7 @@ if(isset($_GET['edit'])){
                     <div class="col-lg-12" id = "Student123">
                     <?php
                         include_once 'dbconfig.php'; //Connect to database
-                        $query = "SELECT * FROM student_tb WHERE Student_status = '1';";
+                        $query = "SELECT * FROM  student_tb WHERE Student_status = '1' ORDER BY CreateDate DESC LIMIT 10";
                         $result = getData($query);
                         echo "<table width='100%'>"; // start a table tag in the HTML
                         echo "<tr>

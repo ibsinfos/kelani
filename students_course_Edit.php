@@ -224,14 +224,14 @@ if(isset($_GET['Student_id'])){
                 </div>
                                 
                 <!-- /.row -->
-                <div class="row" style="padding-left: 15px;">
+                <div class="form-group">
                     <!--<input type="submit" value="Add" name="btnAdd"/>-->                    
                     <!--<input type="submit" value="Delete" name="btnDelete"/>-->
 					<?php if ($permissions[0]['W']) {
 					?>
-					<input type="button" value="Update" name="btnUpdate" id="btnUpdate" onClick="UpdateSubjectGrade()"/>
+					<input type="button" value="Update" name="btnUpdate" id="btnUpdate" class="btn btn-primary" onClick="UpdateSubjectGrade()"/>
 					<?php } ?>
-					<input type="reset" value="Clear" name="btnClear"/>
+					<input type="reset" value="Clear" name="btnClear" class="btn btn-default"/>
                 </div>
                 <!-- /.row -->
  				</form>

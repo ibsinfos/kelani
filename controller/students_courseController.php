@@ -25,7 +25,8 @@ if (isset($_POST["btnAdd"])) {
 					FROM 	student_subject_course_tbl 
 					WHERE 	Subject_Course_tbl_Course_tbl_id = '$COURSE' 
 							AND Subject_Course_tbl_Part_table_id = '$PARTID'
-							AND Subject_Course_tbl_Subject_tbl_id = '$subjectSplit[0]';";
+							AND Subject_Course_tbl_Subject_tbl_id = '$subjectSplit[0]'
+							AND Student_tb_Student_id = '$STUDENTID';";
 		$result = getData($query);
 		if (mysqli_num_rows($result) == 0) {
 		
