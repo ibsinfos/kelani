@@ -3,8 +3,8 @@ function connection()
 {
     $servername = "localhost";
     $username = "root";
-//    $password = "525625";
-    $password = "123";
+    $password = "525625";
+//    $password = "123";
     $database = "kelanidb";
 
 // Create connection
@@ -13,7 +13,6 @@ function connection()
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    //mysqli_select_db($database) or die("Databse not found".mysqli_error());
     return $conn;
 }
 

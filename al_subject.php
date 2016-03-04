@@ -21,7 +21,7 @@
 <?php
 
 include_once './inc/top.php';
-include_once 'dbconfig.php'; //Comnnect to database
+include_once './dbconfig.php'; //Comnnect to database
 ?>
 
 <div id="wrapper">
@@ -57,7 +57,7 @@ include_once 'dbconfig.php'; //Comnnect to database
 
                         <div class="form-group">
                             <label class="control-label col-md-4">Subject Name</label>
-                            <input class="form-control col-md-8" type="text" name="txtSubjectName"/></p>
+                            <input class="form-control col-md-8" type="text" name="txtSubjectName" id="txtSubjectName"/></p>
                         </div>
 
                             <?php if($permissions[0]['W']){?>
@@ -109,21 +109,23 @@ include_once 'dbconfig.php'; //Comnnect to database
                 url: 'controller/al_subjectController.php',
                 data: data,
                 beforeSend: function () {
-//                    $("#msg").fadeOut();
-                    //$("#btnAdd").html('<span class="glyphicon glyphicon-transfer"></span> &nbsp; sending ...');
+                    $("#msg").fadeOut();
                 },
                 success: function (response) {
+                    console.log(response);
                     if (response) {
 						$("#msg").fadeIn(function () {
 							$("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
 						});
+                        $('#msg').fadeOut(4000);
                         $('#sbj_div').load('./al_subject_list.php');
-//                        $('#sbj_div').load(document.URL +  ' #thisdiv');
+                        $('#txtSubjectName').clean();
                     }
                     else {
                         $("#msg").fadeIn(1000, function () {
 							$("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
                         });
+                        $('#msg').fadeOut(4000);
                     }
                 }
             });

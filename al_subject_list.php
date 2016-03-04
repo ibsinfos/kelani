@@ -1,5 +1,5 @@
 <?php
-
+include_once './dbconfig.php';
 $query = "SELECT `Name` FROM alsubject_tbl ORDER BY `Name`;";
 $result = getData($query);
 echo "<table width='100%'>"; // start a table tag in the HTML
