@@ -12,14 +12,10 @@ if (isset($_POST["btnAdd"])) {
     $stmt->execute();
 
     if($stmt->affected_rows > 0){
-		echo "ok";
+		echo true;
     }else{ 	
 		echo "Something is wrong...!";
     }
-
-
-
-
 }
 
 elseif(isset($_POST["btnUpdate"])) {

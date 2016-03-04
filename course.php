@@ -83,10 +83,16 @@ if(isset($_GET['edit'])){
                 <form method="post" action="controller/courseController.php" target="_parent" data-toggle="validator">
                     <div class="row">
                         <div class="col-lg-4">
-                            <label>Course Name</label><br/>
-                            <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
-                            <input type="text" name="txtCourseName"  value="<?php if(isset($_GET['edit'])){ echo $name;} ?>" size="40" required/><br/>
-                            <input type="hidden" name="txtCourseID"  value="<?php if(isset($_GET['edit'])){ echo $id;} ?>" size="40"/>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Course Name</label>
+                                <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
+                                <input class="form-control col-md-8" type="text" name="txtCourseName"  value="<?php if(isset($_GET['edit'])){ echo $name;} ?>" size="40" required/><br/>
+                                <input type="hidden" name="txtCourseID"  value="<?php if(isset($_GET['edit'])){ echo $id;} ?>" size="40"/>
+                            </div>
+
+
+
                         </div>
                         <div class="col-lg-8 selecttable">
                             <?php

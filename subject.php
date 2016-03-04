@@ -73,13 +73,19 @@ include_once './inc/top.php';
                 <form method="post" action="controller/subjectController.php" id="submng" data-toggle="validator">
                     <div class="row selecttable">
                         <div class="col-lg-4">
-                            <label>Subject Name</label><br/>
-                            <input type="text" name="txtSubjectName" size="10" max="10" required/><br/>
-                            <label>Subject Code</label><br/>
-                            <input type="text" name="txtSubjectCode" size="100" maxlength="100" required/><br/>
+                            <div class="form-group">
+                            <label class="control-label col-md-4">Subject Code</label><br/>
+                            <input class="form-control col-md-8" type="text" name="txtSubjectCode" size="10" max="10" required/><br/>
+                            <label class="control-label col-md-4">Subject Name</label><br/>
+                            <input class="form-control col-md-8" type="text" name="txtSubjectName" size="100" maxlength="100" required/><br/>
+                            </div>
+
+
                             <input type="hidden"
                                    value="<?php echo ($_SESSION['user_session'] == 'loged') ? $_SESSION['username'] : 'User'; ?>"
                                    name="ssUser">
+
+
 
                             <?php if ($permissions[0]['W']) { ?>
                                 <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>

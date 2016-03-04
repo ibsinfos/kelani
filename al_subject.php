@@ -54,9 +54,12 @@ include_once 'dbconfig.php'; //Comnnect to database
             <form method="post" action="" data-toggle="validator" id="alsubj">
                 <div class="row">
                     <div class="col-lg-4">
-                        <label>Subject Name</label><br/>
-                        <input type="text" name="txtSubjectName"/><br/>
-                        <div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Subject Name</label>
+                            <input class="form-control col-md-8" type="text" name="txtSubjectName"/></p>
+                        </div>
+
                             <?php if($permissions[0]['W']){?>
                             <input type="submit" value="Add" name="btnAdd" class="btn-primary"/>
                             <input type="submit" value="Update" name="btnUpdate" class="btn-primary"/>
@@ -74,21 +77,10 @@ include_once 'dbconfig.php'; //Comnnect to database
                                 <?php
                             } ?>
                             <input type="reset" value="Clear" name="btnClear"  class="btn-default"/>
-                        </div>
                     </div>
-                    <div class="col-lg-8 selecttable">
-                        <?php
 
-                        $query = "SELECT Name FROM alsubject_tbl;";
-                        $result = getData($query);
-                        echo "<table width='100%'>"; // start a table tag in the HTML
-                        echo "<tr><th>SUBJECTS</th><th>&nbsp;</th></tr>";
-                        while ($row = mysqli_fetch_array($result)) {   //Creates a loop to loop through results
-                            echo "<tr><td>" . $row['Name'] . "</td><td><input type='button' value='Edit'></td></tr>";  //$row['index'] the index here is a field name
-                        }
-                        echo "</table>"; //Close the table in HTML
-                        connection_close(); //Make sure to close out the database connection
-                        ?>
+                    <div class="col-lg-6 selecttable" id="sbj_div">
+                        <?php include './al_subject_list.php'; ?>
                     </div>
                 </div>
             </form>
@@ -117,19 +109,21 @@ include_once 'dbconfig.php'; //Comnnect to database
                 url: 'controller/al_subjectController.php',
                 data: data,
                 beforeSend: function () {
-                    $("#msg").fadeOut();
+//                    $("#msg").fadeOut();
                     //$("#btnAdd").html('<span class="glyphicon glyphicon-transfer"></span> &nbsp; sending ...');
                 },
                 success: function (response) {
-                    if (response == "ok") {
+                    if (response) {
 						$("#msg").fadeIn(function () {
 							$("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
 						});
-						
+                        $('#sbj_div').load('./al_subject_list.php');
+//                        $('#sbj_div').load(document.URL +  ' #thisdiv');
                     }
                     else {
-						window.location.reload();
-							$("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>'); 
+                        $("#msg").fadeIn(1000, function () {
+							$("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
+                        });
                     }
                 }
             });
