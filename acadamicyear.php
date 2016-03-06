@@ -51,11 +51,11 @@ include_once 'dbconfig.php'; //Comnnect to database
             $permissions = $stmt->fetchAll();
             ?>
             <?php if($permissions[0]['R']){?>
-            <form method="post" action="" data-toggle="validator" id="acyear">
+            <form method="post" action="controller/acadamicyearController.php" data-toggle="validator" id="acyear">
                 <div class="row">
                     <div class="col-lg-4">
-                        <label>Subject Name</label><br/>
-                        <input type="text" name="txtSubjectName"/><br/>
+                        <label>Year</label><br/>
+                        <input type="text" name="txtyear" required/><br/>
                         <div>
                             <?php if($permissions[0]['W']){?>
                             <input type="submit" value="Add" name="btnAdd" class="btn-primary"/>

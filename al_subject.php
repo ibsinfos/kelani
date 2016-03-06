@@ -119,7 +119,8 @@ include_once './dbconfig.php'; //Comnnect to database
 						});
                         $('#msg').fadeOut(4000);
                         $('#sbj_div').load('./al_subject_list.php');
-                        $('#txtSubjectName').clean();
+                        //$('#txtSubjectName').clean();
+                        $('#txtSubjectName').val("");
                     }
                     else {
                         $("#msg").fadeIn(1000, function () {

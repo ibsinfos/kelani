@@ -198,7 +198,7 @@ if (isset($_GET['edit'])) {
                 $stmt->execute();
                 $permissions = $stmt->fetchAll();
                 if($permissions[0]['R']){?>
-                <div class="col-lg-4">
+                <div class="col-lg-5">
 
                     <form method="post" action="controller/userController.php" target="_self" data-toggle="validator" id="usrmng">
                         <div class="form-group"><label class="control-label col-md-4">Username</label>
@@ -262,29 +262,32 @@ if (isset($_GET['edit'])) {
                         <input type="hidden" value="<?php echo ($_SESSION['user_session']== 'loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
 
                         <div class="form-group col-md-12">
-                            <?php if($permissions[0]['W']){?>
-                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
-                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary"/>
-                            <?php } else {
-                            ?>
-                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" disabled/>
-                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary" disabled/>
-                                <?php
-                            }
-                            if($permissions[0]['D']){?>
-                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                            <?php if ($permissions[0]['W']) { ?>
+                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"<?php echo $btnAddStatus; ?>/>
+                                <input name="btnUpdate" onclick="" type="submit" value="Update" <?php echo $btnStatus; ?>
+                                       class="btn btn-primary"/>
                             <?php } else {
                                 ?>
-                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger" disabled/>
+                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" <?php echo $btnAddStatus; ?> disabled/>
+                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary" <?php echo $btnStatus; ?>
+                                       disabled/>
+                                <?php
+                            }
+                            if ($permissions[0]['D']) {
+                                ?>
+                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger" <?php echo $btnStatus; ?>/>
+                            <?php } else {
+                                ?>
+                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger" <?php echo $btnStatus; ?>/>
                                 <?php
                             } ?>
-                                <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
+                            <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
 
                         </div>
                     </form>
                 </div>
 
-                <div class="col-lg-8 selecttable">
+                <div class="col-lg-7 selecttable">
                     <?php
                     include_once 'dbconfig.php'; //Connect to database
                     $query = "SELECT u.Username, e.NameInitial, ul.lavel_name, b.City, u.CreateDate

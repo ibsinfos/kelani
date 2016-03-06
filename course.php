@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Kelani</title>
+    <title>Kelani | Course Management</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -87,7 +87,7 @@ if(isset($_GET['edit'])){
                             <div class="form-group">
                                 <label class="control-label col-md-4">Course Name</label>
                                 <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
-                                <input class="form-control col-md-8" type="text" name="txtCourseName"  value="<?php if(isset($_GET['edit'])){ echo $name;} ?>" size="40" required/><br/>
+                                <input class="form-control col-md-8" type="text" name="txtCourseName"  value="<?php if(isset($_GET['edit'])){ echo $name;} ?>" size="40" maxlength="40" required/><br/>
                                 <input type="hidden" name="txtCourseID"  value="<?php if(isset($_GET['edit'])){ echo $id;} ?>" size="40"/>
                             </div>
 

@@ -10,11 +10,11 @@ if (isset($_POST["btnAdd"])) {
 	//var_dump($_POST);
 	//die();
 	$ACADAMICYEAR = $_POST['cmbAcademicYear'];
-	$SUBJECTID  = $_POST['cmbSubject'];
-	$COURSEID  = $_POST['cmbCourse'];
-	$PART = $_POST['cmbPart_DD'];
-	$FEE = $_POST['txtFee'];
-	$USER = $_POST['ssUser'];
+    $SUBJECTID  = $_POST['cmbSubject'];
+    $COURSEID  = $_POST['cmbCourse'];
+    $PART = $_POST['cmbPart_DD'];
+    $FEE = $_POST['txtFee'];
+    $USER = $_POST['ssUser'];
     $STATUS = '1';
     $stmt->execute();
 

@@ -107,7 +107,8 @@ include_once 'dbconfig.php';
                         <label>Amount</label><br/>
                         <input type="text" name="txtAmount" maxlength="10" size="10" required/><br/>
                         <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
-                    <div><?php if ($permissions[0]['W']) { ?>
+                    <div>
+                        <?php if ($permissions[0]['W']) { ?>
                             <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
                         <?php } else {
                             ?>

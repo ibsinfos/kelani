@@ -20,14 +20,32 @@ if (isset($_POST["btnAdd"])) {
         echo "<script type='text/javascript'>alert('Error');</script>";
         header('Location:../subject.php');
     }
-
-
-
-
 }
 
 elseif(isset($_POST["btnUpdate"])) {
-    echo "<script type='text/javascript'>alert('Update');</script>";
+    $con = connection();
+    if(trim(($_POST['idx'])) != ''){
+
+        $IDX = $_POST['idx'];
+        $NAME = $_POST['txtSubjectName'];
+        $CODE = $_POST['txtSubjectCode'];
+        $USER = $_POST['ssUser'];
+
+        $query = "UPDATE subject_tbl SET subjectname = '".$NAME."', Subjectcode = '".$CODE."', CreateUser = '".$USER."' WHERE id ='".$IDX."' ";
+        $result= $con->query($query);
+//        var_dump($_POST);
+//        die();
+//	mysqli_query("query here") or die(mysqli_error($con));
+//	echo $con->error;
+    }
+
+    if($stmt->affected_rows > 0){
+        echo "<script type='text/javascript'>alert('Successfully Update');</script>";
+        header('Location:../subject.php');
+    }else{
+        echo "<script type='text/javascript'>alert('Error');</script>";
+        header('Location:../subject.php');
+    }
 }
 
 elseif(isset($_POST["btnDelete"])) {
@@ -35,7 +53,7 @@ elseif(isset($_POST["btnDelete"])) {
 }
 
 elseif(isset($_POST["btnClear"])) {
-    echo "Yes, Clear";
+    header('Location:../subject.php');
 }
 
 function idgenarate(){

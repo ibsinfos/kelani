@@ -249,24 +249,12 @@ WHERE s.id = ssc.Subject_Course_tbl_Subject_tbl_id AND c.id=ssc.Subject_Course_t
                 <div class="row" style="padding-left: 15px;">
                     <?php if ($permissions[0]['W']) { ?>
                         <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
-                        <input name="btnUpdate" onclick="" type="submit" value="Update"
-                               class="btn btn-primary"/>
                     <?php } else {
                         ?>
                         <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" disabled/>
-                        <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary"
-                               disabled/>
                         <?php
-                    }
-                    if ($permissions[0]['D']) {
-                        ?>
-                        <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
-                    <?php } else {
-                        ?>
-                        <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
-                        <?php
-                    } ?>
-                    <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
+                    }?>
+                    <input name="btnClear" type="reset" value="Clear" class="btn-default btn"/>
                 </div>
                 <!-- /.row -->
                 </form>

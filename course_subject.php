@@ -38,6 +38,54 @@
 
 <?php
 include_once './inc/top.php';
+include_once 'dbconfig.php'; //Connect to database
+
+if(isset($_GET['acadamicyear'])){
+    $ACADAMICYEAR = trim($_GET['acadamicyear']);
+    $COURSEID = trim($_GET['course']);
+    $PART = trim($_GET['part']);
+    $SUBJECTID = trim($_GET['subject']);
+    $query = "SELECT AcadamicYear_id, Course_tbl_id, Part_table_id, Subject_tbl_id, Price, CreateDate, CreateUser, 'Status' FROM subject_course_tbl";
+    //$query = "SELECT s.`subjectname` AS SubjectName,c. `Name` AS CourseName, p.`name` AS Part, sc.Price,a.`year` AS AcademicYear FROM subject_tbl AS s,course_tbl AS c , subject_course_tbl AS sc, part_tbl AS p,acadamicyear AS a WHERE a.id = sc.AcadamicYear_id AND sc.Subject_tbl_id=s.id AND sc.Course_tbl_id = c.id AND sc.Part_table_id = p.id";
+    $result = getData($query);
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $ACADAMICYEAR = $row['AcadamicYear_id'];
+            $COURSEID  = $row['Course_tbl_id'];
+            $PART = $row['Part_table_id'];
+            $SUBJECTID  = $row['Subject_tbl_id'];
+            $FEE = $row['Price'];
+
+            //$ACADAMICYEAR = $row['AcademicYear'];
+            //$SUBJECTID  = $row['SubjectName'];
+            //$COURSEID  = $row['CourseName'];
+            //$PART = $row['Part'];
+            //$FEE = $row['Price'];
+
+            $btnStatus = 'enabled';
+            $btnAddStatus = 'disabled';
+        }
+    }
+    else{
+        $ACADAMICYEAR = '';
+        $COURSEID  = '';
+        $PART = '';
+        $SUBJECTID  = '';
+        $FEE = '';
+        $btnStatus = 'disabled';
+        $btnAddStatus = 'enabled';
+    }
+}
+else{
+    $ACADAMICYEAR = '';
+    $COURSEID  = '';
+    $PART = '';
+    $SUBJECTID  = '';
+    $FEE = '';
+    $btnStatus = 'disabled';
+    $btnAddStatus = 'enabled';
+}
+
 ?>
     <div id="wrapper">
         <div id="page-wrapper">
@@ -65,16 +113,17 @@ include_once './inc/top.php';
                 <!-- cours subject mng -->
                 <?php
                 require_once("./config.php");
-                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'subcou'");
                 $stmt->execute();
                 $permissions = $stmt->fetchAll();
                 ?>
                 <?php if($permissions[0]['R']){?>
-                <form method="post" action="controller/course_subjectController.php" data-toggle="validator">
+                <form method="post" action="controller/course_subjectController.php" data-toggle="validator" id="subcou">
                     <div class="row">
                         <div class="col-lg-4">
+
                         	<label>Academic Year</label><br/>
-                            <select name="cmbAcademicYear" required>
+                            <select name="cmbAcademicYear"  value="<?php echo $ACADAMICYEAR; ?>" required>
                             <option value='0'>        --Select Academic Year--</option>
                                 <?php
                                 include_once 'dbconfig.php';
@@ -90,7 +139,7 @@ include_once './inc/top.php';
                             </select><br />
                             
                             <label>Course Name</label><br/>
-                            <select name="cmbCourse" required>
+                            <select name="cmbCourse"  value="<?php echo $COURSEID; ?>" required>
                             <option value='0'>        --Select Course--</option>
                                 <?php
                                 include_once 'dbconfig.php';
@@ -106,7 +155,7 @@ include_once './inc/top.php';
                             </select><br />
 
                             <label>Part</label><br/>
-                            <select name="cmbPart_DD" required>
+                            <select name="cmbPart_DD"  value="<?php echo $PART; ?>" required>
                             <option value='0'>        --Select Part--</option>
                                 <?php
                                 include_once 'dbconfig.php';
@@ -122,7 +171,7 @@ include_once './inc/top.php';
                             </select><br />
 
                             <label>Subject Name</label><br/>
-                            <select name="cmbSubject" required>
+                            <select name="cmbSubject" value="<?php echo $SUBJECTID; ?>" required>
                             <option value='0'>        --Select Subject--</option>
                                 <?php
                                 include_once 'dbconfig.php';
@@ -138,7 +187,7 @@ include_once './inc/top.php';
                             </select><br />
 
                             <label>Fee</label><br/>
-                            <input type="text" name="txtFee" size="10" maxlength="10" required/><br/>
+                            <input type="text" name="txtFee" size="10" maxlength="10" value="<?php echo $FEE; ?>" required/><br/>
                             <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
 
                             <div>
@@ -178,8 +227,8 @@ include_once './inc/top.php';
 								<th>&nbsp;</th>
 							  </tr>";
 						while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
-						
-							echo "<tr><td>" . $row['CourseName']. "</td><td>" . $row['AcademicYear']. "</td><td>" . $row['Part']. "</td><td>" . $row['SubjectName']. "</td><td>" . $row['Price'] . "</td><td><input type='button' value='Edit'></td></tr>";  //$row['index'] the index here is a field name
+
+                                echo "<tr><td>" . $row['CourseName']. "</td><td>" . $row['AcademicYear']. "</td><td>" . $row['Part']. "</td><td>" . $row['SubjectName']. "</td><td>" . $row['Price'] . "</td><td><a href='course_subject.php?acadamicyear=".$row['AcademicYear']."&course=".$row['CourseName']."&part=".$row['Part']."&subject=".$row['SubjectName']."'>Edit</a></td></tr>";  //$row['index'] the index here is a field name
 						}
 						echo "</table>"; //Close the table in HTML
 						connection_close(); //Make sure to close out the database connection
@@ -191,7 +240,7 @@ include_once './inc/top.php';
                     <div class="col-lg-12">
 
 
-                    
+
                     </div>
                     </div>
                 </form>

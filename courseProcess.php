@@ -196,6 +196,8 @@ else{
 						  <?php
 					  } ?>
 					  <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
+
+
 				  </div>
 			  </div>
             <!-- /.row --> 

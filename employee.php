@@ -58,7 +58,9 @@ if(isset($_GET['edit'])){
 			 $Gender_ = $row['Gender'];
 			 $NIC = $row['NIC'];	 
 			 $DOB = $row['DOB'];	 
-			 $TP_home = $row['TP_home'];	 
+			 $TP_home = $row['TP_home'];
+             $btnStatus = 'enabled';
+             $btnAddStatus = 'disabled';
 		 }
 	 }
 	 else{
@@ -74,6 +76,8 @@ if(isset($_GET['edit'])){
 	 $NIC = "";	 
 	 $DOB = "";	 
 	 $TP_home = "";
+     $btnStatus = 'disabled';
+     $btnAddStatus = 'enabled';
 	 }
 //	var_dump($_POST);
 //	die();
@@ -92,6 +96,8 @@ else{
 	 $NIC = "";	 
 	 $DOB = "";	 
 	 $TP_home = "";
+     $btnStatus = 'disabled';
+     $btnAddStatus = 'enabled';
 }
 ?>
 
@@ -245,22 +251,22 @@ else{
                     <div class="row">
                         <div class="col-lg-12">
                             <?php if ($permissions[0]['W']) { ?>
-                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
-                                <input name="btnUpdate" onclick="" type="submit" value="Update"
+                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"<?php echo $btnAddStatus; ?>/>
+                                <input name="btnUpdate" onclick="" type="submit" value="Update" <?php echo $btnStatus; ?>
                                        class="btn btn-primary"/>
                             <?php } else {
                                 ?>
-                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" disabled/>
-                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary"
+                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" <?php echo $btnAddStatus; ?> disabled/>
+                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary" <?php echo $btnStatus; ?>
                                        disabled/>
                                 <?php
                             }
                             if ($permissions[0]['D']) {
                                 ?>
-                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger" <?php echo $btnStatus; ?>/>
                             <?php } else {
                                 ?>
-                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger" <?php echo $btnStatus; ?>/>
                                 <?php
                             } ?>
                             <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
