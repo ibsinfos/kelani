@@ -29,8 +29,7 @@ include_once './dbconfig.php'; //Comnnect to database
         <div class="container-fluid">
             <!-- Page Heading -->
             <div class="row">
-                <div class="col-lg-">
-					<div id='msg'></div>
+                <div class="col-lg-12">
                     <h1 class="page-header">
                         AL Subject
                     </h1>
@@ -60,6 +59,8 @@ include_once './dbconfig.php'; //Comnnect to database
                             <input class="form-control col-md-8" type="text" name="txtSubjectName" id="txtSubjectName"/></p>
                         </div>
 
+                        <div class="row">
+                            <div class="col-lg-12">
                             <?php if($permissions[0]['W']){?>
                             <input type="submit" value="Add" name="btnAdd" class="btn-primary"/>
                             <input type="submit" value="Update" name="btnUpdate" class="btn-primary"/>
@@ -77,7 +78,11 @@ include_once './dbconfig.php'; //Comnnect to database
                                 <?php
                             } ?>
                             <input type="reset" value="Clear" name="btnClear"  class="btn-default"/>
+                            </div>
+                            <div id='msg'></div>
+                            </div>
                     </div>
+
 
                     <div class="col-lg-6 selecttable" id="sbj_div">
                         <?php include './al_subject_list.php'; ?>
@@ -97,6 +102,8 @@ include_once './dbconfig.php'; //Comnnect to database
 </div>
 <!-- /#wrapper -->
 <?php include_once './inc/footer.php'; ?>
+
+<!-- /#wrapper -->
 <script type="text/javascript">
     $('document').ready(function () {
         $("#alsubj").validate({
@@ -118,9 +125,10 @@ include_once './dbconfig.php'; //Comnnect to database
 							$("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
 						});
                         $('#msg').fadeOut(4000);
-                        $('#sbj_div').load('./al_subject_list.php');
-                        //$('#txtSubjectName').clean();
-                        $('#txtSubjectName').val("");
+                        $('#sbj_div').load('al_subject_list.php');
+                        $("#alsubj")[0].reset();
+
+
                     }
                     else {
                         $("#msg").fadeIn(1000, function () {
@@ -134,5 +142,6 @@ include_once './dbconfig.php'; //Comnnect to database
         }
     });
 </script>
+
 </body>
 </html>

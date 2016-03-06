@@ -63,18 +63,20 @@ include_once './inc/top.php';
                 <!-- /.row -->
                 <?php
                 require_once("./config.php");
-                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'desmng'");
                 $stmt->execute();
                 $permissions = $stmt->fetchAll();
                 if ($permissions[0]['R']) {
                     ?>
                 <!-- exam/seminar center -->
-                <form method="post" target="_parent" action="controller/designationController.php" data-toggle="validator">
+                <form method="post" target="_parent" action="controller/designationController.php" data-toggle="validator" id="desmng">
                     <div class="row">
                         <div class="col-lg-4">
-                            <label>Designation</label><br/>
-                            <input type="text" name="txtDesignation" size="45" maxlength="45" required/><br/>
-                            <div class="row">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Designation</label><br/>
+                            <input class="form-control col-md-8" type="text" name="txtDesignation" size="45" maxlength="45" required/><br/>
+                            </div>
+                                <div class="row">
                                 <div class="col-lg-12">
                                     <?php if ($permissions[0]['W']) { ?>
                                         <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
@@ -97,21 +99,11 @@ include_once './inc/top.php';
                                     } ?>
                                     <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
                                 </div>
+                                <div id='msg'></div>
                             </div>
                         </div>
-                        <div class="col-lg-8 selecttable">
-                            <?php
-                            include_once 'dbconfig.php'; //Connect to database
-                            $query = "SELECT `name` FROM designation_tbl";
-                            $result =getData($query);
-                            echo "<table width='100%'>"; // start a table tag in the HTML
-                            echo "<tr><th>DESIGNATION</th><th>&nbsp;</th></tr>";
-                            while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
-                                echo "<tr><td>" . $row['name'] . "</td><td><input type='button' value='Edit'></td></tr>";  //$row['index'] the index here is a field name
-                            }
-                            echo "</table>"; //Close the table in HTML
-                            connection_close(); //Make sure to close out the database connection
-                            ?>
+                        <div class="col-lg-8 selecttable" id="loadtbl">
+                            <?php include './designation_list.php'; ?>
                         </div>
                     </div>
                 </form>
@@ -131,4 +123,45 @@ include_once './inc/top.php';
     <!-- /#wrapper -->
 
 <?php include_once './inc/footer.php'; ?>
-</body></html>
+
+<script type="text/javascript">
+    $('document').ready(function () {
+        $("#desmng").validate({
+            submitHandler: submitForm
+        });
+        function submitForm() {
+            var data = $("#desmng").serialize();
+            $.ajax({
+                type: 'POST',
+                url: 'controller/designationController.php',
+                data: data,
+                beforeSend: function () {
+                    $("#msg").fadeOut();
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response) {
+                        $("#msg").fadeIn(function () {
+                            $("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                        $('#loadtbl').load('designation_list.php');
+                        $("#desmng")[0].reset();
+
+
+                    }
+                    else {
+                        $("#msg").fadeIn(1000, function () {
+                            $("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                    }
+                }
+            });
+            return false;
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -60,7 +60,7 @@ include_once './inc/top.php';
       <!-- /.row -->
         <?php
         require_once("./config.php");
-        $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+        $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'empath'");
         $stmt->execute();
         $permissions = $stmt->fetchAll();
         if ($permissions[0]['R']) {
@@ -68,21 +68,21 @@ include_once './inc/top.php';
       <form method="post" id="empath" action="">
         <div class="row">
           <div class="col-lg-4">
-            <label>Employee ID</label>
-            <br/>
-            <input type="text" name="txtEmployeeID" size="50"/>
-            <br/>
-            <label>From Date</label>
-            <br/>
-            <input type="date" name="dtpFromDate" readonly/>
-            <br/>
-            <label>To Date</label>
-            <br/>
-            <input type="date" name="dtpToDate" readonly/>
-            <br/>
+              <div class="form-group">
+            <label class="control-label col-md-4">Employee ID</label>
+            <input class="form-control col-md-8" type="text" name="txtEmployeeID" size="50"/>
+            </div>
+              <div class="form-group">
+            <label class="control-label col-md-4">From Date</label>
+            <input class="form-control col-md-8" type="date" name="dtpFromDate"/>
+            </div>
+              <div class="form-group">
+            <label class="control-label col-md-4">To Date</label>
+            <input class="form-control col-md-8" type="date" name="dtpToDate"/>
+            </div>
           </div>
-          <div class="col-lg-4">
-            <label>Attendance  History</label>
+          <div class="col-lg-8">
+            <label class="control-label col-md-4">Attendance  History</label>
             <br/>
             <?php
                         include_once 'dbconfig.php'; //Connect to database

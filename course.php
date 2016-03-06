@@ -75,12 +75,12 @@ if(isset($_GET['edit'])){
                 <!-- cours mng -->
                 <?php
                 require_once("./config.php");
-                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'coumng'");
                 $stmt->execute();
                 $permissions = $stmt->fetchAll();
                 if ($permissions[0]['R']) {
                     ?>
-                <form method="post" action="controller/courseController.php" target="_parent" data-toggle="validator">
+                <form method="post" action="controller/courseController.php" target="_parent" id="coumng" data-toggle="validator">
                     <div class="row">
                         <div class="col-lg-4">
 
@@ -91,46 +91,37 @@ if(isset($_GET['edit'])){
                                 <input type="hidden" name="txtCourseID"  value="<?php if(isset($_GET['edit'])){ echo $id;} ?>" size="40"/>
                             </div>
 
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <?php if ($permissions[0]['W']) { ?>
+                                        <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
+                                        <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary"/>
+                                    <?php } else {
+                                        ?>
+                                        <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" disabled/>
+                                        <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary" disabled/>
+                                        <?php
+                                    }
+                                    if ($permissions[0]['D']) {
+                                        ?>
+                                        <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                                    <?php } else {
+                                        ?>
+                                        <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                                        <?php
+                                    } ?>
+                                    <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
+                                </div>
+                                <div id='msg'></div>
+                            </div>
 
 
                         </div>
-                        <div class="col-lg-8 selecttable">
-                            <?php
-                           
-                            $query = "SELECT * FROM course_tbl";
-                            $result =getData($query);
-                            echo "<table width='100%'>"; // start a table tag in the HTML
-                            echo "<tr><th>COURSE NAME</th><th>&nbsp;</th></tr>";
-                            while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
-                                echo "<tr><td>" . $row['Name'] . "</td><td><a href='course.php?edit=".$row['id']."'>Edit</a></td></tr>";  //$row['index'] the index here is a field name
-                            }
-                            echo "</table>"; //Close the table in HTML
-                            connection_close(); //Make sure to close out the database connection
-                            ?>
+                        <div class="col-lg-8 selecttable" id="courselist">
+                            <?php include './course_list.php'; ?>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <?php if ($permissions[0]['W']) { ?>
-                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
-                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary"/>
-                            <?php } else {
-                                ?>
-                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" disabled/>
-                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary" disabled/>
-                                <?php
-                            }
-                            if ($permissions[0]['D']) {
-                                ?>
-                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
-                            <?php } else {
-                                ?>
-                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
-                                <?php
-                            } ?>
-                            <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
-                        </div>
-                    </div>
+
                 </form>
                 <?php } else {
                     ?>
@@ -148,4 +139,45 @@ if(isset($_GET['edit'])){
     <!-- /#wrapper -->
 
 <?php include_once './inc/footer.php'; ?>
-</body></html>
+
+<script type="text/javascript">
+    $('document').ready(function () {
+        $("#coumng").validate({
+            submitHandler: submitForm
+        });
+        function submitForm() {
+            var data = $("#coumng").serialize();
+            $.ajax({
+                type: 'POST',
+                url: 'controller/courseController.php',
+                data: data,
+                beforeSend: function () {
+                    $("#msg").fadeOut();
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response) {
+                        $("#msg").fadeIn(function () {
+                            $("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                        $('#courselist').load('course_list.php');
+                        $("#coumng")[0].reset();
+
+
+                    }
+                    else {
+                        $("#msg").fadeIn(1000, function () {
+                            $("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                    }
+                }
+            });
+            return false;
+        }
+    });
+</script>
+
+</body>
+</html>

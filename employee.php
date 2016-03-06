@@ -168,16 +168,17 @@ else{
 
                 <?php
                 require_once("./config.php");
-                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'empmng'");
                 $stmt->execute();
                 $permissions = $stmt->fetchAll();
                 if ($permissions[0]['R']) {
                 ?>
-                <form method="post" action="controller/employeeController.php" data-toggle="validator">
+                <form method="post" id="empmng" action="controller/employeeController.php" data-toggle="validator">
                 <div class="row">
                     <div class="col-lg-4">
-                    	<label>Branch</label><br/>
-                        <select  id="cmbBranch" name="cmbBranch" required>
+                        <div class="form-group">
+                    	<label class="control-label col-md-4">Branch</label>
+                        <select class="form-control col-md-8" id="cmbBranch" name="cmbBranch" required>
                         <option value='0'>        --Select Branch--</option>
                         		<?php
                                 include_once 'dbconfig.php';
@@ -191,11 +192,17 @@ else{
                                     }
                                 }
                                 ?>
-                        </select><br />
-                        <label>Employee ID</label><br/>
-                        <input type="text" name="txtEmployeeId" size="50" id="EmployeeId"  value="<?php if(isset($_GET['edit'])){ echo $id;} ?>" readonly/><br/>
-                        <label>Designation</label><br/>
-                        <select name="cmbDesignation" required>
+                        </select>
+                        </div>
+
+                        <div class="form-group">
+                        <label class="control-label col-md-4">Employee ID</label>
+                        <input class="form-control col-md-8" type="text" name="txtEmployeeId" size="50" id="EmployeeId"  value="<?php if(isset($_GET['edit'])){ echo $id;} ?>" readonly/><br/>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Designation</label>
+                        <select class="form-control col-md-8" name="cmbDesignation" required>
                         <option value='0'>        --Select Designation--</option>
                         		<?php
                                 include_once 'dbconfig.php';
@@ -209,34 +216,62 @@ else{
                                     }
                                 }
                                 ?>
-                        </select><br />
-                        <label>Name</label><br/>
-                        <input type="text" name="txaName" size="50" value="<?php if(isset($_GET['edit'])){ echo $name;} ?>" required/><br/>
-                        <label>Name with Initials</label><br/>
-                        <input type="text" name="txtNameWithInitians" size="50" value="<?php if(isset($_GET['edit'])){ echo $NameInitial;} ?>"/><br/>
-                        <label>Gender</label><br/>
-                        <label>
-                            <input type="radio" name="rbGender" value="M" id="gender_0"  <?php echo ($Gender_=='M')?'checked':'' ?>/>Male
+                        </select>
+                            </div>
+
+                        <div class="form-group">
+                        <label class="control-label col-md-4">Name</label>
+                        <input class="form-control col-md-8" type="text" name="txaName" size="50" value="<?php if(isset($_GET['edit'])){ echo $name;} ?>" required/><br/>
+                        </div>
+
+                        <div class="form-group">
+                        <label class="control-label col-md-4">Name with Initials</label>
+                        <input class="form-control col-md-8" type="text" name="txtNameWithInitians" size="50" value="<?php if(isset($_GET['edit'])){ echo $NameInitial;} ?>"/><br/>
+                        </div>
+
+                        <div class="form-group">
+                        <label class="control-label col-md-4">Gender</label><br/>
+                            <label class="control-label col-md-4">
+                        <input type="radio" name="rbGender" value="M" id="gender_0"  <?php echo ($Gender_=='M')?'checked':'' ?>/>Male
                         </label>
-                        <label>
+                            <label class="control-label col-md-4">
                             <input type="radio" name="rbGender" value="F" id="gender_1"  <?php echo ($Gender_=='F')?'checked':'' ?>/>Female
                         </label>
-                        <br />
+                        </div>
+
                     </div>
 
                     <div class="col-lg-4">
-                    	<label>NIC No</label><br/>
-                        <input type="text" name="txtNic" size="12" maxlength="12" value="<?php if(isset($_GET['edit'])){ echo $NIC;} ?>" required/><br/>
-                        <label>Birthday</label><br/>
-                        <input type="date" name="dtpBirthday" value="<?php if(isset($_GET['edit'])){ echo $DOB;} ?>" required/><br/>
-                        <label>Home Address</label><br/>
-                        <textarea rows="3" cols="51" name="txaHomeAddress"><?php if(isset($_GET['edit'])){ echo $Address;} ?></textarea><br/>
-                        <label>Telephone Home</label><br/>
-                        <input type="text" name="txtTelephoneHome" maxlength="10" size="10" value="<?php if(isset($_GET['edit'])){ echo $TP_home;} ?>" required/><br/>
-                        <label>Telephone Mobile</label><br/>
-                        <input type="text" name="txtTelephoneMobile" maxlength="10" size="10" value="<?php if(isset($_GET['edit'])){ echo $TP_mob;} ?>"/><br/>
-                        <label>Email</label><br/>
-                        <input type="email" name="txtEmail" size="50" value="<?php if(isset($_GET['edit'])){ echo $Email;} ?>"/><br/>
+                        <div class="form-group">
+                    	<label class="control-label col-md-4">NIC No</label>
+                        <input class="form-control col-md-8" type="text" name="txtNic" size="12" maxlength="12" value="<?php if(isset($_GET['edit'])){ echo $NIC;} ?>" required/>
+                        </div>
+
+                        <div class="form-group">
+                        <label class="control-label col-md-4">Birthday</label>
+                        <input class="form-control col-md-8" type="date" name="dtpBirthday" value="<?php if(isset($_GET['edit'])){ echo $DOB;} ?>" required/>
+                        </div>
+
+                        <div class="form-group">
+                        <label class="control-label col-md-4">Home Address</label>
+                        <textarea class="form-control col-md-8" rows="3" cols="51" name="txaHomeAddress"><?php if(isset($_GET['edit'])){ echo $Address;} ?></textarea>
+                        </div>
+
+                        <div class="form-group">
+                        <label class="control-label col-md-4">Telephone Home</label>
+                        <input class="form-control col-md-8" type="text" name="txtTelephoneHome" maxlength="10" size="10" value="<?php if(isset($_GET['edit'])){ echo $TP_home;} ?>" required/>
+                        </div>
+
+                        <div class="form-group">
+                        <label class="control-label col-md-4">Telephone Mobile</label><br/>
+                        <input class="form-control col-md-8" type="text" name="txtTelephoneMobile" maxlength="10" size="10" value="<?php if(isset($_GET['edit'])){ echo $TP_mob;} ?>"/>
+                        </div>
+
+                        <div class="form-group">
+                        <label class="control-label col-md-4">Email</label>
+                        <input class="form-control col-md-8" type="email" name="txtEmail" size="50" value="<?php if(isset($_GET['edit'])){ echo $Email;} ?>"/>
+                        </div>
+
 						<input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
                     </div>
 
@@ -271,25 +306,14 @@ else{
                             } ?>
                             <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
                         </div>
+                        <div id='msg'></div>
                     </div>
                 <!-- /.row -->
                 </form>
 
                 <div class="row">
-                    <div class="col-lg-12">                    
-                                      
-                    <?php
-						include_once 'dbconfig.php'; //Connect to database
-						$query = "SELECT Emp_id, `name`, TP_mob, Address, Email FROM employee_tb WHERE Status = '1';";
-						$result =getData($query);
-						echo "<table width='100%'>"; // start a table tag in the HTML
-						echo "<th>Employee ID</th><th>Name</th><th>Mobile</th><th>Address</th><th>Email</th><th>&nbsp;</th></tr>";
-						while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
-							echo "<tr><td>".$row['Emp_id']."</td><td>".$row['name']."</td><td>".$row['TP_mob']."</td><td>".$row['Address']."</td><td>".$row['Email']."</td><td><a href='employee.php?edit=".$row['Emp_id']."'>View</a></td></tr>";  //$row['index'] the index here is a field name
-						}
-						echo "</table>"; //Close the table in HTML
-						connection_close(); //Make sure to close out the database connection
-					?>
+                    <div class="col-lg-selecttable" id="loadtbl">
+                        <?php include './employee_list.php'; ?>
                     </div>
                 </div>
                 <?php } else {
@@ -310,4 +334,45 @@ else{
     <!-- /#wrapper -->
 
 <?php include_once './inc/footer.php'; ?>
-</body></html>
+
+<script type="text/javascript">
+    $('document').ready(function () {
+        $("#empmng").validate({
+            submitHandler: submitForm
+        });
+        function submitForm() {
+            var data = $("#empmng").serialize();
+            $.ajax({
+                type: 'POST',
+                url: 'controller/employeeController.php',
+                data: data,
+                beforeSend: function () {
+                    $("#msg").fadeOut();
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response) {
+                        $("#msg").fadeIn(function () {
+                            $("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                        $('#loadtbl').load('employee_list.php.php');
+                        $("#empmng")[0].reset();
+
+
+                    }
+                    else {
+                        $("#msg").fadeIn(1000, function () {
+                            $("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                    }
+                }
+            });
+            return false;
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Kelani</title>
+    <title>Kelani | Branch</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,10 +34,38 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-</head><body>
+</head>
+<body>
 
 <?php
 include_once './inc/top.php';
+include_once 'dbconfig.php';
+
+if(isset($_GET['edit'])){
+    $id = trim($_GET['edit']);
+    $query = "SELECT Branch_id, City, Address, TP1, TP2, Email FROM branch_tbl WHERE Branch_id='" . $id . "'";
+    $result = getData($query);
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+           // $IDX = $row['id'];
+            //$NAME = $row['subjectname'];
+           // $CODE = $row['Subjectcode'];
+            $btnStatus = 'enabled';
+            $btnAddStatus = 'disabled';
+        }
+    }
+    else{
+       // $IDX = '';
+
+        $btnStatus = 'disabled';
+        $btnAddStatus = 'enabled';
+    }
+}
+else{
+    $IDX = '';
+    $btnStatus = 'disabled';
+    $btnAddStatus = 'enabled';
+}
 ?>
 
     <div id="wrapper">
@@ -65,7 +93,7 @@ include_once './inc/top.php';
 
                 <?php
                 require_once("./config.php");
-                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'branch'");
                 $stmt->execute();
                 $permissions = $stmt->fetchAll();
                 if ($permissions[0]['R']) {
@@ -73,19 +101,31 @@ include_once './inc/top.php';
                 <form method="post" action="controller/branchController.php" target="_parent" data-toggle="validator" id="branch">
                 <div class="row">
                     <div class="col-lg-4">
-                        <label>Branch ID</label><br/>
-                        <input type="text" name="txtBranchID" size="3" maxlength="3" pattern="^[A-Z]{3}$|[A-Z][A-Z][A-Z][0-9]" required/><br/>
-                        <label>City</label><br/>
-                        <input type="text" name="txtBranchCity" size="45" maxlength="45" required/><br/>
-                        <label>Address</label><br/>
-                        <textarea rows="3" cols="51" name="txtBranchAddress" maxlength="255"></textarea><br/>
-                        <label>Telephone 1</label><br/>
-                        <input type="text" name="txtBranchTelephone1" maxlength="10" size="10" pattern="0\d{9}" required/><br/>
-                        <label>Telephone 2</label><br/>
-                        <input type="text" name="txtBranchTelephone2" maxlength="10" size="10" pattern="0\d{9}"/><br/>
-                        <label>Email</label><br/>
-                        <input type="email" name="txtBranchEmail" size="100" pattern="^[_A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$" maxlength="100"/>
-						<input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
+                        <div class="form-group">
+                        <label class="control-label col-md-4">Branch ID</label><br/>
+                        <input class="form-control col-md-8" type="text" name="txtBranchID" size="3" maxlength="3" pattern="^[A-Z]{3}$|[A-Z][A-Z][A-Z][0-9]" required/><br/>
+                        </div>
+                        <div class="form-group">
+                        <label class="control-label col-md-4">City</label><br/>
+                        <input class="form-control col-md-8" type="text" name="txtBranchCity" size="45" maxlength="45" required/><br/>
+                        </div>
+                        <div class="form-group">
+                        <label class="control-label col-md-4">Address</label><br/>
+                        <textarea class="form-control col-md-8" rows="3" cols="51" name="txtBranchAddress" maxlength="255"></textarea><br/>
+                        </div>
+                        <div class="form-group">
+                        <label class="control-label col-md-4">Telephone 1</label><br/>
+                        <input class="form-control col-md-8" type="text" name="txtBranchTelephone1" maxlength="10" size="10" pattern="0\d{9}" required/><br/>
+                        </div>
+                        <div class="form-group">
+                        <label class="control-label col-md-4">Telephone 2</label><br/>
+                        <input class="form-control col-md-8" type="text" name="txtBranchTelephone2" maxlength="10" size="10" pattern="0\d{9}"/><br/>
+                        </div>
+                        <div class="form-group">
+                        <label class="control-label col-md-4">Email</label><br/>
+                        <input class="form-control col-md-8" type="email" name="txtBranchEmail" size="100" pattern="^[_A-Za-z0-9-]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$" maxlength="100"/>
+						</div>
+                        <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
 
                         <div class="row">
                             <div class="col-lg-12">
@@ -110,31 +150,13 @@ include_once './inc/top.php';
                                 } ?>
                                 <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
                             </div>
+                            <div id='msg'></div>
                         </div>
                     
                     </div>
 					
-                    <div class="col-lg-8 selecttable">
-                        <?php
-                        include_once 'dbconfig.php'; //Connect to database
-                        $query = "SELECT * FROM branch_tbl;";
-                        $result = getData($query);
-                        echo "<table width='100%'>"; // start a table tag in the HTML
-                        echo "<tr>
-                        <th>Branch ID</th>
-                        <th>City</th>
-                        <th>Address</th>
-                        <th>Telephone 1</th>
-                        <th>Telephone 2</th>
-                        <th>Email</th>
-                        <th>&nbsp;</th>
-                        </tr>";
-                        while($row = mysqli_fetch_array($result)){//Creates a loop to loop through results
-                            echo "<tr><td>" . $row['Branch_id']. "</td><td>" . $row['City']. "</td><td>" . $row['Address']. "</td><td>" . $row['TP1'] . "</td><td>" . $row['TP2'] . "</td><td>" . $row['Email'] . "</td><td><input type='button' value='Edit'></td></tr>";  //$row['index'] the index here is a field name
-                        }
-                        echo "</table>"; //Close the table in HTML
-                        connection_close(); //Make sure to close out the database connection
-                        ?>
+                    <div class="col-lg-8 selecttable" id="branchlist">
+                        <?php include './branch_list.php'; ?>
                     </div>
                 </div>
                 <!-- /.row -->
@@ -152,6 +174,47 @@ include_once './inc/top.php';
 
     </div>
     <!-- /#wrapper -->
-
 <?php include_once './inc/footer.php'; ?>
-</body></html>
+
+<script type="text/javascript">
+    $('document').ready(function () {
+        $("#branch").validate({
+            submitHandler: submitForm
+        });
+        function submitForm() {
+            var data = $("#branch").serialize();
+            $.ajax({
+                type: 'POST',
+                url: 'controller/branchController.php',
+                data: data,
+                beforeSend: function () {
+                    $("#msg").fadeOut();
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response) {
+                        $("#msg").fadeIn(function () {
+                            $("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                        $('#branchlist').load('branch_list.php');
+                        $("#branch")[0].reset();
+                        //$("#msg").focus();
+
+
+                    }
+                    else {
+                        $("#msg").fadeIn(1000, function () {
+                            $("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                    }
+                }
+            });
+            return false;
+        }
+    });
+</script>
+
+</body>
+</html>

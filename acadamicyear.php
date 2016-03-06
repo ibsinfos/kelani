@@ -30,7 +30,6 @@ include_once 'dbconfig.php'; //Comnnect to database
             <!-- Page Heading -->
             <div class="row">
                 <div class="col-lg-">
-					<div id='msg'></div>
                     <h1 class="page-header">
                         Acadamic Year
                     </h1>
@@ -54,9 +53,14 @@ include_once 'dbconfig.php'; //Comnnect to database
             <form method="post" action="controller/acadamicyearController.php" data-toggle="validator" id="acyear">
                 <div class="row">
                     <div class="col-lg-4">
-                        <label>Year</label><br/>
-                        <input type="text" name="txtyear" required/><br/>
-                        <div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-4">Year</label>
+                            <input class="form-control col-md-4" type="text" name="txtyear" required/></p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
                             <?php if($permissions[0]['W']){?>
                             <input type="submit" value="Add" name="btnAdd" class="btn-primary"/>
                             <input type="submit" value="Update" name="btnUpdate" class="btn-primary"/>
@@ -74,21 +78,13 @@ include_once 'dbconfig.php'; //Comnnect to database
                                 <?php
                             } ?>
                             <input type="reset" value="Clear" name="btnClear"  class="btn-default"/>
-                        </div>
+                            </div>
+                            <div id='msg'></div>
+                            </div>
                     </div>
-                    <div class="col-lg-8 selecttable">
-                        <?php
 
-                        $query = "SELECT `year` FROM acadamicyear";
-                        $result = getData($query);
-                        echo "<table width='100%'>"; // start a table tag in the HTML
-                        echo "<tr><th>ACADAMIC YEAR</th><th>&nbsp;</th></tr>";
-                        while ($row = mysqli_fetch_array($result)) {   //Creates a loop to loop through results
-                            echo "<tr><td>" . $row['year'] . "</td><td><input type='button' value='Edit'></td></tr>";  //$row['index'] the index here is a field name
-                        }
-                        echo "</table>"; //Close the table in HTML
-                        connection_close(); //Make sure to close out the database connection
-                        ?>
+                    <div class="col-lg-6 selecttable" id="acyeartbl">
+                        <?php include './acadamicyear_list.php'; ?>
                     </div>
                 </div>
             </form>
@@ -105,31 +101,36 @@ include_once 'dbconfig.php'; //Comnnect to database
 </div>
 <!-- /#wrapper -->
 <?php include_once './inc/footer.php'; ?>
+
 <script type="text/javascript">
     $('document').ready(function () {
-        $("#alsubj").validate({
+        $("#acyear").validate({
             submitHandler: submitForm
         });
         function submitForm() {
-            var data = $("#alsubj").serialize();
+            var data = $("#acyear").serialize();
             $.ajax({
                 type: 'POST',
-                url: 'controller/al_subjectController.php',
+                url: 'controller/acadamicyearController.php',
                 data: data,
                 beforeSend: function () {
                     $("#msg").fadeOut();
-                    //$("#btnAdd").html('<span class="glyphicon glyphicon-transfer"></span> &nbsp; sending ...');
                 },
                 success: function (response) {
-                    if (response == "ok") {
-						$("#msg").fadeIn(function () {
-							$("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
-						});
-						
+                    console.log(response);
+                    if (response) {
+                        $("#msg").fadeIn(function () {
+                            $("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                        $('#acyeartbl').load('./acadamicyear_list.php');
+                        $("#acyear")[0].reset();
                     }
                     else {
-						window.location.reload();
-							$("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>'); 
+                        $("#msg").fadeIn(1000, function () {
+                            $("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
+                        });
+                        $('#msg').fadeOut(4000);
                     }
                 }
             });
@@ -137,5 +138,6 @@ include_once 'dbconfig.php'; //Comnnect to database
         }
     });
 </script>
+
 </body>
 </html>

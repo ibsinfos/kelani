@@ -60,45 +60,30 @@ include_once './inc/top.php';
       <!-- /.row -->
         <?php
         require_once("./config.php");
-        $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+        $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'empatt'");
         $stmt->execute();
         $permissions = $stmt->fetchAll();
         if ($permissions[0]['R']) {
         ?>
-      <form method="post"id="spform" name="spform" action="controller/employee_attendsController.php">
+      <form method="post" id="empatt" name="spform" action="controller/employee_attendsController.php">
         <div class="row">
           <div class="col-lg-4">
-            <label>Employee ID</label>
-            <br/>
-            <input type="text" name="txtEmployeeID" size="50"/>
-            <br/>
-            <label>Name</label>
-            <br/>
-            <input type="text" name="txtName" readonly/>
+              <div class="form-group">
+                  <label class="control-label col-md-4">Employee ID</label>
+            <input class="form-control col-md-8" type="text" name="txtEmployeeID" size="50"/>
+            </div>
+              <div class="form-group">
+                  <label class="control-label col-md-4">Name</label>
+            <input class="form-control col-md-8" type="text" name="txtName" readonly/>
             <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
-            <br/>
+            </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-4 selecttable" id="loadtbl">
             <label>Attendance  History</label>
             <br/>
-            <?php
-                        include_once 'dbconfig.php'; //Connect to database
-						$datenow = date("Y-m-d");
-                        $query = "SELECT * FROM attendanceemployee_tbl WHERE `Date`='$datenow' ";
-                        $result = getData($query);
-                        echo "<table width='100%'>"; // start a table tag in the HTML
-                        echo "<tr>
-                        <th>ATTENDANCE</th>
-						<th>DATE</th>
-						<th>TIME</th>
-                        </tr>";
-                        while($row = mysqli_fetch_array($result)){//Creates a loop to loop through results
-                           echo "<tr><td>" . $row['Employee_tb_Emp_id']. "</td><td>" . $row['Date'] ."</td><td>" . $row['Time'] . "</td></tr>";  //$row['index'] the index here is a field name
-                        }
-                        echo "</table>"; //Close the table in HTML
-                        connection_close(); //Make sure to close out the database connection
-                        ?>
+              <?php include './employee_attends_list.php'; ?>
           </div>
+
           <div class="col-lg-4">
             <table>
               <tr>
@@ -122,6 +107,7 @@ include_once './inc/top.php';
           <input type="submit" value="Add" name="btnAdd" class="btn btn-primary"/>
             <?php } ?>
           <input type="reset" value="Clear"  name="btnClear" class="btn btn-default"/>
+            <div id='msg'></div>
         </div>
         <!-- /.row -->
       </form>
@@ -141,5 +127,43 @@ include_once './inc/top.php';
 <!-- /#wrapper -->
 
 <?php include_once './inc/footer.php'; ?>
+<script type="text/javascript">
+    $('document').ready(function () {
+        $("#empatt").validate({
+            submitHandler: submitForm
+        });
+        function submitForm() {
+            var data = $("#empatt").serialize();
+            $.ajax({
+                type: 'POST',
+                url: 'controller/employee_attendsController.php',
+                data: data,
+                beforeSend: function () {
+                    $("#msg").fadeOut();
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response) {
+                        $("#msg").fadeIn(function () {
+                            $("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                        $('#loadtbl').load('employee_attends_list.php');
+                        $("#empatt")[0].reset();
+
+
+                    }
+                    else {
+                        $("#msg").fadeIn(1000, function () {
+                            $("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                    }
+                }
+            });
+            return false;
+        }
+    });
+</script>
 </body>
 </html>

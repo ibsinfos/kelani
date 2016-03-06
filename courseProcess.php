@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Kelani</title>
+<title>Kelani | Course Process</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -95,19 +95,19 @@ else{
       </div>
       <!-- /.row --><?php
 		require_once("./config.php");
-		$stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+		$stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'coupro'");
 		$stmt->execute();
 		$permissions = $stmt->fetchAll();
 		if ($permissions[0]['R']) {
 		?>
-      <form method="post" action="controller/courseProcessController.php" data-toggle="validator">
+      <form method="post" action="controller/courseProcessController.php" data-toggle="validator" id="coupro">
         <div class="row">
           <div class="col-lg-4"> 
             <!--acadamic year-->
-            <label>Acadamic Year</label>
-            <br/>
+			<div class="form-group">
+            <label class="control-label col-md-4">Acadamic Year</label>
             <input type="hidden" name="cmbAcadamicYear_"  value="<?php echo $acadamicyear; ?>" size="40"/>
-            <select id="cmbAcadamicYear" name="cmbAcadamicYear" <?php echo $btnAddStatus; ?>>
+            <select class="form-control col-md-8" id="cmbAcadamicYear" name="cmbAcadamicYear" <?php echo $btnAddStatus; ?>>
               <?php
 							include_once 'dbconfig.php';
 							$query = 'SELECT * FROM acadamicyear';
@@ -122,13 +122,13 @@ else{
 							}
 							?>
             </select>
-            <br />
-            
+			</div>
             <!--select course-->
-            <label>Course</label>
+			<div class="form-group">
+			<label class="control-label col-md-4">Course</label>
             <br/>
             <input type="hidden" name="cmbCourse_"  value="<?php echo $course; ?>" size="40"/>
-            <select id="cmbCourse" name="cmbCourse" <?php echo $btnAddStatus; ?>>
+            <select class="form-control col-md-8" id="cmbCourse" name="cmbCourse" <?php echo $btnAddStatus; ?>>
               	<?php
 							include_once 'dbconfig.php';
 							$query = 'SELECT * FROM course_tbl;';
@@ -143,12 +143,13 @@ else{
 							}
 				?>
             </select>
-            <br />
+			</div>
             <!--load part-->
-            <label>Part</label>
+			<div class="form-group">
+			<label class="control-label col-md-4">Part</label>
             <br/>
             <input type="hidden" name="cmbPart_"  value="<?php echo $part; ?>" size="40"/>
-            <select id="cmbPart" name="cmbPart" <?php echo $btnAddStatus; ?>>
+            <select class="form-control col-md-8" id="cmbPart" name="cmbPart" <?php echo $btnAddStatus; ?>>
               <?php
 							include_once 'dbconfig.php';
 							$query = 'SELECT * FROM part_tbl';
@@ -163,17 +164,17 @@ else{
 							}
 							?>
             </select>
-            <br />
-            <label>Start Date</label>
-            <br />
-            <input type="date" name="dtpStartDate" size="50" value="<?php echo $StartDate; ?>"/>
-            <br/>
-            <label>End Date</label>
-            <br />
-            <input type="date" name="dtpEndDate" size="50" value="<?php echo $EndDate; ?>"/>
-            <br/>
-			<input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
+            </div>
+			<div class="form-group">
+            <label class="control-label col-md-4">Start Date</label>
+            <input class="form-control col-md-8" type="date" name="dtpStartDate" size="50" value="<?php echo $StartDate; ?>"/>
+			</div>
 
+			<div class="form-group">
+            <label class="control-label col-md-4">End Date</label>
+            <input class="form-control col-md-8" type="date" name="dtpEndDate" size="50" value="<?php echo $EndDate; ?>"/>
+			<input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
+			</div>
 			  <div class="row">
 				  <div class="col-lg-12">
 					  <?php if ($permissions[0]['W']) { ?>
@@ -196,35 +197,14 @@ else{
 						  <?php
 					  } ?>
 					  <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
-
-
 				  </div>
+				  <div id='msg'></div>
 			  </div>
             <!-- /.row --> 
             
           </div>
-          <div class="col-lg-8 selecttable">
-			<?php
-						include_once 'dbconfig.php'; //Connect to database
-						$query = "SELECT a.`year` AS acadamicyear, c.`Name` AS course, p.`name` AS part, cp.StartDate, cp.EndDate 
-									FROM courseprocess cp INNER JOIN acadamicyear a ON cp.AcadamicYear_id=a.id INNER JOIN course_tbl c ON cp.Course_tbl_id=c.id INNER JOIN part_tbl p ON cp.Part_tbl_id=p.id WHERE  cp.Status = '1'";
-						$result = getData($query);
-						echo "<table width='100%'>"; // start a table tag in the HTML
-						echo "<tr>
-								<th>ACADAMIC YEAR</th>
-								<th>COURSE</th>
-								<th>PART</th>
-								<th>Start Date</th>
-								<th>End Date</th>
-								<th>&nbsp;</th>
-							  </tr>";
-						while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
-						
-							echo "<tr><td>" . $row['acadamicyear']. "</td><td>" . $row['course']. "</td><td>" . $row['part']. "</td><td>" . $row['StartDate']. "</td><td>" . $row['EndDate'] . "</td><td><a href='courseProcess.php?acadamicyear=".$row['acadamicyear']."&course=".$row['course']."&part=".$row['part']."'>Edit</a></td></tr>";  //$row['index'] the index here is a field name
-						}
-						echo "</table>"; //Close the table in HTML
-						connection_close(); //Make sure to close out the database connection
-						?>
+          <div class="col-lg-8 selecttable" id="loadtbl">
+			  <?php include './courseProcess_list.php'; ?>
           </div>
         </div>
         
@@ -255,5 +235,45 @@ else{
 <!-- /#wrapper -->
 
 <?php include_once './inc/footer.php'; ?>
+
+<script type="text/javascript">
+	$('document').ready(function () {
+		$("#coupro").validate({
+			submitHandler: submitForm
+		});
+		function submitForm() {
+			var data = $("#coupro").serialize();
+			$.ajax({
+				type: 'POST',
+				url: 'controller/courseProcessController.php',
+				data: data,
+				beforeSend: function () {
+					$("#msg").fadeOut();
+				},
+				success: function (response) {
+					console.log(response);
+					if (response) {
+						$("#msg").fadeIn(function () {
+							$("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
+						});
+						$('#msg').fadeOut(4000);
+						$('#loadtbl').load('courseProcess_list.php');
+						$("#coupro")[0].reset();
+
+
+					}
+					else {
+						$("#msg").fadeIn(1000, function () {
+							$("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
+						});
+						$('#msg').fadeOut(4000);
+					}
+				}
+			});
+			return false;
+		}
+	});
+</script>
+
 </body>
 </html>
