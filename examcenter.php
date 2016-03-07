@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Kelani</title>
+    <title>Kelani | Exam&frasl;Seminar Center</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -64,57 +64,53 @@ include_once './inc/top.php';
 
                 <?php
                 require_once("./config.php");
-                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'exsece'");
                 $stmt->execute();
                 $permissions = $stmt->fetchAll();
                 if ($permissions[0]['R']) {
                     ?>
                 <!-- exam/seminar center -->
-                <form method="post" action="controller/examcenterController.php" target="_parent" data-toggle="validator">
+                <form method="post" action="controller/examcenterController.php" target="_parent" data-toggle="validator" id="exsece">
                     <div class="row">
                         <div class="col-lg-4">
-                            <label>Exam&frasl;Seminar Center</label><br/>
-                            <input type="text" name="txtCenter" size="45" maxlength="45" required/><br/>
+                            <div class="form-group">
+                                <label class="control-label col-md-6">Exam&frasl;Seminar Center</label>
+                            <input class="form-control col-md-8" type="text" name="txtCenter" size="45" maxlength="45" required/><br/>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <?php if ($permissions[0]['W']) { ?>
+                                        <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
+                                        <input name="btnUpdate" onclick="" type="submit" value="Update"
+                                               class="btn btn-primary"/>
+                                    <?php } else {
+                                        ?>
+                                        <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" disabled/>
+                                        <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary"
+                                               disabled/>
+                                        <?php
+                                    }
+                                    if ($permissions[0]['D']) {
+                                        ?>
+                                        <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                                    <?php } else {
+                                        ?>
+                                        <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                                        <?php
+                                    } ?>
+                                    <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
+                                </div>
+                                <div id="msg"></div>
+                            </div>
+
                         </div>
-                        <div class="col-lg-8 selecttable">
-                            <?php
-                            include_once 'dbconfig.php'; //Connect to database
-                            $query = "SELECT `name` FROM examcenter_tbl";
-                            $result =getData($query);
-                            echo "<table width='100%'>"; // start a table tag in the HTML
-                            echo "<tr><th>COURSE NAME</th><th>&nbsp;</th></tr>";
-                            while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
-                                echo "<tr><td>" . $row['name'] . "</td><td><input type='button' value='Edit'></td></tr>";  //$row['index'] the index here is a field name
-                            }
-                            echo "</table>"; //Close the table in HTML
-                            connection_close(); //Make sure to close out the database connection
-                            ?>
+                        <div class="col-lg-8 selecttable" id="sbj_div">
+                            <?php include './examcenter_list.php'; ?>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-lg-12"><?php if ($permissions[0]['W']) { ?>
-                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
-                                <input name="btnUpdate" onclick="" type="submit" value="Update"
-                                       class="btn btn-primary"/>
-                            <?php } else {
-                                ?>
-                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" disabled/>
-                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary"
-                                       disabled/>
-                                <?php
-                            }
-                            if ($permissions[0]['D']) {
-                                ?>
-                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
-                            <?php } else {
-                                ?>
-                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
-                                <?php
-                            } ?>
-                            <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
-                        </div>
-                    </div>
+
                 </form>
                 <?php } else {
                     ?>
@@ -132,5 +128,44 @@ include_once './inc/top.php';
     <!-- /#wrapper -->
 
 <?php include_once './inc/footer.php'; ?>
+
+<script type="text/javascript">
+    $('document').ready(function () {
+        $("#exsece").validate({
+            submitHandler: submitForm
+        });
+        function submitForm() {
+            var data = $("#exsece").serialize();
+            $.ajax({
+                type: 'POST',
+                url: 'controller/examcenterController.php',
+                data: data,
+                beforeSend: function () {
+                    $("#msg").fadeOut();
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response) {
+                        $("#msg").fadeIn(function () {
+                            $("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                        $('#sbj_div').load('examcenter_list.php');
+                        $("#exsece")[0].reset();
+
+
+                    }
+                    else {
+                        $("#msg").fadeIn(1000, function () {
+                            $("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                    }
+                }
+            });
+            return false;
+        }
+    });
+</script>
 </body>
 </html>

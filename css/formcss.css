@@ -10,7 +10,7 @@ body {
 	overflow-x: hidden;
 }
 
-
+#lecpay{padding-right: 10px;}
 .selecttable input[type="button"]{
 	width:50px !important;
 	height:20px !important ;

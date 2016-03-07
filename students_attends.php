@@ -157,14 +157,16 @@ include_once './inc/top.php';
           <form method="post" id="stuatt" name="stuatt" action="controller/students_attendsController.php">
         <div class="row">
               <div class="col-lg-4">
-            <label>Student ID</label>
-            <br/>
-            <input type="text" id="txtStudentID" name="txtStudentID" size="50" onClick="dateTimeShow"/>
-            <br/>
-            <label>Name</label>
-            <br/>
-            <input type="text" id="txtstudentName" name="txtstudentName" size="50" readonly/>
-            <br/>
+
+			<div class="form-group">
+			<label class="control-label col-md-4">Student ID</label>
+            <input class="form-control col-md-8" type="text" id="txtStudentID" name="txtStudentID" size="50" onClick="dateTimeShow"/>
+			</div>
+		 	<div class="form-group">
+			<label class="control-label col-md-4">Name</label>
+            <input class="form-control col-md-8" type="text" id="txtstudentName" name="txtstudentName" size="50" readonly/>
+			</div>
+
              <div id="SubjectID" class="col-lg-8"> </div>
             <!--<table width="100%">
                   <tr>
@@ -199,8 +201,8 @@ include_once './inc/top.php';
 				<td></td>
               </tr>
             </table>
-            	<div class="col-lg-4" id="PayStudent">
-              	</div> 
+            	<div class="col-lg-4" id="PayStudent" style="font-weight: bold; font-size: 50px; color: forestgreen;">
+              	</div>
             <input type="hidden" value="<?php echo date('Y-m-d'); ?>" name="dtpDate">
             <input type="hidden" value="<?php date_default_timezone_set('Asia/Colombo'); echo $today = date('H:i:s');?>" name="dtpTime">
             <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
@@ -233,5 +235,6 @@ include_once './inc/top.php';
     </div>
 <!-- /#wrapper -->
 <?php include_once './inc/footer.php'; ?>
+
 </body>
 </html>

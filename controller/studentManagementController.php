@@ -1,9 +1,32 @@
 <?php
-require_once ("../dbconfig.php");
+require_once ("..\dbconfig.php");
 if (isset($_POST["btnFinishDD"])) {
 	/* Set connection */
     $con = connection();
+	$branch = $_POST['cmbBranch'];	
+	$query = "SELECT (RIGHT(DATE_FORMAT(NOW(), '%Y'),2)) AS Yr";
+	$result= $con->query($query);
+	if (mysqli_num_rows($result) > 0){
+		while ($row = mysqli_fetch_assoc($result)) {
+			$yr1 = $row['Yr'];
+		}
+	}
+	$YR2 = $yr1.$branch; 	
 	
+	$query = "SELECT LPAD((MAX(RIGHT(Student_id,4)) + 1),5,'0')  AS Student_id FROM student_tb WHERE Student_id LIKE CONCAT('%','".$YR2."','%');";
+	$result= $con->query($query);
+	//echo $query;
+			if (mysqli_num_rows($result) > 0) {
+				// output data of each row
+				while ($row = mysqli_fetch_assoc($result)) {
+					if($row['Student_id'] == null || $row['Student_id'] == ""){
+						$Student_id_ = $YR2.'00001';
+					}
+					else{
+						$Student_id_ = $YR2.$row['Student_id'];
+					}
+			}
+	}
 	//O/L Qulification---------------------------------------------------------------------
 	if(trim(($_POST['txtOLindexNo'])) != ''){
 		$stmt=$con->prepare('INSERT INTO  olqulification_tbl VALUES (?, ?, ?, ?, now(), ?, ?)');
@@ -13,7 +36,7 @@ if (isset($_POST["btnFinishDD"])) {
 		$Year = $_POST['txtOLyear'];
 		$Pass = $_POST['rbOLpass'];
 		$Englishgrade= $_POST['cmbEnglishGrade'];
-		$CreateUser = $_POST['ssUser'];
+		$CreateUser = 'Admin';
 		$Status = '1';
 		$stmt->execute();
 		/* close statement and connection */
@@ -44,7 +67,7 @@ if (isset($_POST["btnFinishDD"])) {
 		if (isset($_POST['cmbALStream'])) {
 			$ALStream = $_POST['cmbALStream'];
 		}	
-		$CreateUser = $_POST['ssUser'];
+		$CreateUser = 'Admin';
 		$Status = '1';
 		$stmt->execute();
 		$stmt->close();
@@ -60,7 +83,8 @@ if (isset($_POST["btnFinishDD"])) {
 		if (isset($_POST['cmbBranch'])) {
 			$Branch_id = $_POST['cmbBranch'];
 		}
-		$Student_id = $_POST['txtStudentId'];
+		//$Student_id = $_POST['txtStudentId'];
+		$Student_id = $Student_id_;
 		$Old_student_id = $_POST['txtOldStudentId'];
 		$FullName = $_POST['txaFullname'];
 		$Name =$_POST['txtNamewithInitians'];
@@ -104,7 +128,7 @@ if (isset($_POST["btnFinishDD"])) {
 		}
 		$OLQulification_tbl_Index_no = $_POST['txtOLindexNo'];
 		$ALQulification_tbl_Index_no = $_POST['txtALindexNo'];
-		$CreateUser = $_POST['ssUser'];
+		$CreateUser = 'Admin';
 		$Student_status = 1;
 		
 		$stmt->execute();
@@ -112,11 +136,11 @@ if (isset($_POST["btnFinishDD"])) {
 		
 		$Student_id = $_POST['txtStudentId'];
 		$dir_to_search = $_POST['ImageStu'];
-		copy('C:/Kelani/images/Student/'.$dir_to_search, '../img/Student/'.$Student_id.'.jpg');
+		copy('C:/Kelani/images/Student/'.$dir_to_search, '../img/Student/'.$Student_id_.'.jpg');
 		
 		$Student_id = $_POST['txtStudentId'];
 		$Signature_to_search = $_POST['ImageSig'];
-		copy('C:/Kelani/images/Signature/'.$Signature_to_search, '../img/Signature/'.$Student_id.'.jpg');
+		copy('C:/Kelani/images/Signature/'.$Signature_to_search, '../img/Signature/'.$Student_id_.'.jpg');
 	}
 		
 	//Other Qulification---------------------------------------------------------------------
@@ -131,8 +155,9 @@ if (isset($_POST["btnFinishDD"])) {
 		$Subject = $_POST['txtSubject_OQ'];
 		$Grade = $_POST['txtGrade_OQ'];
 		$Year = $_POST['txtYear_OQ'];
-		$CreateUser = $_POST['ssUser'];
-		$Student_tb_Student_id = $_POST['txtStudentId'];
+		$CreateUser = 'Admin';
+		//$Student_tb_Student_id = $_POST['txtStudentId'];
+		$Student_tb_Student_id = $Student_id_;
 		
 		$stmt->execute();
 		/* close statement and connection */

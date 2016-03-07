@@ -1,9 +1,9 @@
-                                                                                                                                                                                                                                                                                  <?php session_start(); ?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Kelani</title>
+    <title>Kelani | Expenses</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -85,12 +85,12 @@ include_once 'dbconfig.php';
 
                 <?php
                 require_once("./config.php");
-                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'expenc'");
                 $stmt->execute();
                 $permissions = $stmt->fetchAll();
                 if ($permissions[0]['R']) {
                     ?>
-                <form method="post" action="controller/expencesController.php" target="_parent" data-toggle="validator">
+                <form method="post" action="controller/expencesController.php" target="_parent" data-toggle="validator" id="expenc">
                 <div class="row">
                     <div class="col-lg-4">
                         <label>#NO</label><br/>
@@ -107,8 +107,12 @@ include_once 'dbconfig.php';
                         <label>Amount</label><br/>
                         <input type="text" name="txtAmount" maxlength="10" size="10" required/><br/>
                         <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
-                    <div>
-                        <?php if ($permissions[0]['W']) { ?>
+
+
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                            <?php if ($permissions[0]['W']) { ?>
                             <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
                         <?php } else {
                             ?>
@@ -116,32 +120,16 @@ include_once 'dbconfig.php';
                             <?php
                         }?>
                         <input name="btnClear" type="reset" value="Clear" class="btn-default btn"/>
+                        </div>
+                            <div id='msg'></div>
+                        </div>
                     </div>
-                    
+                    <div class="col-lg-8 selecttable" id="exlist">
+                        <?php include './expences_list.php'; ?>
+                    </div>
                     </div>
 					
-                    <div class="col-lg-8 selecttable">
-                        <?php
-                        include_once 'dbconfig.php'; //Connect to database
-                        $query = "SELECT * FROM kelanidb.otherexpenses_tbl";
-                        $result = getData($query);
-                        echo "<table width='100%'>"; // start a table tag in the HTML
-                        echo "<tr>
-                        <th># NO</th>
-                        <th>INVOICE NUMBER</th>
-                        <th>SUPPLIER</th>
-						<th>DATE</th>
-                        <th>TIME</th>
-                        <th>DESCRIPTION</th>
-                        <th align='right'>AMOUNT</th>
-                        </tr>";
-                        while($row = mysqli_fetch_array($result)){//Creates a loop to loop through results
-                            echo "<tr><td>" . $row['esp']. "</td><td>" . $row['InvoiceNumber']. "</td><td>" . $row['SuplierName']. "</td><td>" . $row['Date'] . "</td><td>" . $row['Time'] . "</td><td>" . $row['Des'] . "</td><td align='right'>" . $row['Amount'] . "</td></tr>";  //$row['index'] the index here is a field name
-                        }
-                        echo "</table>"; //Close the table in HTML
-                        connection_close(); //Make sure to close out the database connection
-                        ?>
-                    </div>
+
                 </div>
                 <!-- /.row -->
 				</form>
@@ -160,4 +148,45 @@ include_once 'dbconfig.php';
     <!-- /#wrapper -->
 
 <?php include_once './inc/footer.php'; ?>
-</body></html>
+
+<script type="text/javascript">
+    $('document').ready(function () {
+        $("#expenc").validate({
+            submitHandler: submitForm
+        });
+        function submitForm() {
+            var data = $("#expenc").serialize();
+            $.ajax({
+                type: 'POST',
+                url: 'controller/expencesController.php',
+                data: data,
+                beforeSend: function () {
+                    $("#msg").fadeOut();
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response) {
+                        $("#msg").fadeIn(function () {
+                            $("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                        $('#exlist').load('expences_list.php');
+                        $("#expenc")[0].reset();
+
+
+                    }
+                    else {
+                        $("#msg").fadeIn(1000, function () {
+                            $("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                    }
+                }
+            });
+            return false;
+        }
+    });
+</script>
+
+</body>
+</html>

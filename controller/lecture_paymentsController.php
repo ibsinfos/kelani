@@ -2,12 +2,13 @@
 require_once ("../dbconfig.php");
 if (isset($_POST["btnAdd"])) {
 
+
+
     $con = connection();
-    $stmt=$con->prepare('INSERT INTO lecturerpayment_tbl VALUES (?,?,?,?,?,?,?,?,?,?,?,?)');
-    $stmt->bind_param('sisidddddssi', $DATE,$STUDENTCOURSE,$EMPLOYEE,$STUDENTCOUNT,$SUBJECTAMOUNT,$COMMITION,$SALARY,$ALLOWANCE,$TOTAL,$PAYEDDATE,$USER,$STATUS);
+    $stmt=$con->prepare('INSERT INTO lecturerpayment_tbl VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    $stmt->bind_param('ssidddddssiiiii', $DATE,$EMPLOYEE,$STUDENTCOUNT,$SUBJECTAMOUNT,$COMMITION,$SALARY,$ALLOWANCE,$TOTAL,$PAYEDDATE,$USER,$STATUS,$COURSE,$PART,$SUBJECT,$YEAR);
 										
 	$DATE = $_POST['dtpDate'];
-	$STUDENTCOURSE = $_POST['cmbSubject'];
 	$EMPLOYEE = $_POST['cmbLecturer'];
 	$STUDENTCOUNT = $_POST['txtxPresentStudents'];
 	$SUBJECTAMOUNT = $_POST['txtSubjectAmount'];
@@ -18,14 +19,22 @@ if (isset($_POST["btnAdd"])) {
 	$PAYEDDATE = $_POST['dtpdate'];
     $USER = $_POST['ssUser'];
     $STATUS = '1';
+
+    $valuex = $_POST['cmbSubject'];
+    $ids = explode('-', $valuex);
+    $COURSE = $ids[0];
+    $PART = $ids[1];
+    $SUBJECT = $ids[2];
+    $YEAR = $ids[4];
+
+
     $stmt->execute();
-	
-	
+
 	$TempAmount = $_POST['v_txtTempAmount'];
     $query = "UPDATE tempamount_tbl SET amount = '$TempAmount'";
-    $result= $con->query($query);								
-	
-	
+    $result= $con->query($query);
+
+
 	
 
     if($stmt->affected_rows > 0){

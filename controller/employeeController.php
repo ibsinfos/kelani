@@ -1,13 +1,29 @@
 <?php
 require_once ("../dbconfig.php");
 
-if (isset($_POST["btnSubmit"])) {
+if (isset($_POST["btnAdd"])) {
 
     $con = connection();
-    $stmt=$con->prepare('INSERT INTO employee_tb VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,now(),?,?)');
-    $stmt->bind_param('ssisssssssssssi', $EMPID,$BRANCH,$DESINGATION,$NAME,$NAMEINITIAL,$GENDER,$NIC,$DOB,$HOMEADDRESS,$TPHOME,$TPMOBILE,$EMAIL,$PHOTO,$USER,$STATUS);
+	$branch = $_POST['cmbBranch'];	
 		
-	$EMPID  = $_POST['txtEmployeeId'];
+	$query = "SELECT LPAD((IFNULL(MAX(CAST(RIGHT(Emp_id, 3) AS UNSIGNED INT)),0) + 1), 3, 0) AS MAXNO FROM employee_tb  WHERE Emp_id LIKE CONCAT('%','".$branch."','%');";
+	$result= $con->query($query);
+	//echo $query;
+			if (mysqli_num_rows($result) > 0) {
+				// output data of each row
+				while ($row = mysqli_fetch_assoc($result)) {
+					if($row['MAXNO'] == null || $row['MAXNO'] == ""){
+						$EMP_ID = $branch.'00001';
+					}
+					else{
+						$EMP_ID = $branch.$row['MAXNO'];
+					}
+			}
+	}
+    $stmt=$con->prepare('INSERT INTO employee_tb VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,now(),?,?)');
+    $stmt->bind_param('ssisssssssssssi', $EMPID_,$BRANCH,$DESINGATION,$NAME,$NAMEINITIAL,$GENDER,$NIC,$DOB,$HOMEADDRESS,$TPHOME,$TPMOBILE,$EMAIL,$PHOTO,$USER,$STATUS);
+		
+	$EMPID_  = $EMP_ID;
 	$BRANCH = $_POST['cmbBranch'];
 	$DESINGATION  = $_POST['cmbDesignation'];
 	$NAME  = $_POST['txaName'];
@@ -21,22 +37,22 @@ if (isset($_POST["btnSubmit"])) {
 	$EMAIL  = $_POST['txtEmail'];
 
 	if(trim(($_POST['imgImage'])) != ''){
-		$PHOTO = 'img/Employee/'.$EMPID.'.jpg';
+		$PHOTO = 'img/Employee/'.$EMPID_.'.jpg';
 	}
 	else if(trim(($_POST['imgImage'])) == ''){
 		$PHOTO = '1';
 	}
-	$USER = $_POST['ssUser'];
+	$USER = 'Admin';
     $STATUS = '1';
 	
 	$EMPID = $_POST['txtEmployeeId'];
 	$dir_to_search = $_POST['imgImage'];
-	copy('C:/Kelani/images/Employee/'.$dir_to_search, '../img/Employee/'.$EMPID.'.jpg');
+	copy('C:/Kelani/images/Employee/'.$dir_to_search, '../img/Employee/'.$EMPID_.'.jpg');
 		
     $stmt->execute();
 	
-	//var_dump($_POST);
-	//die();
+//	var_dump($_POST);
+//	die();
 	
     if($stmt->affected_rows > 0){
         echo "<script type='text/javascript'>alert('Successfully Inserted');</script>";

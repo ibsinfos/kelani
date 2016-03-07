@@ -4,7 +4,7 @@
 <html lang="en">
 
 <head>
-    <title>Kelani</title>
+    <title>Kelani | Lecturer Payment</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -47,6 +47,7 @@
 		function GetNoofStudent(){
 			var SubjectCource  = document.getElementById("cmbSubject").value;
 			var DDate = document.getElementById("dtpDate").value;
+            //alert(SubjectCource);
 				$.ajax({
 					type:'POST',
 					url:"GetNoofStudents.php",
@@ -79,7 +80,7 @@
 		var amountx = studentx*subjectpricex;
 		
 		var commitionx = Number(document.getElementById('txtCommissionPercentage').value);
-		
+
 		var salaryx = (amountx*commitionx)/100;
 			document.getElementById('txtSalary').value = salaryx;
 	}
@@ -107,7 +108,6 @@ $amount = '0';
 if (mysqli_num_rows($result) > 0) {
 	// output data of each row
 	while ($row = mysqli_fetch_assoc($result)) {
-		
 		$amount=$row['amount'];
 	}
 }
@@ -148,7 +148,7 @@ else{
                 ?>
                 
                 <form method="post" action="controller/lecture_paymentsController.php" target="_parent" data-toggle="validator" id="lecpay">                
-                <div class="row">
+                <div class="frmbase row">
                     <div class="col-lg-4">
                     <label class="">Date</label>&nbsp;<label for="date" id="dtDate"><?php echo date("Y/m/d") ; ?></label>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -166,16 +166,17 @@ else{
                     <div class="col-lg-4">
                         <label>Subject</label><br/>
                             <select name="cmbSubject" id="cmbSubject">
+                                <option value='0'>        --Select Subject--</option>
                                 <?php
                                 include_once 'dbconfig.php';
-                                $query = 'SELECT ssc.id, ssc.AcadamicYear, c.`Name`, ssc.Part, s.subjectname, ssc.Price
-FROM subject_tbl s, student_subject_course_tbl ssc , course_tbl c
-WHERE s.id = ssc.Subject_Course_tbl_Subject_tbl_id AND c.id=ssc.Subject_Course_tbl_Course_tbl_id';
+                                $query = 'SELECT sc.AcadamicYear_id, ay.`year`, sc.Course_tbl_id, c.`Name` AS cname, sc.Part_table_id, p.`name` AS pname, sc.Subject_tbl_id, s.subjectname
+FROM subject_course_tbl sc, acadamicyear ay , course_tbl c, part_tbl p, subject_tbl s
+WHERE sc.AcadamicYear_id = ay.id AND sc.Course_tbl_id=c.id AND sc.Part_table_id=p.id AND sc.Subject_tbl_id=s.id';
                                 $result = getData($query);
                                 if (mysqli_num_rows($result) > 0) {
                                     // output data of each row
                                     while ($row = mysqli_fetch_assoc($result)) {
-										echo "<option value='".$row['id']."'>".$row['AcadamicYear']." ".$row['Name']." ".$row['Part']." ".$row['subjectname']."</option>";
+										echo "<option value='".$row['Course_tbl_id']."-".$row['Part_table_id']."-".$row['Subject_tbl_id']."-".$row['year']."-".$row['AcadamicYear_id']."'>".$row['year']." ".$row['cname']." ".$row['pname']." ".$row['subjectname']."</option>";
                                     }
                                 }
                                 ?>
@@ -185,6 +186,7 @@ WHERE s.id = ssc.Subject_Course_tbl_Subject_tbl_id AND c.id=ssc.Subject_Course_t
                     <div class="col-lg-4">
                         <label>Lecturer</label><br/>
                             <select name="cmbLecturer">
+                                <option value='0'>        --Select Lecturer--</option>
                                 <?php
                                 include_once 'dbconfig.php';
                                 $query = "SELECT * FROM employee_tb WHERE Designation_tbl_id = '2'";
@@ -233,9 +235,10 @@ WHERE s.id = ssc.Subject_Course_tbl_Subject_tbl_id AND c.id=ssc.Subject_Course_t
                     </div>
                     <div class="col-lg-6">
                        <table width="100%" class="paymenttable">
-                            <tr>
-                                <td>Existing Amount</td>
-                                <td align="right"><input type="text" id="v_txtExistingTempAmount" value="<?php echo $amount; ?>" name="v_txtExistingTempAmount" size="5" readonly/><label>&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
+                            <tr id="lecture_amount">
+<!--                                <td>Existing Amount</td>-->
+<!--                                <td align="right"><input type="text" id="v_txtExistingTempAmount" value="--><?php //echo $amount; ?><!--" name="v_txtExistingTempAmount" size="5" readonly/><label>&nbsp;&nbsp;&nbsp;&nbsp;</label></td>-->
+                                <?php include './lecture_exsisting_amount.php'?>
                             </tr>
                             <tr>
                                 <td>New Temp Amount</td>
@@ -247,6 +250,8 @@ WHERE s.id = ssc.Subject_Course_tbl_Subject_tbl_id AND c.id=ssc.Subject_Course_t
                 </div>
                 <!-- /.row -->
                 <div class="row" style="padding-left: 15px;">
+                    <div class="row">
+                        <div class="col-lg-12">
                     <?php if ($permissions[0]['W']) { ?>
                         <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
                     <?php } else {
@@ -255,6 +260,9 @@ WHERE s.id = ssc.Subject_Course_tbl_Subject_tbl_id AND c.id=ssc.Subject_Course_t
                         <?php
                     }?>
                     <input name="btnClear" type="reset" value="Clear" class="btn-default btn"/>
+                    </div>
+                    <div id='msg'></div>
+                    </div>
                 </div>
                 <!-- /.row -->
                 </form>
@@ -276,4 +284,43 @@ WHERE s.id = ssc.Subject_Course_tbl_Subject_tbl_id AND c.id=ssc.Subject_Course_t
     <!-- /#wrapper -->
 
 <?php include_once './inc/footer.php'; ?>
-</body></html>
+
+<script type="text/javascript">
+    $('document').ready(function () {
+        $("#lecpay").validate({
+            submitHandler: submitForm
+        });
+        function submitForm() {
+            var data = $("#lecpay").serialize();
+            $.ajax({
+                type: 'POST',
+                url: 'controller/lecture_paymentsController.php',
+                data: data,
+                beforeSend: function () {
+                    $("#msg").fadeOut();
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response) {
+                        $("lecture_amount").load('./lecture_exsisting_amount.php');
+                        $("#msg").fadeIn(function () {
+                            $("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                        $("#lecpay").reset();
+                    }
+                    else {
+                        $("#msg").fadeIn(1000, function () {
+                            $("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                    }
+                }
+            });
+            return false;
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Kelani</title>
+    <title>Kelani | Polling Divisions</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -64,7 +64,7 @@ include_once './inc/top.php';
 
                 <?php
                 require_once("./config.php");
-                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+                $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'poldiv'");
                 $stmt->execute();
                 $permissions = $stmt->fetchAll();
                 if ($permissions[0]['R']) {
@@ -73,59 +73,46 @@ include_once './inc/top.php';
                 <form method="post" id="poldiv" action="controller/pollingdivisionsController.php">
                     <div class="row">
                         <div class="col-lg-4">
-                            <label>Polling Division</label><br/>	
-                            <input type="text" name="txtPollingDivision" size="100" maxlength="100" required/><br/>
-                        </div>
-                        <div class="col-lg-8 selecttable">
-                        	<?php
-							include_once 'dbconfig.php'; //Comnnect to database
-							$query = "SELECT Name FROM polling_devition_tbl;";
-							$result =getData($query);
-							echo "<table width='100%'>"; // start a table tag in the HTML
-							echo "<tr><th>POLLING DIVISIONS</th><th>&nbsp;</th></tr>";
-							while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
-								echo "<tr><td>" . $row['Name'] . "</td><td><input type='button' value='Edit'></td></tr>";  //$row['index'] the index here is a field name
-							}
-							echo "</table>"; //Close the table in HTML
-							connection_close(); //Make sure to close out the database connection
-							?>
-                            
                             <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
-                        
-                        <table width="100%">
-                                <tr>
-                                    <th></th>
-                                </tr>
-                                <tr>
-                                    <td>&nbsp;</td>
-                                </tr>
-                            </table>
+
+                            <div class="form-group">
+                            <label class="control-label col-md-8">Polling Division</label><br/>
+                            <input class="form-control col-md-8" type="text" name="txtPollingDivision" size="100" maxlength="100" required/><br/>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <?php if ($permissions[0]['W']) { ?>
+                                        <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
+                                        <input name="btnUpdate" onclick="" type="submit" value="Update"
+                                               class="btn btn-primary"/>
+                                    <?php } else {
+                                        ?>
+                                        <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" disabled/>
+                                        <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary"
+                                               disabled/>
+                                        <?php
+                                    }
+                                    if ($permissions[0]['D']) {
+                                        ?>
+                                        <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                                    <?php } else {
+                                        ?>
+                                        <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                                        <?php
+                                    } ?>
+                                    <input type="reset" value="Clear" name="btnClear" class="btn-default btn"/>
+                                </div>
+                                <div id="msg"></div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-8 selecttable" id="sbj_div">
+                            <?php include './polling_divisions_list.php'; ?>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-lg-12"><?php if ($permissions[0]['W']) { ?>
-                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
-                                <input name="btnUpdate" onclick="" type="submit" value="Update"
-                                       class="btn btn-primary"/>
-                            <?php } else {
-                                ?>
-                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" disabled/>
-                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary"
-                                       disabled/>
-                                <?php
-                            }
-                            if ($permissions[0]['D']) {
-                                ?>
-                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
-                            <?php } else {
-                                ?>
-                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
-                                <?php
-                            } ?>
-                            <input type="reset" value="Clear" name="btnClear" class="btn-default btn"/>
-                        </div>
-                    </div>
+
                 </form>
                 <!-- /polling divisions -->
 
@@ -149,4 +136,45 @@ include_once './inc/top.php';
     <!-- /#wrapper -->
 
 <?php include_once './inc/footer.php'; ?>
-</body></html>
+
+<script type="text/javascript">
+    $('document').ready(function () {
+        $("#poldiv").validate({
+            submitHandler: submitForm
+        });
+        function submitForm() {
+            var data = $("#poldiv").serialize();
+            $.ajax({
+                type: 'POST',
+                url: 'controller/pollingdivisionsController.php',
+                data: data,
+                beforeSend: function () {
+                    $("#msg").fadeOut();
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response) {
+                        $("#msg").fadeIn(function () {
+                            $("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                        $('#sbj_div').load('polling_divisions_list.php');
+                        $("#poldiv")[0].reset();
+
+
+                    }
+                    else {
+                        $("#msg").fadeIn(1000, function () {
+                            $("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                    }
+                }
+            });
+            return false;
+        }
+    });
+</script>
+
+</body>
+</html>

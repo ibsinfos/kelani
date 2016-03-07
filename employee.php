@@ -356,7 +356,7 @@ else{
                             $("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
                         });
                         $('#msg').fadeOut(4000);
-                        $('#loadtbl').load('employee_list.php.php');
+                        $('#loadtbl').load('./employee_list.php');
                         $("#empmng")[0].reset();
 
 
