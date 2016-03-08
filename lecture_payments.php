@@ -165,7 +165,7 @@ else{
                     </div>
                     <div class="col-lg-4">
                         <label>Subject</label><br/>
-                            <select name="cmbSubject" id="cmbSubject">
+                            <select required name="cmbSubject" id="cmbSubject">
                                 <option value='0'>        --Select Subject--</option>
                                 <?php
                                 include_once 'dbconfig.php';
@@ -185,7 +185,7 @@ WHERE sc.AcadamicYear_id = ay.id AND sc.Course_tbl_id=c.id AND sc.Part_table_id=
                     </div>
                     <div class="col-lg-4">
                         <label>Lecturer</label><br/>
-                            <select name="cmbLecturer">
+                            <select required name="cmbLecturer">
                                 <option value='0'>        --Select Lecturer--</option>
                                 <?php
                                 include_once 'dbconfig.php';
@@ -242,7 +242,7 @@ WHERE sc.AcadamicYear_id = ay.id AND sc.Course_tbl_id=c.id AND sc.Part_table_id=
                             </tr>
                             <tr>
                                 <td>New Temp Amount</td>
-                                <td align="right"><input type="text" id="v_txtTempAmount" value="0.00" name="v_txtTempAmount" size="5" readonly/><label>&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
+                                <td align="right"><input type="text" id="v_txtTempAmount" value="0.00" name="v_txtTempAmount" size="5" readonly/><label></label></td>
                             </tr>
                         </table>
                         
@@ -285,42 +285,42 @@ WHERE sc.AcadamicYear_id = ay.id AND sc.Course_tbl_id=c.id AND sc.Part_table_id=
 
 <?php include_once './inc/footer.php'; ?>
 
-<script type="text/javascript">
-    $('document').ready(function () {
-        $("#lecpay").validate({
-            submitHandler: submitForm
-        });
-        function submitForm() {
-            var data = $("#lecpay").serialize();
-            $.ajax({
-                type: 'POST',
-                url: 'controller/lecture_paymentsController.php',
-                data: data,
-                beforeSend: function () {
-                    $("#msg").fadeOut();
-                },
-                success: function (response) {
-                    console.log(response);
-                    if (response) {
-                        $("lecture_amount").load('./lecture_exsisting_amount.php');
-                        $("#msg").fadeIn(function () {
-                            $("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
-                        });
-                        $('#msg').fadeOut(4000);
-                        $("#lecpay").reset();
-                    }
-                    else {
-                        $("#msg").fadeIn(1000, function () {
-                            $("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
-                        });
-                        $('#msg').fadeOut(4000);
-                    }
-                }
-            });
-            return false;
-        }
-    });
-</script>
+<!--<script type="text/javascript">-->
+<!--    $('document').ready(function () {-->
+<!--        $("#lecpay").validate({-->
+<!--            submitHandler: submitForm-->
+<!--        });-->
+<!--        function submitForm() {-->
+<!--            var data = $("#lecpay").serialize();-->
+<!--            $.ajax({-->
+<!--                type: 'POST',-->
+<!--                url: 'controller/lecture_paymentsController.php',-->
+<!--                data: data,-->
+<!--                beforeSend: function () {-->
+<!--                    $("#msg").fadeOut();-->
+<!--                },-->
+<!--                success: function (response) {-->
+<!--                    console.log(response);-->
+<!--                    if (response) {-->
+<!--                        $("lecture_amount").load('./lecture_exsisting_amount.php');-->
+<!--                        $("#msg").fadeIn(function () {-->
+<!--                            $("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');-->
+<!--                        });-->
+<!--                        $('#msg').fadeOut(4000);-->
+<!--                        $("#lecpay").reset();-->
+<!--                    }-->
+<!--                    else {-->
+<!--                        $("#msg").fadeIn(1000, function () {-->
+<!--                            $("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');-->
+<!--                        });-->
+<!--                        $('#msg').fadeOut(4000);-->
+<!--                    }-->
+<!--                }-->
+<!--            });-->
+<!--            return false;-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
 
 </body>
 </html>

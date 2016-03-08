@@ -102,8 +102,9 @@ else{
             if ($permissions[0]['R']) {
                 ?>
                 <form method="post" action="controller/subjectController.php" id="submng" data-toggle="validator">
-                    <div class="row selecttable">
+                    <div class="row">
                         <div class="col-lg-4">
+
                             <div class="form-group">
                             <label class="control-label col-md-4">Subject Code</label><br/>
                             <input class="form-control col-md-8" type="text" name="txtSubjectCode" size="10" maxlength="10" value="<?php echo $CODE; ?>" required/><br/>
@@ -116,7 +117,8 @@ else{
                             <input type="hidden"
                                    value="<?php echo ($_SESSION['user_session'] == 'loged') ? $_SESSION['username'] : 'User'; ?>"
                                    name="ssUser">
-
+                            <div class="row">
+                                <div class="col-lg-12">
                             <?php if ($permissions[0]['W']) { ?>
                                 <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"<?php echo $btnAddStatus; ?>/>
                                 <input name="btnUpdate" onclick="" type="submit" value="Update" <?php echo $btnStatus; ?>
@@ -137,21 +139,13 @@ else{
                                 <?php
                             } ?>
                             <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
-
+                            </div>
+                                <div id='msg'></div>
+                            </div>
                         </div>
-                        <div class="col-lg-8">
-                            <?php
-                            include_once 'dbconfig.php'; //Comnnect to database
-                            $query = "SELECT id, subjectname, Subjectcode FROM subject_tbl;";
-                            $result = getData($query);
-                            echo "<table width='100%'>"; // start a table tag in the HTML
-                            echo "<tr><th>CODE</th><th>SUBJECT NAME</th><th>&nbsp;</th></tr>";
-                            while ($row = mysqli_fetch_array($result)) {   //Creates a loop to loop through results
-                                echo "<tr><td>" . $row['Subjectcode'] . "</td><td>" . $row['subjectname'] . "</td><td><a href='subject.php?edit=" . $row['id'] . "'>Edit</a></td></tr>";  //$row['index'] the index here is a field name
-                            }
-                            echo "</table>"; //Close the table in HTML
-                            connection_close(); //Make sure to close out the database connection
-                            ?>
+                        <div class="col-lg-8" id="sbj_div">
+                            <?php include './subject_list.php'; ?>
+
                         </div>
                     </div>
                 </form>
@@ -173,5 +167,45 @@ else{
 <!-- /#wrapper -->
 
 <?php include_once './inc/footer.php'; ?>
+
+<script type="text/javascript">
+    $('document').ready(function () {
+        $("#submng").validate({
+            submitHandler: submitForm
+        });
+        function submitForm() {
+            var data = $("#submng").serialize();
+            $.ajax({
+                type: 'POST',
+                url: 'controller/subjectController.php',
+                data: data,
+                beforeSend: function () {
+                    $("#msg").fadeOut();
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response) {
+                        $("#msg").fadeIn(function () {
+                            $("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                        $('#sbj_div').load('subject_list.php');
+                        $("#submng")[0].reset();
+
+
+                    }
+                    else {
+                        $("#msg").fadeIn(1000, function () {
+                            $("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                    }
+                }
+            });
+            return false;
+        }
+    });
+</script>
+
 </body>
 </html>
