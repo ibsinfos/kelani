@@ -127,8 +127,8 @@ include_once './inc/top.php';
                             ?>
                             <tr>
                                 <td>
-                                    <input type='text' readonly name='txtname<?php echo $i?>' value='<?php echo $row[1];?>'>
-                                    <input type='hidden' readonly name='txtid<?php echo $i?>' value='<?php echo $row[0];?>'>
+                                    <input type='text' readonly name='txtname[]' value='<?php echo $row[1];?>'>
+                                    <input type='hidden' readonly name='txtid[]' value='<?php echo $row[0];?>'>
                                 </td>
                                 <td><input type='checkbox' name='cbR<?php echo $i?>' value='1'></td>
                                 <td><input type='checkbox' name='cbW<?php echo $i?>' value='1'></td>
