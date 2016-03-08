@@ -70,12 +70,12 @@ include_once './inc/top.php';
                 <div class="row">
                     <?php
                     require_once("./config.php");
-                    $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+                    $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'usrpri'");
                     $stmt->execute();
                     $permissions = $stmt->fetchAll();
                     if($permissions[0]['R']){?>
                     <div class="col-lg-6">
-                    <form method="post" action="controller/userController.php" target="_self" data-toggle="validator" id="usrmng">
+                    <form method="post" action="controller/userController.php" target="_self" data-toggle="validator" id="usrpri">
                         <label>User Level</label><br/>
                         <select name="cmbUserLevel" id="cmbUserLevel">
                         <option value='0'>        --Select UserLevel--</option>

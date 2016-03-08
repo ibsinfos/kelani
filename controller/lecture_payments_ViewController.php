@@ -23,20 +23,22 @@ FROM 	lecturerpayment_tbl lp
         INNER JOIN course_tbl c ON c.id = lp.Subject_Course_tbl_Course_tbl_id
         INNER JOIN part_tbl p ON p.id = lp.Subject_Course_tbl_Part_table_id
         INNER JOIN subject_tbl s ON s.id = lp.Subject_Course_tbl_Subject_tbl_id
-
 			  WHERE   lp.`date` BETWEEN '$FromDate' AND '$ToDate'
 					  AND Employee_tb_Emp_id = CASE IFNULL('$Lect','ALL') WHEN 'ALL' THEN Employee_tb_Emp_id ELSE '$Lect' END;";
 
 	$result= $con->query($query);
 		
 	if (mysqli_num_rows($result) > 0){
-		
-                        echo "<table width='100%'>"; // start a table tag in the HTML
-                        echo "<tr>
+
+		echo "<table width='100%'>"; // start a table tag in the HTML
+		echo "<tr>
+						<th>SUBJECT</th>
+						<th>COURSE</th>
+						<th>PART</th>
+						<th>SUBJECT</th>
 						<th>DATE</th>
                         <th>EMPLOYEE NAME</th>
-						<th>SUBJECT</th>
-                        <th>AMOUNT</th>	
+                        <th>AMOUNT</th>
                         <th>STUDENTS</th>
                         <th>COMMISSION(%)</th>
                         <th>SALARY</th>
@@ -44,12 +46,12 @@ FROM 	lecturerpayment_tbl lp
 						<th>TOTAL</th>
 						<th>PAID  DATE</th>
                         </tr>";
-                       	while($row = mysqli_fetch_array($result)){//Creates a loop to loop through results
-                            echo "<tr><td>" . $row['date']. "</td><td>" . $row['Name']. "</td><td>" . $row['subjectname']. "</td><td>" . $row['subjectAmount'] . "</td><td>" . $row['numberStudent'] . "</td><td>" . $row['commission'] . "</td><td>" . $row['salary'].  "</td><td>" . $row['allowance']. "</td><td>" . $row['total']. "</td><td>" . $row['PayedDate']."</td></tr>";  //$row['index'] the index here is a field name
-                        }
-                        echo "</table>"; //Close the table in HTML
-                        connection_close(); //Make sure to close out the database connection
-                       
+		while($row = mysqli_fetch_array($result)){//Creates a loop to loop through results
+			echo "<tr><td>" . $row['year']. "</td><td>" . $row['cname']. "</td><td>" . $row['pname']. "</td><td>" . $row['sname']. "</td><td>" . $row['date']. "</td><td>" . $row['Name']. "</td><td>" . $row['subjectAmount'] . "</td><td>" . $row['numberStudent'] . "</td><td>" . $row['commission'] . "</td><td>" . $row['salary'].  "</td><td>" . $row['allowance']. "</td><td>" . $row['total']. "</td><td>" . $row['PayedDate']."</td></tr>";  //$row['index'] the index here is a field name
+		}
+		echo "</table>"; //Close the table in HTML
+		connection_close(); //Make sure to close out the database connection
+
 	}
 
 ?>
