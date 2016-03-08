@@ -116,34 +116,31 @@ include_once './inc/top.php';
                     </div>
 					
                     <div class="col-lg-6 selecttable">
+                        <table name="tbl_previ">
+                            <tr><th>Form Name</th><th>R</th><th>W</th><th>D</th></tr>
                         <?php
-                        include_once 'dbconfig.php'; //Connect to database
-                        $query = "SELECT FormID, `Name` FROM form_tbl;";
-                        $result = getData($query);
-                        echo "<table width='100%'>"; // start a table tag in the HTML
-                        echo "<tr>
-                        <th>FORM</th>
-                        <th>R</th>
-                        <th>W</th>
-                        <th>D</th>
-                        </tr>";
-                        while($row = mysqli_fetch_array($result)){//Creates a loop to loop through results
-                            $name=$row['Name'];
-                            $id=$row['FormID'];
-                            echo "<tr>
-                            <td>
-                            <input type='text' readonly name='txtname' value='$name'>
-                            <input type='hidden' readonly name='txtid' value='$id'>
-                            </td>
-                            <td><input type='checkbox' name='cbR' value='1'></td>
-                            <td><input type='checkbox' name='cbW' value='1'></td>
-                            <td><input type='checkbox' name='cbD' value='1'></td>
-                            </tr>";  //$row['index'] the index here is a field name
+                        include_once 'dbconfig.php';
+                        $result = getData("SELECT FormID, `Name` FROM form_tbl");
+                        $rows = mysqli_fetch_all($result);
+                        $i = 0;
+                        foreach($rows as $row){
+                            ?>
+                            <tr>
+                                <td>
+                                    <input type='text' readonly name='txtname<?php echo $i?>' value='<?php echo $row[1];?>'>
+                                    <input type='hidden' readonly name='txtid<?php echo $i?>' value='<?php echo $row[0];?>'>
+                                </td>
+                                <td><input type='checkbox' name='cbR<?php echo $i?>' value='1'></td>
+                                <td><input type='checkbox' name='cbW<?php echo $i?>' value='1'></td>
+                                <td><input type='checkbox' name='cbD<?php echo $i?>' value='1'></td>
+                            </tr>
+                            <?php
+                            $i++;
                         }
-                        echo "</table>"; //Close the table in HTML
                         connection_close(); //Make sure to close out the database connection
                         ?>
                     </div>
+
 
                     <?php } else {
                         ?>
