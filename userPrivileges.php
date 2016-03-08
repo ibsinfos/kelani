@@ -70,12 +70,13 @@ include_once './inc/top.php';
                 <div class="row">
                     <?php
                     require_once("./config.php");
-                    $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'usrpri'");
+                    $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
                     $stmt->execute();
                     $permissions = $stmt->fetchAll();
                     if($permissions[0]['R']){?>
-                    <div class="col-lg-6">
-                    <form method="post" action="controller/userController.php" target="_self" data-toggle="validator" id="usrpri">
+                    <form method="post" action="controller/userPrivilegesController.php" target="_self" data-toggle="validator" id="usrpri">
+                        <div class="col-lg-6">
+
                         <label>User Level</label><br/>
                         <select name="cmbUserLevel" id="cmbUserLevel">
                         <option value='0'>        --Select UserLevel--</option>
@@ -91,9 +92,6 @@ include_once './inc/top.php';
                                 }
                                 ?>
                         </select>
-
-                        <input name="btnAddNew" type="submit" value="Add New" class="btn btn-primary"/>
-                        <br />
                         
 
                     <div><?php if($permissions[0]['W']){?>
@@ -114,13 +112,13 @@ include_once './inc/top.php';
                         } ?>
                         <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
                     </div>
-                    </form>
+
                     </div>
 					
                     <div class="col-lg-6 selecttable">
                         <?php
                         include_once 'dbconfig.php'; //Connect to database
-                        $query = "SELECT * FROM privileges_tbl";
+                        $query = "SELECT FormID, `Name` FROM form_tbl;";
                         $result = getData($query);
                         echo "<table width='100%'>"; // start a table tag in the HTML
                         echo "<tr>
@@ -130,7 +128,17 @@ include_once './inc/top.php';
                         <th>D</th>
                         </tr>";
                         while($row = mysqli_fetch_array($result)){//Creates a loop to loop through results
-                            echo "<tr><td>" . $row['Form_tbl_FormID']. "</td><td>" . $row['R']. "</td><td>" . $row['W']. "</td><td>" . $row['D'] . "</td></tr>";  //$row['index'] the index here is a field name
+                            $name=$row['Name'];
+                            $id=$row['FormID'];
+                            echo "<tr>
+                            <td>
+                            <input type='text' readonly name='txtname' value='$name'>
+                            <input type='hidden' readonly name='txtid' value='$id'>
+                            </td>
+                            <td><input type='checkbox' name='cbR' value='1'></td>
+                            <td><input type='checkbox' name='cbW' value='1'></td>
+                            <td><input type='checkbox' name='cbD' value='1'></td>
+                            </tr>";  //$row['index'] the index here is a field name
                         }
                         echo "</table>"; //Close the table in HTML
                         connection_close(); //Make sure to close out the database connection
@@ -142,6 +150,7 @@ include_once './inc/top.php';
                         <h1>You Do Not Have Permissions To This Page...!</h1>
                         <?php
                     } ?>
+                </form>
                 </div>
                 <!-- /.row -->
 

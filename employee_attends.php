@@ -71,12 +71,13 @@ include_once './inc/top.php';
               <div class="form-group">
                   <label class="control-label col-md-4">Employee ID</label>
             <input class="form-control col-md-8" type="text" name="txtEmployeeID" size="50"/>
-            </div>
-              <div class="form-group">
-                  <label class="control-label col-md-4">Name</label>
-            <input class="form-control col-md-8" type="text" name="txtName" readonly/>
             <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
+
             </div>
+<!--              <div class="form-group">-->
+<!--                  <label class="control-label col-md-4">Name</label>-->
+<!--            <input class="form-control col-md-8" type="text" name="txtName" readonly/>-->
+<!--            </div>-->
           </div>
           <div class="col-lg-4 selecttable" id="loadtbl">
             <label>Attendance  History</label>
