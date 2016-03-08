@@ -15,8 +15,8 @@ if (isset($_POST["btnAdd"])) {
     $STATUS = '1';
 	
 //	mysqli_query("query here") or die(mysqli_error($con));
-//	var_dump($_POST);
-//	die();
+	//var_dump($_POST);
+	//die();
 	
 	foreach ($cbSubject as $cbSubjectEach){
 		

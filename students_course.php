@@ -141,12 +141,12 @@ else{
                     <div class="col-lg-4">
                         <div class="form-group">
                         <label class="control-label col-md-4">Student ID</label><br />
-                        <input class="form-control col-md-8" type="text" name="txtStudentID" size="50" value="<?php echo $txtStudentId ?>" id="txtStudentID" disabled/><br/>
+                        <input class="form-control col-md-8" type="text" name="txtStudentID" size="50" value="<?php echo $txtStudentId ?>" id="txtStudentID" readonly/><br/>
                         </div>
 
                         <div class="form-group">
                         <label class="control-label col-md-4">Name</label><br />
-                        <input class="form-control col-md-8" type="text" name="txtName" value="<?php echo $txtNamewithInitians ?>" disabled/><br/>
+                        <input class="form-control col-md-8" type="text" name="txtName" value="<?php echo $txtNamewithInitians ?>" readonly/><br/>
                         <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
                         </div>
 

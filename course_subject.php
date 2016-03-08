@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Kelani</title>
+    <title>Kelani | Subject and Course Management</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -55,13 +55,6 @@ if(isset($_GET['acadamicyear'])){
             $PART = $row['Part_table_id'];
             $SUBJECTID  = $row['Subject_tbl_id'];
             $FEE = $row['Price'];
-
-            //$ACADAMICYEAR = $row['AcademicYear'];
-            //$SUBJECTID  = $row['SubjectName'];
-            //$COURSEID  = $row['CourseName'];
-            //$PART = $row['Part'];
-            //$FEE = $row['Price'];
-
             $btnStatus = 'enabled';
             $btnAddStatus = 'disabled';
         }
@@ -122,8 +115,9 @@ else{
                     <div class="row">
                         <div class="col-lg-4">
 
-                        	<label>Academic Year</label><br/>
-                            <select name="cmbAcademicYear"  value="<?php echo $ACADAMICYEAR; ?>" required>
+                            <div class="form-group">
+                                <label class="control-label col-md-8">Academic Year</label><br/>
+                            <select name="cmbAcademicYear" class="form-control col-md-8" value="<?php echo $ACADAMICYEAR; ?>" <?php echo $btnAddStatus; ?> required>
                             <option value='0'>        --Select Academic Year--</option>
                                 <?php
                                 include_once 'dbconfig.php';
@@ -132,14 +126,17 @@ else{
                                 if (mysqli_num_rows($result) > 0) {
                                     // output data of each row
                                     while ($row = mysqli_fetch_assoc($result)) {
-										echo "<option value='".$row['id']."'>".$row['year']."</option>";
+                                        $selected = $row['id'] == $ACADAMICYEAR ? 'selected' : '';
+                                        echo "<option ". $selected ." value='".$row['id']."'>".$row['year']."</option>";
                                     }
                                 }
                                 ?>
                             </select><br />
-                            
-                            <label>Course Name</label><br/>
-                            <select name="cmbCourse"  value="<?php echo $COURSEID; ?>" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Course Name</label><br/>
+                            <select name="cmbCourse" class="form-control col-md-8" value="<?php echo $COURSEID; ?>" <?php echo $btnAddStatus; ?> required>
                             <option value='0'>        --Select Course--</option>
                                 <?php
                                 include_once 'dbconfig.php';
@@ -148,14 +145,17 @@ else{
                                 if (mysqli_num_rows($result) > 0) {
                                     // output data of each row
                                     while ($row = mysqli_fetch_assoc($result)) {
-										echo "<option value='".$row['id']."'>".$row['Name']."</option>";
+                                        $selected = $row['id'] == $COURSEID ? 'selected' : '';
+                                        echo "<option ". $selected ." value='".$row['id']."'>".$row['Name']."</option>";
                                     }
                                 }
                                 ?>
                             </select><br />
+                            </div>
 
-                            <label>Part</label><br/>
-                            <select name="cmbPart_DD"  value="<?php echo $PART; ?>" required>
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Part</label><br/>
+                            <select name="cmbPart_DD" class="form-control col-md-8" value="<?php echo $PART; ?>" <?php echo $btnAddStatus; ?> required>
                             <option value='0'>        --Select Part--</option>
                                 <?php
                                 include_once 'dbconfig.php';
@@ -164,14 +164,17 @@ else{
                                 if (mysqli_num_rows($result) > 0) {
                                     // output data of each row
                                     while ($row = mysqli_fetch_assoc($result)) {
-										echo "<option value='".$row['id']."'>".$row['name']."</option>";
+                                        $selected = $row['id'] == $PART ? 'selected' : '';
+                                        echo "<option ". $selected ." value='".$row['id']."'>".$row['name']."</option>";
                                     }
                                 }
                                 ?>
                             </select><br />
+                            </div>
 
-                            <label>Subject Name</label><br/>
-                            <select name="cmbSubject" value="<?php echo $SUBJECTID; ?>" required>
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Subject Name</label><br/>
+                            <select name="cmbSubject" class="form-control col-md-8" value="<?php echo $SUBJECTID; ?>" <?php echo $btnAddStatus; ?> required>
                             <option value='0'>        --Select Subject--</option>
                                 <?php
                                 include_once 'dbconfig.php';
@@ -180,17 +183,22 @@ else{
                                 if (mysqli_num_rows($result) > 0) {
                                     // output data of each row
                                     while ($row = mysqli_fetch_assoc($result)) {
-										echo "<option value='".$row['id']."'>".$row['subjectname']."</option>";
+                                        $selected = $row['id'] == $SUBJECTID ? 'selected' : '';
+                                        echo "<option ". $selected ." value='".$row['id']."'>".$row['subjectname']."</option>";
                                     }
                                 }
                                 ?>
                             </select><br />
+                            </div>
 
-                            <label>Fee</label><br/>
-                            <input type="text" name="txtFee" size="10" maxlength="10" value="<?php echo $FEE; ?>" required/><br/>
+                            <div class="form-group">
+                                <label class="control-label col-md-4">Fee</label><br/>
+                            <input type="text" class="form-control col-md-8" name="txtFee" size="10" maxlength="10" value="<?php echo $FEE; ?>" required/><br/>
                             <input type="hidden" value="<?php echo ($_SESSION['user_session']=='loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
+                            </div>
 
-                            <div>
+                            <div class="row">
+                                <div class="col-lg-12">
                                 <?php if($permissions[0]['W']){?>
                                     <input type="submit" value="Add" name="btnAdd" class="btn-primary"/>
                                     <input type="submit" value="Update" name="btnUpdate" class="btn-primary"/>
@@ -208,8 +216,8 @@ else{
                                     <?php
                                 } ?>
                                 <input type="reset" value="Clear" name="btnClear"  class="btn-default"/>
+                                </div>
                             </div>
-                        
                         </div>
                     
                         <div class="col-lg-8 selecttable">
@@ -234,14 +242,6 @@ else{
 						connection_close(); //Make sure to close out the database connection
 						?>
                         </div>
-                    </div>
-                                        
-                    <div class="row">
-                    <div class="col-lg-12">
-
-
-
-                    </div>
                     </div>
                 </form>
                 <!-- /cours subject mng -->
