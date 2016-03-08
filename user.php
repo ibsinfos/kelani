@@ -261,6 +261,9 @@ if (isset($_GET['edit'])) {
 
                         <input type="hidden" value="<?php echo ($_SESSION['user_session']== 'loged')?$_SESSION['username']: 'User'; ?>" name="ssUser">
 
+                        <div class="row">
+                            <div class="col-lg-12">
+
                         <div class="form-group col-md-12">
                             <?php if ($permissions[0]['W']) { ?>
                                 <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"<?php echo $btnAddStatus; ?>/>
@@ -282,12 +285,15 @@ if (isset($_GET['edit'])) {
                                 <?php
                             } ?>
                             <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
-                            <div id='msg'></div>
+
                         </div>
+                        <div id='msg'></div>
+                        </div>
+                            </div>
                     </form>
                 </div>
 
-                <div class="col-lg-7 id="sbj_div">
+                <div class="col-lg-7" id="sbj_div">
                 <?php include './user_list.php'; ?>
                 </div>
 

@@ -178,7 +178,7 @@ else{
                     <div class="col-lg-4">
                         <div class="form-group">
                     	<label class="control-label col-md-4">Branch</label>
-                        <select class="form-control col-md-8" id="cmbBranch" name="cmbBranch" required>
+                        <select class="form-control col-md-8" id="cmbBranch" name="cmbBranch" <?php echo $btnAddStatus; ?> required>
                         <option value='0'>        --Select Branch--</option>
                         		<?php
                                 include_once 'dbconfig.php';
