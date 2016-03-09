@@ -116,7 +116,8 @@ if (isset($_GET['edit'])) {
 
                         <div class="form-group">
                             <label class="control-label col-md-4">User Level</label><br/>
-                            <select class="form-control col-md-8" name="cmbUserLevel" id="cmbUserLevel" <?php echo $btnAddStatus; ?>>
+                            <select class="form-control col-md-8" name="cmbUserLevel"
+                                    id="cmbUserLevel">
                                 <option value='0'> --Select UserLevel--</option>
                                 <?php
                                 include_once 'dbconfig.php';
@@ -135,21 +136,27 @@ if (isset($_GET['edit'])) {
 
                         <div>
                             <?php if ($permissions[0]['W']) { ?>
-                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" <?php echo $btnAddStatus; ?>/>
-                                <input name="btnUpdate" onclick="" type="submit" value="Update" <?php echo $btnStatus; ?>
+                                <input name="btnAdd" type="submit" value="Add"
+                                       class="btn btn-primary" <?php echo $btnAddStatus; ?>/>
+                                <input name="btnUpdate" onclick="" type="submit"
+                                       value="Update" <?php echo $btnStatus; ?>
                                        class="btn btn-primary"/>
                             <?php } else {
                                 ?>
-                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" <?php echo $btnAddStatus; ?> disabled/>
-                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary" <?php echo $btnStatus; ?> disabled/>
+                                <input name="btnAdd" type="submit" value="Add"
+                                       class="btn btn-primary" <?php echo $btnAddStatus; ?> disabled/>
+                                <input name="btnUpdate" onclick="" type="submit" value="Update"
+                                       class="btn btn-primary" <?php echo $btnStatus; ?> disabled/>
                                 <?php
                             }
                             if ($permissions[0]['D']) {
                                 ?>
-                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger" <?php echo $btnStatus; ?>/>
+                                <input name="btnDelete" type="submit" value="Delete"
+                                       class="btn btn-danger" <?php echo $btnStatus; ?>/>
                             <?php } else {
                                 ?>
-                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger" <?php echo $btnStatus; ?>/>
+                                <input name="btnDelete" type="submit" value="Delete"
+                                       class="btn btn-danger" <?php echo $btnStatus; ?>/>
                                 <?php
                             } ?>
                             <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
@@ -201,8 +208,6 @@ if (isset($_GET['edit'])) {
                                         <td><input type='checkbox'
                                                    name='cbD<?php echo $i ?>' <?php echo ($row[5] == '1') ? 'checked' : '' ?>
                                                    value='1'></td>
-
-
                                     </tr>
                                     <?php
                                     $i++;

@@ -46,6 +46,8 @@ if (isset($_POST["btnAdd"])) {
     }
 
 } elseif (isset($_POST["btnUpdate"])) {
+
+    //var_dump($_POST); exit();
     $con = connection();
 
     if (trim(($_POST['cmbUserLevel'])) != '') {
