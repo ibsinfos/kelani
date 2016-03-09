@@ -53,6 +53,10 @@ if (isset($_GET['edit'])) {
     $result = getData($query);
     if (mysqli_num_rows($result) > 0) {
         $row_edt = mysqli_fetch_all($result);
+
+        $btnStatus = 'enabled';
+        $btnAddStatus = 'disabled';
+
     } else {
         $userlevel_ = "";
         $form_ = "";
@@ -112,7 +116,7 @@ if (isset($_GET['edit'])) {
 
                         <div class="form-group">
                             <label class="control-label col-md-4">User Level</label><br/>
-                            <select class="form-control col-md-8" name="cmbUserLevel" id="cmbUserLevel">
+                            <select class="form-control col-md-8" name="cmbUserLevel" id="cmbUserLevel" <?php echo $btnAddStatus; ?>>
                                 <option value='0'> --Select UserLevel--</option>
                                 <?php
                                 include_once 'dbconfig.php';
@@ -131,28 +135,29 @@ if (isset($_GET['edit'])) {
 
                         <div>
                             <?php if ($permissions[0]['W']) { ?>
-                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
-                                <input name="btnUpdate" onclick="" type="submit" value="Update"
+                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" <?php echo $btnAddStatus; ?>/>
+                                <input name="btnUpdate" onclick="" type="submit" value="Update" <?php echo $btnStatus; ?>
                                        class="btn btn-primary"/>
                             <?php } else {
                                 ?>
-                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" disabled/>
-                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary"
-                                       disabled/>
+                                <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" <?php echo $btnAddStatus; ?> disabled/>
+                                <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary" <?php echo $btnStatus; ?> disabled/>
                                 <?php
                             }
                             if ($permissions[0]['D']) {
                                 ?>
-                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger" <?php echo $btnStatus; ?>/>
                             <?php } else {
                                 ?>
-                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger"/>
+                                <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger" <?php echo $btnStatus; ?>/>
                                 <?php
                             } ?>
                             <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
                         </div>
 
                         <div>
+                            <hr>
+                            <h3>User Level List</h3>
                             <?php
                             include_once 'dbconfig.php'; //Connect to database
                             $query = "SELECT distinct p.UserLevel_tbl_id, ul.lavel_name

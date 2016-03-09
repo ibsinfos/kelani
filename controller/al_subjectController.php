@@ -27,10 +27,6 @@ elseif(isset($_POST["btnDelete"])) {
     echo "<script type='text/javascript'>alert('Delete');</script>";
 }
 
-elseif(isset($_POST["btnClear"])) {
-    echo "Yes, Clear";
-}
-
 
 
 ?>
