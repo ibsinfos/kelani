@@ -36,13 +36,59 @@
     <![endif]-->
 
 <script type="text/javascript">
+
 </script>  
     
 </head>
 <body>
 
 <?php
-include_once './inc/top.php';
+include_once 'dbconfig.php'; //Connect to database
+//include_once './inc/top.php';
+
+$row_edt = null;
+if(isset($_GET['edit'])){
+    $id = trim($_GET['edit']);
+    $query = "SELECT p.UserLevel_tbl_id, p.Form_tbl_FormID, f.Name, p.R, p.W, p.D FROM privileges_tbl p, form_tbl f WHERE p.UserLevel_tbl_id=".$id." and f.FormID = p.Form_tbl_FormID";
+
+    $result = getData($query);
+    if (mysqli_num_rows($result) > 0) {
+        $row_edt = mysqli_fetch_all($result);
+//        var_dump($row_edt); exit();
+//        while ($row_edt = mysqli_fetch_assoc($result)) {
+//            $userlevel_ = $row_edt['UserLevel_tbl_id'];
+//            $form_ = $row_edt['Form_tbl_FormID'];
+//            $cbr_ = $row_edt['R'];
+//            $cbw_ = $row_edt['W'];
+//            $cbd_ = $row_edt['D'];
+//
+//            $btnStatus = 'enabled';
+//            $btnAddStatus = 'disabled';
+//        }
+//        exit();
+    }
+    else{
+        $userlevel_ = "";
+        $form_ = "";
+        $cbr_ = "";
+        $cbw_ = "";
+        $cbd_ = "";
+
+        $btnStatus = 'disabled';
+        $btnAddStatus = 'enabled';
+    }
+}
+else{
+    $userlevel_ = "";
+    $form_ = "";
+    $cbr_ = "";
+    $cbw_ = "";
+    $cbd_ = "";
+
+    $btnStatus = 'disabled';
+    $btnAddStatus = 'enabled';
+}
+?>
 ?>
 
     <div id="wrapper">
@@ -70,7 +116,7 @@ include_once './inc/top.php';
                 <div class="row">
                     <?php
                     require_once("./config.php");
-                    $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'alsubj'");
+                    $stmt = $db_con->prepare("SELECT * FROM privileges_tbl WHERE UserLevel_tbl_id = '" . $_SESSION['userLvl'] . "' AND Form_tbl_FormID = 'usrpri'");
                     $stmt->execute();
                     $permissions = $stmt->fetchAll();
                     if($permissions[0]['R']){?>
@@ -88,7 +134,8 @@ include_once './inc/top.php';
                                 if (mysqli_num_rows($result) > 0) {
                                     // output data of each row
                                     while ($row = mysqli_fetch_assoc($result)) {
-										echo "<option value='".$row['id']."'>".$row['lavel_name']."</option>";
+                                        $selected = $row['id'] == $row_edt[0][0] ? 'selected' : '';
+                                        echo "<option ". $selected ." value='".$row['id']."'>".$row['lavel_name']."</option>";
                                     }
                                 }
                                 ?>
@@ -115,31 +162,68 @@ include_once './inc/top.php';
                         <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
                     </div>
 
+                            <div>
+                                <?php
+                                include_once 'dbconfig.php'; //Connect to database
+                                $query = "SELECT distinct p.UserLevel_tbl_id, ul.lavel_name
+                                FROM  privileges_tbl p
+                                INNER JOIN userlevel_tbl ul ON p.UserLevel_tbl_id = ul.id";
+                                $result =getData($query);
+                                echo "<table width='100%'>"; // start a table tag in the HTML
+                                echo "<th>USER LEVEL</th><th>&nbsp;</th></tr>";
+                                while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
+                                    echo "<tr><td>".$row['lavel_name']."</td><td><a href='userPrivileges.php?edit=".$row['UserLevel_tbl_id']."'>View</a></td></tr>";  //$row['index'] the index here is a field name
+                                }
+                                echo "</table>"; //Close the table in HTML
+                                connection_close(); //Make sure to close out the database connection
+                                ?>
+                            </div>
                     </div>
-					
-                    <div class="col-lg-6 selecttable">
+                    <div class="col-lg-6">
                         <table name="tbl_previ">
                             <tr><th>Form Name</th><th>R</th><th>W</th><th>D</th></tr>
                         <?php
-                        include_once 'dbconfig.php';
-                        $result = getData("SELECT FormID, `Name` FROM form_tbl");
-                        $rows = mysqli_fetch_all($result);
-                        $i = 0;
-                        foreach($rows as $row){
-                            ?>
-                            <tr>
-                                <td>
-                                    <input type='text' readonly name='txtname[]' value='<?php echo $row[1];?>'>
-                                    <input type='hidden' readonly name='txtid[]' value='<?php echo $row[0];?>'>
-                                </td>
-                                <td><input type='checkbox' name='cbR<?php echo $i?>' value='1'></td>
-                                <td><input type='checkbox' name='cbW<?php echo $i?>' value='1'></td>
-                                <td><input type='checkbox' name='cbD<?php echo $i?>' value='1'></td>
-                            </tr>
-                            <?php
-                            $i++;
+                        if(!is_null($row_edt)){
+                            $i = 0;
+                            foreach($row_edt as $row){
+                                ?>
+                                <tr>
+                                    <td>
+                                        <input type='text' readonly name='txtname[]' value='<?php echo $row[2];?>'>
+                                        <input type='hidden' readonly name='txtid[]' value='<?php echo $row[1];?>'>
+                                    </td>
+                                    <td><input type='checkbox' name='cbR<?php echo $i?>' <?php echo ($row[3]=='1')?'checked':'' ?> value='1'></td>
+                                    <td><input type='checkbox' name='cbW<?php echo $i?>' <?php echo ($row[4]=='1')?'checked':'' ?> value='1'></td>
+                                    <td><input type='checkbox' name='cbD<?php echo $i?>' <?php echo ($row[5]=='1')?'checked':'' ?> value='1'></td>
+
+
+                                </tr>
+                                <?php
+                                $i++;
+                            }
+                        }else{
+                            include_once 'dbconfig.php';
+                            $result = getData("SELECT FormID, `Name` FROM form_tbl");
+                            $rows = mysqli_fetch_all($result);
+                            $i = 0;
+                            foreach($rows as $row){
+                                ?>
+                                <tr>
+                                    <td>
+                                        <input type='text' readonly name='txtname[]' value='<?php echo $row[1];?>'>
+                                        <input type='hidden' readonly name='txtid[]' value='<?php echo $row[0];?>'>
+                                    </td>
+                                    <td><input type='checkbox' name='cbR<?php echo $i?>' <?php echo ($cbr_=='1')?'checked':'' ?> value='1'></td>
+                                    <td><input type='checkbox' name='cbW<?php echo $i?>' <?php echo ($cbw_=='1')?'checked':'' ?> value='1'></td>
+                                    <td><input type='checkbox' name='cbD<?php echo $i?>' <?php echo ($cbd_=='1')?'checked':'' ?> value='1'></td>
+
+
+                                </tr>
+                                <?php
+                                $i++;
+                            }
+                            connection_close(); //Make sure to close out the database connection
                         }
-                        connection_close(); //Make sure to close out the database connection
                         ?>
                     </div>
 
