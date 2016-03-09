@@ -45,7 +45,13 @@ if(isset($_GET['acadamicyear'])){
     $COURSEID = trim($_GET['course']);
     $PART = trim($_GET['part']);
     $SUBJECTID = trim($_GET['subject']);
-    $query = "SELECT AcadamicYear_id, Course_tbl_id, Part_table_id, Subject_tbl_id, Price, CreateDate, CreateUser, 'Status' FROM subject_course_tbl";
+    //var_dump($_GET);exit();
+
+
+
+
+    $query = "SELECT AcadamicYear_id, Course_tbl_id, Part_table_id, Subject_tbl_id, Price, CreateDate, CreateUser, 'Status' FROM subject_course_tbl WHERE AcadamicYear_id='$ACADAMICYEAR' AND Course_tbl_id='$COURSEID' AND Part_table_id='$PART' AND Subject_tbl_id='$SUBJECTID' ";
+    //var_dump($query);exit();
     //$query = "SELECT s.`subjectname` AS SubjectName,c. `Name` AS CourseName, p.`name` AS Part, sc.Price,a.`year` AS AcademicYear FROM subject_tbl AS s,course_tbl AS c , subject_course_tbl AS sc, part_tbl AS p,acadamicyear AS a WHERE a.id = sc.AcadamicYear_id AND sc.Subject_tbl_id=s.id AND sc.Course_tbl_id = c.id AND sc.Part_table_id = p.id";
     $result = getData($query);
     if (mysqli_num_rows($result) > 0) {
@@ -223,7 +229,9 @@ else{
                         <div class="col-lg-8 selecttable">
                         <?php
 						include_once 'dbconfig.php'; //Connect to database
-						$query = "SELECT s.`subjectname` AS SubjectName,c. `Name` AS CourseName, p.`name` AS Part, sc.Price,a.`year` AS AcademicYear FROM subject_tbl AS s,course_tbl AS c , subject_course_tbl AS sc, part_tbl AS p,acadamicyear AS a WHERE a.id = sc.AcadamicYear_id AND sc.Subject_tbl_id=s.id AND sc.Course_tbl_id = c.id AND sc.Part_table_id = p.id";
+						$query = "SELECT sc.Subject_tbl_id, s.`subjectname` AS SubjectName, sc.Course_tbl_id, c. `Name` AS CourseName, sc.Part_table_id, p.`name` AS Part, sc.Price, sc.AcadamicYear_id, a.`year` AS AcademicYear
+FROM subject_tbl AS s,course_tbl AS c , subject_course_tbl AS sc, part_tbl AS p,acadamicyear AS a
+WHERE a.id = sc.AcadamicYear_id AND sc.Subject_tbl_id=s.id AND sc.Course_tbl_id = c.id AND sc.Part_table_id = p.id;";
 						$result = getData($query);
 						echo "<table width='100%'>"; // start a table tag in the HTML
 						echo "<tr>
@@ -236,7 +244,7 @@ else{
 							  </tr>";
 						while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
 
-                                echo "<tr><td>" . $row['CourseName']. "</td><td>" . $row['AcademicYear']. "</td><td>" . $row['Part']. "</td><td>" . $row['SubjectName']. "</td><td>" . $row['Price'] . "</td><td><a href='course_subject.php?acadamicyear=".$row['AcademicYear']."&course=".$row['CourseName']."&part=".$row['Part']."&subject=".$row['SubjectName']."'>Edit</a></td></tr>";  //$row['index'] the index here is a field name
+                                echo "<tr><td id='Course_tbl_id'>" . $row['CourseName']. "</td><td id='AcadamicYear_id'>" . $row['AcademicYear']. "</td><td id='Part_table_id'>" . $row['Part']. "</td><td id='Subject_tbl_id'>" . $row['SubjectName']. "</td><td>" . $row['Price'] . "</td><td><a href='course_subject.php?acadamicyear=".$row['AcadamicYear_id']."&course=".$row['Course_tbl_id']."&part=".$row['Part_table_id']."&subject=".$row['Subject_tbl_id']."'>Edit</a></td></tr>";  //$row['index'] the index here is a field name
 						}
 						echo "</table>"; //Close the table in HTML
 						connection_close(); //Make sure to close out the database connection

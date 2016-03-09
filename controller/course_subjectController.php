@@ -25,28 +25,15 @@ if (isset($_POST["btnAdd"])) {
         echo "<script type='text/javascript'>alert('Error');</script>";
         header('Location:../course_subject.php');
     }
-
-
-
-
 }
 
 elseif(isset($_POST["btnUpdate"])) {
+
     echo "<script type='text/javascript'>alert('Update');</script>";
 }
 
 elseif(isset($_POST["btnDelete"])) {
     echo "<script type='text/javascript'>alert('Delete');</script>";
-}
-
-elseif(isset($_POST["btnClear"])) {
-    echo "Yes, Clear";
-}
-
-function idgenarate(){
-
-    $query1="SELECT MAX(Course_ID) FROM course_tbl";
-
 }
 
 ?>
