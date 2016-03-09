@@ -62,7 +62,7 @@
           <ul id="security_list" class="collapse">
           	<li> <a href="user.php"> User</a> </li>
             <li> <a href="userPrivileges.php"> User Privileges</a> </li>
-            <!--<li> <a href="employee_payments.php"> Employee Payment</a> </li>-->
+            <li> <a href="userlevel.php"> User Level</a> </li>
           </ul>
         </li>
       </ul>

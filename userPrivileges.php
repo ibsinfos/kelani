@@ -77,8 +77,9 @@ include_once './inc/top.php';
                     <form method="post" action="controller/userPrivilegesController.php" target="_self" data-toggle="validator" id="usrpri">
                         <div class="col-lg-6">
 
-                        <label>User Level</label><br/>
-                        <select name="cmbUserLevel" id="cmbUserLevel">
+                        <div class="form-group">
+                        <label class="control-label col-md-4">User Level</label><br/>
+                        <select class="form-control col-md-8" name="cmbUserLevel" id="cmbUserLevel">
                         <option value='0'>        --Select UserLevel--</option>
                         		<?php
                                 include_once 'dbconfig.php';
@@ -92,9 +93,10 @@ include_once './inc/top.php';
                                 }
                                 ?>
                         </select>
-                        
+                        </div>
 
-                    <div><?php if($permissions[0]['W']){?>
+                    <div>
+                        <?php if($permissions[0]['W']){?>
                         <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"/>
                         <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary"/>
                         <?php } else {
