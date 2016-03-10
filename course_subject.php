@@ -122,7 +122,9 @@ else{
                         <div class="col-lg-4">
 
                             <div class="form-group">
+                                <input type="hidden" value="<?php echo date('Y-m-d'); ?>" name="dtpDate">
                                 <label class="control-label col-md-8">Academic Year</label><br/>
+                                <input type="hidden" name="cmbAcademicYear_"  value="<?php echo $ACADAMICYEAR; ?>"/>
                             <select name="cmbAcademicYear" class="form-control col-md-8" value="<?php echo $ACADAMICYEAR; ?>" <?php echo $btnAddStatus; ?> required>
                             <option value='0'>        --Select Academic Year--</option>
                                 <?php
@@ -142,6 +144,7 @@ else{
 
                             <div class="form-group">
                                 <label class="control-label col-md-4">Course Name</label><br/>
+                                <input type="hidden" name="cmbCourse_"  value="<?php echo $COURSEID; ?>"/>
                             <select name="cmbCourse" class="form-control col-md-8" value="<?php echo $COURSEID; ?>" <?php echo $btnAddStatus; ?> required>
                             <option value='0'>        --Select Course--</option>
                                 <?php
@@ -161,6 +164,7 @@ else{
 
                             <div class="form-group">
                                 <label class="control-label col-md-4">Part</label><br/>
+                                <input type="hidden" name="cmbPart_DD_"  value="<?php echo $PART; ?>"/>
                             <select name="cmbPart_DD" class="form-control col-md-8" value="<?php echo $PART; ?>" <?php echo $btnAddStatus; ?> required>
                             <option value='0'>        --Select Part--</option>
                                 <?php
@@ -180,6 +184,7 @@ else{
 
                             <div class="form-group">
                                 <label class="control-label col-md-4">Subject Name</label><br/>
+                                <input type="hidden" name="cmbSubject_"  value="<?php echo $SUBJECTID; ?>"/>
                             <select name="cmbSubject" class="form-control col-md-8" value="<?php echo $SUBJECTID; ?>" <?php echo $btnAddStatus; ?> required>
                             <option value='0'>        --Select Subject--</option>
                                 <?php
@@ -205,50 +210,33 @@ else{
 
                             <div class="row">
                                 <div class="col-lg-12">
-                                <?php if($permissions[0]['W']){?>
-                                    <input type="submit" value="Add" name="btnAdd" class="btn-primary"/>
-                                    <input type="submit" value="Update" name="btnUpdate" class="btn-primary"/>
-                                <?php } else {
-                                    ?>
-                                    <input type="submit" value="Add" name="btnAdd" class="btn-disabled" disabled/>
-                                    <input type="submit" value="Update" name="btnUpdate" class="btn-disabled" disabled/>
-                                    <?php
-                                }
-                                if($permissions[0]['D']){?>
-                                    <input type="submit" value="Delete" name="btnDelete" class="btn-danger"/>
-                                <?php } else {
-                                    ?>
-                                    <input type="submit" value="Delete" name="btnDelete" class="btn-disabled" disabled/>
-                                    <?php
-                                } ?>
-                                <input type="reset" value="Clear" name="btnClear"  class="btn-default"/>
+                                    <?php if ($permissions[0]['W']) { ?>
+                                        <input name="btnAdd" type="submit" value="Add" class="btn btn-primary"<?php echo $btnAddStatus; ?>/>
+                                        <input name="btnUpdate" onclick="" type="submit" value="Update" <?php echo $btnStatus; ?>
+                                               class="btn btn-primary"/>
+                                    <?php } else {
+                                        ?>
+                                        <input name="btnAdd" type="submit" value="Add" class="btn btn-primary" <?php echo $btnAddStatus; ?> disabled/>
+                                        <input name="btnUpdate" onclick="" type="submit" value="Update" class="btn btn-primary" <?php echo $btnStatus; ?>
+                                               disabled/>
+                                        <?php
+                                    }
+                                    if ($permissions[0]['D']) {
+                                        ?>
+                                        <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger" <?php echo $btnStatus; ?>/>
+                                    <?php } else {
+                                        ?>
+                                        <input name="btnDelete" type="submit" value="Delete" class="btn btn-danger" <?php echo $btnStatus; ?>/>
+                                        <?php
+                                    } ?>
+                                    <input name="btnClear" type="reset" value="Clear" class="btn btn-default"/>
                                 </div>
+                                <div id="msg"></div>
                             </div>
                         </div>
                     
-                        <div class="col-lg-8 selecttable">
-                        <?php
-						include_once 'dbconfig.php'; //Connect to database
-						$query = "SELECT sc.Subject_tbl_id, s.`subjectname` AS SubjectName, sc.Course_tbl_id, c. `Name` AS CourseName, sc.Part_table_id, p.`name` AS Part, sc.Price, sc.AcadamicYear_id, a.`year` AS AcademicYear
-FROM subject_tbl AS s,course_tbl AS c , subject_course_tbl AS sc, part_tbl AS p,acadamicyear AS a
-WHERE a.id = sc.AcadamicYear_id AND sc.Subject_tbl_id=s.id AND sc.Course_tbl_id = c.id AND sc.Part_table_id = p.id;";
-						$result = getData($query);
-						echo "<table width='100%'>"; // start a table tag in the HTML
-						echo "<tr>
-								<th>COURSE</th>
-								<th>YEAR</th>
-								<th>PART</th>
-								<th>SUBJECT</th>
-								<th>FEE</th>
-								<th>&nbsp;</th>
-							  </tr>";
-						while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
-
-                                echo "<tr><td id='Course_tbl_id'>" . $row['CourseName']. "</td><td id='AcadamicYear_id'>" . $row['AcademicYear']. "</td><td id='Part_table_id'>" . $row['Part']. "</td><td id='Subject_tbl_id'>" . $row['SubjectName']. "</td><td>" . $row['Price'] . "</td><td><a href='course_subject.php?acadamicyear=".$row['AcadamicYear_id']."&course=".$row['Course_tbl_id']."&part=".$row['Part_table_id']."&subject=".$row['Subject_tbl_id']."'>Edit</a></td></tr>";  //$row['index'] the index here is a field name
-						}
-						echo "</table>"; //Close the table in HTML
-						connection_close(); //Make sure to close out the database connection
-						?>
+                        <div class="col-lg-8 selecttable" id="sbj_div">
+                            <?php include './course_subject_list.php'; ?>
                         </div>
                     </div>
                 </form>
@@ -267,4 +255,45 @@ WHERE a.id = sc.AcadamicYear_id AND sc.Subject_tbl_id=s.id AND sc.Course_tbl_id 
     <!-- /#wrapper -->
 
 <?php include_once './inc/footer.php'; ?>
-</body></html>
+
+<script type="text/javascript">
+    $('document').ready(function () {
+        $("#subcou").validate({
+            submitHandler: submitForm
+        });
+        function submitForm() {
+            var data = $("#subcou").serialize();
+            $.ajax({
+                type: 'POST',
+                url: 'controller/course_subjectController.php',
+                data: data,
+                beforeSend: function () {
+                    $("#msg").fadeOut();
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response) {
+                        $("#msg").fadeIn(function () {
+                            $("#msg").html('<div class="alert alert-success"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; Successfully Inserted...!</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                        $('#sbj_div').load('course_subject_list.php');
+                        $("#subcou")[0].reset();
+
+
+                    }
+                    else {
+                        $("#msg").fadeIn(1000, function () {
+                            $("#msg").html('<div class="alert alert-danger"> <span class="glyphicon glyphicon-info-sign"></span> &nbsp; ' + response + ' !</div>');
+                        });
+                        $('#msg').fadeOut(4000);
+                    }
+                }
+            });
+            return false;
+        }
+    });
+</script>
+
+</body>
+</html>
