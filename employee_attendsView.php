@@ -35,6 +35,25 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <script src="js/jquery.js"></script>
+    <script type="text/javascript">
+        function LoadLect(){
+
+            var Employee = document.getElementById("txtEmployeeID").value;
+            var FromDate  = document.getElementById("dtpFromDate").value;
+            var ToDate  = document.getElementById("dtpToDate").value;
+
+            $.ajax({
+                type:'POST',
+                url:"controller/employee_attendsViewController.php",
+                data:{empID:Employee, dtFromDate:FromDate, dtToDate:ToDate},
+                success: function(data){
+                    document.getElementById("LectView").innerHTML = data;
+                }
+            });
+        }
+    </script>
+
 </head>
 
 <body>
@@ -70,44 +89,25 @@ include_once './inc/top.php';
           <div class="col-lg-4">
               <div class="form-group">
             <label class="control-label col-md-4">Employee ID</label>
-            <input class="form-control col-md-8" type="text" name="txtEmployeeID" size="50"/>
+            <input class="form-control col-md-8" type="text" name="txtEmployeeID" id="txtEmployeeID" onChange="LoadLect()" size="50"/>
             </div>
               <div class="form-group">
             <label class="control-label col-md-4">From Date</label>
-            <input class="form-control col-md-8" type="date" name="dtpFromDate"/>
+            <input class="form-control col-md-8" type="date" name="dtpFromDate" id="dtpFromDate" data-date-format="DD/MM/YYYY" onChange="LoadLect()"/>
+
             </div>
               <div class="form-group">
             <label class="control-label col-md-4">To Date</label>
-            <input class="form-control col-md-8" type="date" name="dtpToDate"/>
-            </div>
+            <input class="form-control col-md-8" type="date" name="dtpToDate" id="dtpToDate" data-date-format="DD/MM/YYYY" onChange="LoadLect()"/>
+              </div>
           </div>
-          <div class="col-lg-8">
+
             <label class="control-label col-md-4">Attendance  History</label>
-            <br/>
-            <?php
-                        include_once 'dbconfig.php'; //Connect to database
-                        $query = "SELECT * FROM attendanceemployee_tbl;";
-                        $result = getData($query);
-                        echo "<table width='100%'>"; // start a table tag in the HTML
-                        echo "<tr>
-                        <th>DATE</th>
-                        <th>ATTENDANCE</th>
-                        </tr>";
-                        while($row = mysqli_fetch_array($result)){//Creates a loop to loop through results
-                            echo "<tr><td>" . $row['Date']. "</td><td>" . $row['Employee_tb_Emp_id'] . "</td></tr>";  //$row['index'] the index here is a field name
-                        }
-                        echo "</table>"; //Close the table in HTML
-                        connection_close(); //Make sure to close out the database connection
-                        ?>
+          <div class="col-lg-8" id="LectView">
+
           </div>
           <div class="col-lg-4"> </div>
         </div>
-        <!-- /.row -->
-        <div class="row" style="padding-left: 15px;">
-          <input type="submit" value="Add" name="btnSearch" class="btn btn-primary"/>
-          <input type="reset" value="Clear"  name="btnClear" class="btn btn-default"/>
-        </div>
-
         <!-- /.row -->
       </form>
         <?php } else {
