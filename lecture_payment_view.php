@@ -144,9 +144,11 @@ FROM 	lecturerpayment_tbl lp
         INNER JOIN acadamicyear ay ON ay.id = lp.Subject_Course_tbl_AcadamicYear_id
         INNER JOIN course_tbl c ON c.id = lp.Subject_Course_tbl_Course_tbl_id
         INNER JOIN part_tbl p ON p.id = lp.Subject_Course_tbl_Part_table_id
-        INNER JOIN subject_tbl s ON s.id = lp.Subject_Course_tbl_Subject_tbl_id";
+        INNER JOIN subject_tbl s ON s.id = lp.Subject_Course_tbl_Subject_tbl_id
+
+        ORDER BY PayedDate DESC LIMIT 10";
                         $result = getData($query);
-                        echo "<table width='100%'>"; // start a table tag in the HTML
+                        echo "<table width='100%' class='table table-bordered table-hover'>"; // start a table tag in the HTML
                         echo "<tr>
 						<th>SUBJECT</th>
 						<th>COURSE</th>

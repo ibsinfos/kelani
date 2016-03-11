@@ -2,7 +2,7 @@
 include_once 'dbconfig.php'; //Connect to database
 include ('./paginate.php');
 
-$query = "SELECT id, subjectname, Subjectcode FROM subject_tbl;";
+$query = "SELECT id, subjectname, Subjectcode FROM subject_tbl ";
 $result = getData($query);
 $per_page = 10;
 $total_results = mysqli_num_rows($result);
@@ -39,7 +39,7 @@ $reload = $_SERVER['PHP_SELF'] . "?tpages=" . $tpages;
 
 
 echo "<table class='table table-bordered table-hover'>"; // start a table tag in the HTML
-echo "<tr><th>CODE</th><th>SUBJECT NAME</th><th>&nbsp;</th></tr>";
+echo "<tr><th>CODE</th><th>SUBJECT NAME</th><th>#EDIT</th></tr>";
 $res = mysqli_fetch_all($result);
 for ($i = $start; $i < $end; $i++) {
     if ($i == $total_results) {

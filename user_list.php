@@ -13,7 +13,7 @@ echo "<tr>
                         <th>USER LEVEL</th>
                         <th>CITY</th>
 						<th>CREATE DATE</th>
-						<th>&nbsp;</th>
+						<th>#EDIT</th>
                         </tr>";
 while ($row = mysqli_fetch_array($result)) {//Creates a loop to loop through results
     echo "<tr><td>" . $row['Username'] . "</td><td>" . $row['NameInitial'] . "</td><td>" . $row['lavel_name'] . "</td><td>" . $row['City'] . "</td><td>" . $row['CreateDate'] . "</td><td><a href='user.php?edit=" . $row['Username'] . "'>Edit</a></td></tr>";  //$row['index'] the index here is a field name
