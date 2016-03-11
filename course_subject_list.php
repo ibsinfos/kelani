@@ -4,14 +4,14 @@ $query = "SELECT sc.Subject_tbl_id, s.`subjectname` AS SubjectName, sc.Course_tb
 FROM subject_tbl AS s,course_tbl AS c , subject_course_tbl AS sc, part_tbl AS p,acadamicyear AS a
 WHERE a.id = sc.AcadamicYear_id AND sc.Subject_tbl_id=s.id AND sc.Course_tbl_id = c.id AND sc.Part_table_id = p.id;";
 $result = getData($query);
-echo "<table width='100%'>"; // start a table tag in the HTML
+echo "<table width='100%' class='table table-bordered table-hover'>"; // start a table tag in the HTML
 echo "<tr>
 								<th>COURSE</th>
 								<th>YEAR</th>
 								<th>PART</th>
 								<th>SUBJECT</th>
 								<th>FEE</th>
-								<th>&nbsp;</th>
+								<th>#EDIT</th>
 							  </tr>";
 while($row = mysqli_fetch_array($result)){   //Creates a loop to loop through results
 

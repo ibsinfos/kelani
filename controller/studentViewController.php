@@ -7,7 +7,7 @@ if (isset($_POST["studentID"])) {
     $query = "SELECT * FROM student_tb WHERE Student_id LIKE CONCAT('','".$search."','%');";
 	$result= $con->query($query);
 	if (mysqli_num_rows($result) > 0){
-		echo "<table width='100%'>"; // start a table tag in the HTML
+		echo "<table width='100%' class='table table-bordered table-hover'>"; // start a table tag in the HTML
 		echo "<tr>
 				<th>Student ID</th>
                         <th>Old Student ID</th>
@@ -15,10 +15,10 @@ if (isset($_POST["studentID"])) {
                         <th>NIC</th>
                         <th>Mobile No</th>
                         <th>Email</th>
-                        <th>&nbsp;</th>
-						<th>&nbsp;</th>
-						<th>&nbsp;</th>
-						<th>&nbsp;</th>
+                        <th>View</th>
+						<th>Cource</th>
+						<th>Payment</th>
+						<th>Attendance</th>
 				</tr>";			
 				while($row = mysqli_fetch_array($result)){//Creates a loop to loop through results
                             echo "<tr><td>" . $row['Student_id']. "</td><td>" . $row['Old_student_id']. "</td><td>" . $row['Name']. "</td><td>" . $row['NIC'] . "</td><td>" . $row['TP_mob'] . "</td><td>" . $row['Email'] . "</td><td><a href='student_management_Edit.php?Studentid=".$row['Student_id']."'>View</a></td><td> 
@@ -36,7 +36,7 @@ if (isset($_POST["OldstudentID"])) {
     $query = "SELECT * FROM student_tb WHERE Old_student_id LIKE CONCAT('','".$search."','%');";
 	$result= $con->query($query);
 	if (mysqli_num_rows($result) > 0){
-		echo "<table width='100%'>"; // start a table tag in the HTML
+		echo "<table width='100%' class='table table-bordered table-hover'>"; // start a table tag in the HTML
 		echo "<tr>
 				<th>Student ID</th>
                         <th>Old Student ID</th>
@@ -44,10 +44,10 @@ if (isset($_POST["OldstudentID"])) {
                         <th>NIC</th>
                         <th>Mobile No</th>
                         <th>Email</th>
-                        <th>&nbsp;</th>
-						<th>&nbsp;</th>
-						<th>&nbsp;</th>
-						<th>&nbsp;</th>
+                        <th>View</th>
+						<th>Cource</th>
+						<th>Payment</th>
+						<th>Attendance</th>
 				</tr>";			
 				while($row = mysqli_fetch_array($result)){//Creates a loop to loop through results
                             echo "<tr><td>" . $row['Student_id']. "</td><td>" . $row['Old_student_id']. "</td><td>" . $row['Name']. "</td><td>" . $row['NIC'] . "</td><td>" . $row['TP_mob'] . "</td><td>" . $row['Email'] . "</td><td><a href='student_management_Edit.php?Studentid=".$row['Student_id']."'>View</a></td><td> 
@@ -65,7 +65,7 @@ if (isset($_POST["NIC"])) {
     $query = "SELECT * FROM student_tb WHERE NIC LIKE CONCAT('','".$search."','%');";
 	$result= $con->query($query);
 	if (mysqli_num_rows($result) > 0){
-		echo "<table width='100%'>"; // start a table tag in the HTML
+		echo "<table width='100%' class='table table-bordered table-hover'>"; // start a table tag in the HTML
 		echo "<tr>
 				<th>Student ID</th>
                         <th>Old Student ID</th>
@@ -73,10 +73,10 @@ if (isset($_POST["NIC"])) {
                         <th>NIC</th>
                         <th>Mobile No</th>
                         <th>Email</th>
-                        <th>&nbsp;</th>
-						<th>&nbsp;</th>
-						<th>&nbsp;</th>
-						<th>&nbsp;</th>
+                        <th>View</th>
+						<th>Cource</th>
+						<th>Payment</th>
+						<th>Attendance</th>
 				</tr>";			
 				while($row = mysqli_fetch_array($result)){//Creates a loop to loop through results
                             echo "<tr><td>" . $row['Student_id']. "</td><td>" . $row['Old_student_id']. "</td><td>" . $row['Name']. "</td><td>" . $row['NIC'] . "</td><td>" . $row['TP_mob'] . "</td><td>" . $row['Email'] . "</td><td><a href='student_management_Edit.php?Studentid=".$row['Student_id']."'>View</a></td><td> 

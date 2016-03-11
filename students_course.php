@@ -250,7 +250,7 @@ else{
  FROM student_subject_course_tbl ssc, subject_tbl s, course_tbl c
  WHERE ssc.Subject_Course_tbl_Course_tbl_id = c.id AND ssc.Subject_Course_tbl_Subject_tbl_id = s.id AND Student_tb_Student_id = '$txtStudentId'";
                     $result = getData($query);
-                    echo "<table width='100%'>"; // start a table tag in the HTML
+                    echo "<table width='100%' class='table table-bordered table-hover'>"; // start a table tag in the HTML
                     echo "<tr>
                         <th>STUDENT ID</th>
                         <th>ACADAMIC YEAR</th>

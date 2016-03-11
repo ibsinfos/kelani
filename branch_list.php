@@ -2,7 +2,7 @@
                         include_once 'dbconfig.php'; //Connect to database
                         $query = "SELECT * FROM branch_tbl;";
                         $result = getData($query);
-                        echo "<table width='100%'>"; // start a table tag in the HTML
+                        echo "<table class='table table-bordered table-hover'>"; // start a table tag in the HTML
                         echo "<tr>
                         <th>Branch ID</th>
                         <th>City</th>

@@ -30,7 +30,7 @@ FROM 	lecturerpayment_tbl lp
 		
 	if (mysqli_num_rows($result) > 0){
 
-		echo "<table width='100%'>"; // start a table tag in the HTML
+		echo "<table width='100%' class='table table-bordered table-hover'>"; // start a table tag in the HTML
 		echo "<tr>
 						<th>SUBJECT</th>
 						<th>COURSE</th>

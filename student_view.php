@@ -115,7 +115,7 @@ if(isset($_GET['edit'])){
                 <!-- /.row -->
 					<div>
                     <form method="post" action="student_management_Edit.php" target="_parent" data-toggle="validator" id="stuviw">
-                    	<table width='100%'>
+                    	<table width='100%' class='table table-bordered table-hover'>
                             <tr>
                                 <td>
                                     <label>Student ID</label><br/><input type="search" name="txtStudentID" id="txtStudID" onKeyUp="LoadStudent();" size="13" value="<?php if(isset($_GET['edit'])){ echo $id;} ?>" />
@@ -136,7 +136,7 @@ if(isset($_GET['edit'])){
                         include_once 'dbconfig.php'; //Connect to database
                         $query = "SELECT * FROM  student_tb WHERE Student_status = '1' ORDER BY CreateDate DESC LIMIT 10";
                         $result = getData($query);
-                        echo "<table width='100%'>"; // start a table tag in the HTML
+                        echo "<table width='100%' class='table table-bordered table-hover'>"; // start a table tag in the HTML
                         echo "<tr>
                         <th>Student ID</th>
                         <th>Old Student ID</th>
@@ -144,10 +144,10 @@ if(isset($_GET['edit'])){
                         <th>NIC</th>
                         <th>Mobile No</th>
                         <th>Email</th>
-                        <th>&nbsp;</th>
-						<th>&nbsp;</th>
-						<th>&nbsp;</th>
-						<th>&nbsp;</th>
+                        <th>View</th>
+						<th>Cource</th>
+						<th>Payment</th>
+						<th>Attendance</th>
                         </tr>";
                         while($row = mysqli_fetch_array($result)){//Creates a loop to loop through results
                             echo "<tr><td>" . $row['Student_id']. "</td><td>" . $row['Old_student_id']. "</td><td>" . $row['Name']. "</td><td>" . $row['NIC'] . "</td><td>" . $row['TP_mob'] . "</td><td>" . $row['Email'] . "</td><td><a href='student_management_Edit.php?Studentid=".$row['Student_id']."'>View</a></td><td> 

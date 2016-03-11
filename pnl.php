@@ -44,7 +44,7 @@
 				data:{dtFromDate:FromDate, dtToDate:ToDate},
 				success: function(data){
 					var i = 0;
-					var text = "<table width='94%'>";
+					var text = "<table width='94%' class='table table-bordered table-hover'>";
 					text = text.concat("<tr><th>Date</th><th>Description</th><th style='text-align:right'>Income</th><th style='text-align:right'>Expense</th></tr>");
 					while(data.length > 0){
 					
@@ -76,7 +76,7 @@
 				data:{dtFromDate:FromDate, dtToDate:ToDate},
 				success: function(data){
 					var i = 0;
-					var text = "<table width='94%'>";
+					var text = "<table width='94%' class='table table-bordered table-hover'>";
 					text = text.concat("<tr><th>Date</th><th>Description</th><th style='text-align:right'>Income</th><th style='text-align:right'>Expense</th></tr>");
 					while(data.length > 0){
 					

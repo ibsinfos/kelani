@@ -6,7 +6,7 @@ WHERE u.Emp_id = e.Emp_id AND u.UserLevel_tbl_id = ul.id AND e.Branch_tbl_Branch
 ";
 //Username, NameInitial, lavel_name, City, CreateDate
 $result = getData($query);
-echo "<table width='100%'>"; // start a table tag in the HTML
+echo "<table width='100%' class='table table-bordered table-hover'>"; // start a table tag in the HTML
 echo "<tr>
                         <th>USERNAME</th>
                         <th>NAME</th>

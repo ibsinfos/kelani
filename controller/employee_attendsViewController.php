@@ -16,7 +16,7 @@ WHERE `Date` BETWEEN '$FromDate' AND '$ToDate'
 	$result= $con->query($query);
 
 if (mysqli_num_rows($result) > 0){
-	echo "<table width='100%'>"; // start a table tag in the HTML
+	echo "<table width='100%' class='table table-bordered table-hover'>"; // start a table tag in the HTML
 	echo "<tr>
                         <th>EMPLOYEE ID</th>
                         <th>NAME</th>

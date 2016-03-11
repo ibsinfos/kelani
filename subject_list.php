@@ -49,6 +49,7 @@ for ($i = $start; $i < $end; $i++) {
     echo "<tr>";
     echo '<td>' . $res[$i][2].'</td>';
     echo '<td>' . $res[$i][1].'</td>';
+    echo "<td><a href='subject.php?edit=" . $res[$i][1] . "'>Edit</a></td>";
     echo "</tr>";
 }
 

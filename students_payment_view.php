@@ -122,7 +122,7 @@ else{
 FROM  payment_tbl p, student_tb s
 WHERE s.Student_id = p.Student_tb_Student_id AND Student_tb_Student_id='".$txtStudentId."'";
                         $result = getData($query);
-                        echo "<table width='100%'>"; // start a table tag in the HTML
+                        echo "<table width='100%' class='table table-bordered table-hover'>"; // start a table tag in the HTML
                         echo "<tr>
                         <th>INVOICE NO</th>
                         <th>DATE</th>
